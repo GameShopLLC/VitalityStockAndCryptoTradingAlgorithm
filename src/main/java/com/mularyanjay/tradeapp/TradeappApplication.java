@@ -31,7 +31,11 @@ import javax.servlet.ServletException;
 public class TradeappApplication extends SpringBootServletInitializer  {
 
 	public static void main(String[] args) {
+		try {
 		ApplicationContext ctx = SpringApplication.run(TradeappApplication.class, args);
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 		System.out.println("We're live");
 		//ApplicationPropertiesValues apv = ctx.getBean(ApplicationPropertiesValues.class);
 		
