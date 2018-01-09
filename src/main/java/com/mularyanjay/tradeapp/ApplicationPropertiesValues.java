@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationPropertiesValues {
 
-	@Value("${server.ssl.key-store}")
+	//@Value("${server.ssl.key-store}")
 	private String keyStore;
 	
 	public ApplicationPropertiesValues() {

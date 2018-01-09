@@ -76,11 +76,11 @@ public class TradeappApplication extends SpringBootServletInitializer  {
 		return new HttpEntityBean();
 	}
 	
-	@Bean
-	ApplicationPropertiesValues applicationPropertiesValues() {
-		return new ApplicationPropertiesValues();
-		
-	}
+//	@Bean
+//	ApplicationPropertiesValues applicationPropertiesValues() {
+//		return new ApplicationPropertiesValues();
+//		
+//	}
 //	  @Bean
 //	    public WebMvcConfigurer corsConfigurer() {
 //	        return new WebMvcConfigurerAdapter() {
