@@ -58,11 +58,17 @@ public class MainController {
 	
 	@RequestMapping(value="/")
 	public String index(@RequestParam(value = "errCode", required=false) String errCode, Model model) {
+		try {
 		if (errCode == null){
 			errCode = new String("");
 		}
 		model.addAttribute("errCode", errCode);
 		return "Index";
+		}
+		catch (Throwable e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 	
 	@RequestMapping(value="/", method=RequestMethod.POST)
