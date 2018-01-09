@@ -33,9 +33,9 @@ public class TradeappApplication extends SpringBootServletInitializer  {
 	public static void main(String[] args) {
 		ApplicationContext ctx = SpringApplication.run(TradeappApplication.class, args);
 		System.out.println("We're live");
-		ApplicationPropertiesValues apv = ctx.getBean(ApplicationPropertiesValues.class);
+		//ApplicationPropertiesValues apv = ctx.getBean(ApplicationPropertiesValues.class);
 		
-		System.out.println(apv.getKeyStore());
+		//System.out.println(apv.getKeyStore());
 //		String[] beanNames = ctx.getBeanDefinitionNames();
 //		Arrays.sort(beanNames);
 //		for (String beanName : beanNames){
