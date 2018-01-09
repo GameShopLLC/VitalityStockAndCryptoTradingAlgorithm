@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="Includes :: index">
+
+<title>Insert title here</title>
+</head>
+<body>
+<span th:if="${errCode?.contains('inv') == false}">Hello</span><span th:if="${errCode?.contains('inv')}">Access Denied</span>
+<div>
+<form action="#" th:action="@{/}" th:object="${userLogin}" th:method="post"> <!-- th:object = modelattribute -->
+<input type="text" th:field="*{username}" th:placeholder="Username"> 
+<input type="password" th:field="*{password}"th:placeholder="Password"> 
+<input type="submit"  value="Login">
+		</form>
+</div>
+</body>
+</html>

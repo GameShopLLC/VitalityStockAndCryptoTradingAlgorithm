@@ -1,0 +1,51 @@
+//Copyright (C) 2017 Lynden Jay Evans Jr
+
+//I, LYNDEN JAY EVANS JR, AM THE CREATOR OF THIS
+//SOURCE CODE, AND UNDER 17 U.S.C. §§ 101-810
+//COPYRIGHT LAW, NO ONE OTHER THAN ME MAY VIEW, 
+//EXECUTE, DISTRIBUTE, OR SELL THIS CODE. 
+
+package com.mularyanjay.tradeapp;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Component;
+
+@Component
+public class HttpEntityBean {
+	@Autowired
+	HashingAlgorithm hashingAlgorithm;
+	
+	private HttpHeaders headers = new HttpHeaders();
+	private HttpEntity entity;
+	public HttpEntityBean(){
+		
+//		headers.add("accept", "application/json");
+//        headers.add("content-type", "application/json");
+//        headers.add("CB-ACCESS-KEY", hashingAlgorithm.getKey());
+//        headers.add("CB-ACCESS-SIGN", hashingAlgorithm.getHash(defaultUrl));
+//        headers.add("CB-ACCESS-TIMESTAMP", hashingAlgorithm.getTimestamp());
+//        headers.add("CB-ACCESS-PASSPHRASE", hashingAlgorithm.getPassphrase());
+//        entity = new HttpEntity(headers);
+
+	}
+	
+	public HttpEntity <String> getEntityFromUrl(String url){
+		headers.clear();
+		headers.add("accept", "application/json");
+        headers.add("content-type", "application/json");
+        headers.add("CB-ACCESS-KEY", hashingAlgorithm.getKey());
+        headers.add("CB-ACCESS-SIGN", hashingAlgorithm.getHash(url));
+        headers.add("CB-ACCESS-TIMESTAMP", hashingAlgorithm.getTimestamp());
+        headers.add("CB-ACCESS-PASSPHRASE", hashingAlgorithm.getPassphrase());
+        //headers.set
+		return new HttpEntity<String>("", headers);
+	}
+	
+	//the fuck?
+//	public HttpEntity postEntityFromUrl(String url, String body){
+//		//headers.remove(    )
+//		return null;
+//	}
+}
