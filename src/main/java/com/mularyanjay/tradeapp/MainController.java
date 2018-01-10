@@ -26,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -227,5 +228,21 @@ public class MainController {
 //		return list;
 //		
 //	}
+	
+	@RequestMapping(value="/priceReadResult", method=RequestMethod.POST)
+	public @ResponseBody String priceReadResult(@RequestBody TickerData ajaxJSON) {
+		//initstarttime
+		//4times
+		//Or just use last data from hashingalgorithm
+		//Or epochsecond? when post requested
+		//Use datetime
+		//.price - current price (ask)
+		//.time -use time parser
+		//.bid - highest buy 
+		//.ask - lowest sell
+		//.volume
+		ComparableDateTime cdt = new ComparableDateTime(ajaxJSON.getTime());
+		return cdt.toString() + " " + ajaxJSON.getPrice();		
+	}
 	
 }

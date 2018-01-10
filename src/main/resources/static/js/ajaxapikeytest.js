@@ -55,7 +55,30 @@ function ajaxCall() {
 		//$('#counter').text('The current price of bitcoin is $' + result.price);
 		//$('#counter').text('Your current accounts locally are' + JSON.stringify(result));
 		//$('#counter').text('Your current accounts locally are' + result[0].profile_id);
-		$('#counter').text('Your current accounts on GDAX are' + JSON.stringify(result));
+		//$('#counter').text('Your current accounts on GDAX are' + JSON.stringify(result.price));
+		$('#counter').text('The current price of Litecoin is' + JSON.stringify(result));
+		priceReadResultCall(JSON.stringify(result));
+	});
+	console.log("In Ajax Call");
+}
+
+function priceReadResultCall(priceData) {
+	request = $.ajax({
+		url: 'https://ancient-crag-48261.herokuapp.com/priceReadResult',
+		method: 'POST',
+		data: priceData,
+		contentType: 'application/json',
+		success: function(data) {
+			console.log("W00T");
+			console.log("THE FUCK");
+			console.log(data);
+		},
+		error: function(){
+		console.log("FUCK THIS");	
+		}
+	}).then(function(data){
+		var result = $.parseJSON(data);
+		$('#priceDataList').append(result);
 		
 	});
 	console.log("In Ajax Call");
