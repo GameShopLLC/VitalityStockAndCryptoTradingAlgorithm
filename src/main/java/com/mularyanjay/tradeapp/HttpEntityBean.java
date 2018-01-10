@@ -40,7 +40,8 @@ public class HttpEntityBean {
         headers.add("CB-ACCESS-TIMESTAMP", hashingAlgorithm.getTimestamp());
         headers.add("CB-ACCESS-PASSPHRASE", hashingAlgorithm.getPassphrase());
         //headers.set
-		return new HttpEntity<String>("", headers);
+		//return new HttpEntity<String>("", headers);
+		return new HttpEntity<>("", headers);
 	}
 	
 	//the fuck?
