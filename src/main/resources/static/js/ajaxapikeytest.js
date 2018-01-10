@@ -4,7 +4,7 @@
 //document.domain='api.gdax.com';
 $(document).ready(function(){
 	//alert("includes and jquery working");
-	setInterval(ajaxCall, 1000);
+	setInterval(ajaxCall, 250);
 	//ajaxCall();
 });
 
