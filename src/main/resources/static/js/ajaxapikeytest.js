@@ -10,7 +10,9 @@ $(document).ready(function(){
 
 function ajaxCall() {
 	request = $.ajax({
-		url: 'https://localhost:8080/testbackendrequest',//'https://api.gdax.com/products',
+		//url: 'https://localhost:8080/testbackendrequest',//'https://api.gdax.com/products',
+		url: 'https://ancient-crag-48261.herokuapp.com/testbackendrequest',//'https://api.gdax.com/products',
+		
 		//dataType: 'application/json',
 		//format:'json',
 		method: 'GET',
