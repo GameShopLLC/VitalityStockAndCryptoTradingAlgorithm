@@ -114,7 +114,7 @@ public class MainController {
 
 			        public boolean verify(String hostname,
 			                javax.net.ssl.SSLSession sslSession) {
-			            if (hostname.equals("localhost")) {
+			            if (hostname.equals("ancient-crag-48261.herokuapp.com")) {
 			                return true;
 			            }
 			            return false;
