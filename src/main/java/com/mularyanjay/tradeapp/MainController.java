@@ -108,7 +108,7 @@ public class MainController {
 	
 	//all ajax will be a get request, get or post of api will be handled by backend
 	@RequestMapping(value="/testbackendrequest")
-	public @ResponseBody String testBackendRequest() {
+	public @ResponseBody Account[] testBackendRequest() {
 		javax.net.ssl.HttpsURLConnection.setDefaultHostnameVerifier(
 			    new javax.net.ssl.HostnameVerifier(){
 
@@ -123,42 +123,50 @@ public class MainController {
 		if (isLoggedIn){
 			ObjectMapper mapper = new ObjectMapper();
 			RestTemplate restTemplate = new RestTemplate();
-			String url = "https://api.gdax.com/products/BTC-USD/TICKER";//"https://api.gdax.com/accounts";//"https://api.gdax.com/products/BTC-USD/TICKER";//"https://localhost:8080/testParamType";//"https://api.gdax.com/account";//;
+			String url = "https://api.gdax.com/accounts";//"https://api.gdax.com/products/BTC-USD/TICKER";//"https://api.gdax.com/accounts";//"https://api.gdax.com/products/BTC-USD/TICKER";//"https://localhost:8080/testParamType";//"https://api.gdax.com/account";//;
+			
+			//***NO USE ****
 			//ResponseEntity<Account[]> response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<Account[]>(){});//restTemplate.exchange(requestEntity, responseType)//restTemplate.getForEntity(url, String.class)
 			//restTemplate.exchange(requestEntity, responseType)//restTemplate.getForEntity(url, String.class)
 		//restTemplate.getForEntity(url, String.class);
 			//ResponseEntity<List<Account>> response = restTemplate.getfor .exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<List<Account>>(){});//restTemplate.exchange(requestEntity, responseType)//restTemplate.getForEntity(url, String.class);
-
-			ResponseEntity<String> response;
+			//****NO USE END *****
+			
+			
+			//***FOR STRING RESPONSE
+			//ResponseEntity<String> response;
 //			//try {
 			
+			////response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+			
 			//response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
-			response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
-//			
+			//***STRING RESPONSE END
 
 			//			//}
 			
-						//ResponseEntity<Account[]> response;
-//			try {
-//			response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<Account[]>(){});//restTemplate.exchange(requestEntity, responseType)//
-//			}
-//			catch (HttpStatusCodeException e) {
-////			    List<String> customHeader = e.getResponseHeaders().get("x-app-err-id");
-//////			    List<String> customHeader = e.getResponseHeaders().get("message");
-////				   
-//////			    String svcErrorMessageID = "";
-//////			    if (customHeader != null) {
-//////			        svcErrorMessageID = customHeader.get(0);                
-//////			    }
-//			    return e.getResponseBodyAsString();//e.getMessage() + svcErrorMessageID;
-//////			    //throw new CustomException(e.getMessage(), e, svcErrorMessageID);
-//////			    // You can get the body too but you will have to deserialize it yourself
-//////			    // e.getResponseBodyAsByteArray()
-//////			    // e.getResponseBodyAsString()
-//////			}
-//////			catch (Throwable ex) {
-//////				return ex.getMessage() + "hai";
-//			}
+			ResponseEntity<Account[]> response;
+//			
+			try {
+			response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<Account[]>(){});//restTemplate.exchange(requestEntity, responseType)//
+			}
+			catch (HttpStatusCodeException e) {
+//			    List<String> customHeader = e.getResponseHeaders().get("x-app-err-id");
+////			    List<String> customHeader = e.getResponseHeaders().get("message");
+//				   
+////			    String svcErrorMessageID = "";
+////			    if (customHeader != null) {
+////			        svcErrorMessageID = customHeader.get(0);                
+////			    }
+				System.out.println(e.getResponseBodyAsString());
+			    return null;//e.getMessage() + svcErrorMessageID;
+////			    //throw new CustomException(e.getMessage(), e, svcErrorMessageID);
+////			    // You can get the body too but you will have to deserialize it yourself
+////			    // e.getResponseBodyAsByteArray()
+////			    // e.getResponseBodyAsString()
+////			}
+////			catch (Throwable ex) {
+////				return ex.getMessage() + "hai";
+			}
 			//ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
 			
 			//
@@ -175,7 +183,8 @@ public class MainController {
 			return response.getBody();
 			
 		}
-		return "";
+		//return "";
+		return null;
 	}
 	
 	@RequestMapping(value="/testParamType")
