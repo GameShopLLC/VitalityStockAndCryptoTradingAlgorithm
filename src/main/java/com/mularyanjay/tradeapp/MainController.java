@@ -243,12 +243,23 @@ public class MainController {
 		//.bid - highest buy 
 		//.ask - lowest sell
 		//.volume
+		String increaseSignature = "";
+		
 		try {
 		ComparableDateTime cdt = new ComparableDateTime(ajaxJSON.getTime());
 		System.out.println(cdt.toString() + " " + ajaxJSON.getPrice());	
 		if (!cdt.toString().equals(lastTime.toString())) {
+			if (lastTime != null) {
+				if (lastTime.increaseGreater(cdt, "second", new BigDecimal("0"))) {
+					increaseSignature = new String("secondIncrease");
+				}
+				if (lastTime.increaseGreater(cdt, "minute", 0)) {
+					increaseSignature = new String(increaseSignature + "minuteIncrease");
+				}
+				//if ()
+			}
 			lastTime.setDateTime(cdt.toString());
-			return cdt.toString() + " " + ajaxJSON.getPrice() + " " + "true";
+			return cdt.toString() + " " + ajaxJSON.getPrice() + " " + increaseSignature + " "+ "true";
 		}
 		lastTime.setDateTime(cdt.toString());
 		return cdt.toString() + " " + ajaxJSON.getPrice() + " " + "false";		

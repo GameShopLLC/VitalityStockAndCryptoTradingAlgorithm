@@ -35,6 +35,96 @@ public class ComparableDateTime {
 		
 	}
 	
+	public boolean increaseEquals(ComparableDateTime other, String timeslot, int increase) {
+		
+		switch(timeslot) {
+		case "year":
+			if (other.getYear() == getYear() + increase) {
+				return true;
+			}	
+			return false;
+			//break;
+		case "month":
+			if (other.getMonth() == getMonth() + increase) {
+				return true;
+			}	
+			return false;
+		case "day":
+			if (other.getDay() == getDay() + increase) {
+				return true;
+			}	
+			return false;
+		case "hour":
+			if (other.getHour() == getHour() + increase) {
+				return true;
+			}	
+			return false;
+		case "minute":
+			if (other.getMinute() == getMinute() + increase) {
+				return true;
+			}	
+			return false;
+		}
+		return false;
+	}
+	
+	public boolean increaseEquals(ComparableDateTime other, String timeslot, BigDecimal increase) {
+		
+		switch(timeslot) {
+		case "second":
+			if (other.getSecond() == getSecond().add(increase)) {
+				return true;
+			}	
+			return false;
+		}
+		return false;
+	}
+	
+public boolean increaseGreater(ComparableDateTime other, String timeslot, int increase) {
+		
+		switch(timeslot) {
+		case "year":
+			if (other.getYear() > getYear() + increase) {
+				return true;
+			}	
+			return false;
+			//break;
+		case "month":
+			if (other.getMonth() > getMonth() + increase) {
+				return true;
+			}	
+			return false;
+		case "day":
+			if (other.getDay() > getDay() + increase) {
+				return true;
+			}	
+			return false;
+		case "hour":
+			if (other.getHour() > getHour() + increase) {
+				return true;
+			}	
+			return false;
+		case "minute":
+			if (other.getMinute() > getMinute() + increase) {
+				return true;
+			}	
+			return false;
+		}
+		return false;
+	}
+	
+	public boolean increaseGreater(ComparableDateTime other, String timeslot, BigDecimal increase) {
+		
+		switch(timeslot) {
+		case "second":
+			if (other.getSecond().compareTo(getSecond().add(increase)) == 1) {
+				return true;
+			}	
+			return false;
+		}
+		return false;
+	}
+	
 	public String toString() {
 		return "" + getYear() + "-" + getMonth() + "-" + getDay() + "T" + getHour() + ":" + getMinute() + ":" + getSecond() + "Z";
 	}
