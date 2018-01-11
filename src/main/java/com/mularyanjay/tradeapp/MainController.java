@@ -49,7 +49,11 @@ public class MainController {
 	@Autowired
 	HttpEntityBean httpEntityBean;
 	
+	@Autowired
+	CarrotHistory carrotHistory;
+	
 	ComparableDateTime lastTime = new ComparableDateTime();
+	Carrot currentCarrot;
 	
     boolean isLoggedIn;
 	int counter = 0;
@@ -246,13 +250,22 @@ public class MainController {
 		String increaseSignature = "";
 		
 		try {
+		//
 		ComparableDateTime cdt = new ComparableDateTime(ajaxJSON.getTime());
+		if (currentCarrot == null) {
+		currentCarrot = new Carrot(ajaxJSON.getPrice(), cdt);
+		}
+		
 		System.out.println(cdt.toString() + " " + ajaxJSON.getPrice());	
 		if (!cdt.toString().equals(lastTime.toString())) {
 			if (lastTime != null && cdt != null) {
 				if(lastTime.getSecond() != null && cdt.getSecond() != null) {
 				if (lastTime.increaseGreater(cdt, "second", new BigDecimal("0"))) {
 					increaseSignature = new String("secondIncrease");
+					//
+					if (currentCarrot != null) {
+						currentCarrot.addCurrent(ajaxJSON.getPrice());
+					}
 				}
 				} else {
 					System.out.println("Null Second?");
@@ -262,12 +275,32 @@ public class MainController {
 				//if(cdt.getMinute() != null) {
 				if (lastTime.increaseGreater(cdt, "minute", 0)) {
 					increaseSignature = new String(increaseSignature + "minuteIncrease");
+					if (currentCarrot != null && !increaseSignature.contains("nullsecondstart")) {
+						currentCarrot.closeCarrot(cdt);
+						carrotHistory.getHistory().add(currentCarrot);
+						currentCarrot = null;
+						int i = 1;
+						for (Carrot c: carrotHistory.getHistory()) {
+							System.out.println("" + i + ")" + c.toString());
+						}
+						//need global boolean to open and 
+						//close carrot... er to decide to make
+						//new carrot.  Or can reset to null
+						//o.O
+						
+					}
 				}
 				//}
 				//if ()
 			}
 			lastTime.setDateTime(cdt.toString());
-			return cdt.toString() + " " + ajaxJSON.getPrice() + " " + increaseSignature + " "+ "true";
+			//return cdt.toString() + " " + ajaxJSON.getPrice() + " " + increaseSignature + " "+ "true";
+			//return "" + 
+			if (currentCarrot != null) {
+				return currentCarrot.toString();
+			} else {
+				return carrotHistory.getHistory().get(carrotHistory.getHistory().size() - 1).toString();
+			}
 		}
 		lastTime.setDateTime(cdt.toString());
 		return cdt.toString() + " " + ajaxJSON.getPrice() + " " + "false";		

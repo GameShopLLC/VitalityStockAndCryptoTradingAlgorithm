@@ -76,6 +76,10 @@ public class TradeappApplication extends SpringBootServletInitializer  {
 		return new HttpEntityBean();
 	}
 	
+	@Bean
+	CarrotHistory carrotHistory() {
+		return new CarrotHistory();
+	}
 //	@Bean
 //	ApplicationPropertiesValues applicationPropertiesValues() {
 //		return new ApplicationPropertiesValues();
