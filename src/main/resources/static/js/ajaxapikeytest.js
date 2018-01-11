@@ -82,9 +82,11 @@ function priceReadResultCall(priceData) {
 		//its showing same times, need boolean in 
 		//response to show if there is a change,
 		//and then if so append text
-		if (response.includes('true')) {
-		$('#priceDataList').text($('#priceDataList').text() + "," + response.replace(' true',''));//JSON.stringify(result));
-		}
+//		if (response.includes('true')) {
+//		$('#priceDataList').text($('#priceDataList').text() + "," + response.replace(' true',''));//JSON.stringify(result));
+//		}
+		$('#priceDataList').text($('#priceDataList').text() + "," + response);
+		
 	});
 	console.log("In Ajax Call");
 }
