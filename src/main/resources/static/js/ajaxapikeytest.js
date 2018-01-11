@@ -79,7 +79,7 @@ function priceReadResultCall(priceData) {
 		}
 	}).then(function(response){
 		//var result = $.parseJSON(response);
-		$('#priceDataList').text(response);//JSON.stringify(result));
+		$('#priceDataList').text($('#priceDataList').text() + "," + response);//JSON.stringify(result));
 		
 	});
 	console.log("In Ajax Call");
