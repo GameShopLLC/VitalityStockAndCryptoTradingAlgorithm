@@ -78,7 +78,7 @@ function priceReadResultCall(priceData) {
 		}
 	}).then(function(response){
 		var result = $.parseJSON(response);
-		$('#priceDataList').text(result);
+		$('#priceDataList').text(JSON.stringify(result));
 		
 	});
 	console.log("In Ajax Call");
