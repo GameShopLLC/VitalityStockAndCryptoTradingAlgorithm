@@ -241,8 +241,15 @@ public class MainController {
 		//.bid - highest buy 
 		//.ask - lowest sell
 		//.volume
+		try {
 		ComparableDateTime cdt = new ComparableDateTime(ajaxJSON.getTime());
+		System.out.println(cdt.toString() + " " + ajaxJSON.getPrice());	
 		return cdt.toString() + " " + ajaxJSON.getPrice();		
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
+		
+		return "No Result";
 	}
 	
 }
