@@ -67,7 +67,8 @@ function priceReadResultCall(priceData) {
 		url: 'https://ancient-crag-48261.herokuapp.com/priceReadResult',
 		method: 'POST',
 		data: priceData,
-		contentType: 'application/x-www-form-urlencoded; charset=UTF-8',//'application/json',
+		contentType: 'application/json',//'application/x-www-form-urlencoded; charset=UTF-8',//'application/json',
+		dataType: 'text',
 		success: function(response) {
 			console.log("W00T IN RESPONSE");
 			//console.log("THE FUCK");
