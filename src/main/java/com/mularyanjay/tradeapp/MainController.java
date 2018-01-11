@@ -311,7 +311,7 @@ public class MainController {
 			}
 		}
 		lastTime.setDateTime(cdt.toString());
-		return cdt.toString() + " " + ajaxJSON.getPrice() + " " + "false";		
+		return "";//cdt.toString() + " " + ajaxJSON.getPrice() + " " + "false";		
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
