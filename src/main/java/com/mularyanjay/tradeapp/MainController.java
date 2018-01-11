@@ -49,6 +49,8 @@ public class MainController {
 	@Autowired
 	HttpEntityBean httpEntityBean;
 	
+	ComparableDateTime lastTime = new ComparableDateTime();
+	
     boolean isLoggedIn;
 	int counter = 0;
 	String sayHey = "Hey";
@@ -244,7 +246,12 @@ public class MainController {
 		try {
 		ComparableDateTime cdt = new ComparableDateTime(ajaxJSON.getTime());
 		System.out.println(cdt.toString() + " " + ajaxJSON.getPrice());	
-		return cdt.toString() + " " + ajaxJSON.getPrice();		
+		if (!cdt.toString().equals(lastTime.toString())) {
+			lastTime.setDateTime(cdt.toString());
+			return cdt.toString() + " " + ajaxJSON.getPrice() + " " + "true";
+		}
+		lastTime.setDateTime(cdt.toString());
+		return cdt.toString() + " " + ajaxJSON.getPrice() + " " + "false";		
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}

@@ -79,8 +79,12 @@ function priceReadResultCall(priceData) {
 		}
 	}).then(function(response){
 		//var result = $.parseJSON(response);
-		$('#priceDataList').text($('#priceDataList').text() + "," + response);//JSON.stringify(result));
-		
+		//its showing same times, need boolean in 
+		//response to show if there is a change,
+		//and then if so append text
+		if (response.includes('true')) {
+		$('#priceDataList').text($('#priceDataList').text() + "," + response.replace(' true',''));//JSON.stringify(result));
+		}
 	});
 	console.log("In Ajax Call");
 }
