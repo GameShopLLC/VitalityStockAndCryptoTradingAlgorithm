@@ -249,13 +249,21 @@ public class MainController {
 		ComparableDateTime cdt = new ComparableDateTime(ajaxJSON.getTime());
 		System.out.println(cdt.toString() + " " + ajaxJSON.getPrice());	
 		if (!cdt.toString().equals(lastTime.toString())) {
-			if (lastTime != null) {
+			if (lastTime != null && cdt != null) {
+				if(lastTime.getSecond() != null && cdt.getSecond() != null) {
 				if (lastTime.increaseGreater(cdt, "second", new BigDecimal("0"))) {
 					increaseSignature = new String("secondIncrease");
 				}
+				} else {
+					System.out.println("Null Second?");
+					increaseSignature = new String("nullsecondstart");
+				}
+				
+				//if(cdt.getMinute() != null) {
 				if (lastTime.increaseGreater(cdt, "minute", 0)) {
 					increaseSignature = new String(increaseSignature + "minuteIncrease");
 				}
+				//}
 				//if ()
 			}
 			lastTime.setDateTime(cdt.toString());
