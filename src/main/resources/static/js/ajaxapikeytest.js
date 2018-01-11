@@ -68,17 +68,17 @@ function priceReadResultCall(priceData) {
 		method: 'POST',
 		data: priceData,
 		contentType: 'application/json',
-		success: function(data) {
-			console.log("W00T");
-			console.log("THE FUCK");
-			console.log(data);
+		success: function(response) {
+			console.log("W00T IN RESPONSE");
+			//console.log("THE FUCK");
+			console.log(response);
 		},
 		error: function(){
-		console.log("FUCK THIS");	
+		console.log("FUCK THIS RESPONSE");	
 		}
-	}).then(function(data){
-		var result = $.parseJSON(data);
-		$('#priceDataList').text($('#priceDataList').text() + result);
+	}).then(function(response){
+		var result = $.parseJSON(response);
+		$('#priceDataList').text(result);
 		
 	});
 	console.log("In Ajax Call");
