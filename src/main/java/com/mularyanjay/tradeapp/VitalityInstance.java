@@ -41,6 +41,7 @@ public class VitalityInstance {
 		
 		setUsd(initialUSD);
 		setLtc(new BigDecimal("0"));
+		setProfit(new BigDecimal("0"));
 		groups = new ArrayList<TradeGroup>();
 		setEntryPointStatus("");
 		for(TradeGroup g: whatGroups) {
