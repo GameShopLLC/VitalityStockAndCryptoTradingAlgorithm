@@ -151,11 +151,18 @@ public class TradeGroup {
 		
 		//Problem solved ^.^
 		//Move on to threads
+		for (TradeThread t: trades) {
+			t.broadcastCarrot(carrot); //or should I evaluate current
+			//carrot and broadcast that? No, keep as is.
+		}
+		
 		if(getName().contains("One")) {
 			//if (getCurrentCarrot() == null) {
 			setCurrentCarrot(carrot);
 			if (!getCurrentCarrot().isActive()) {
 				getCarrotCache().add(carrot);
+				//doDeploy
+				doDeploy();
 			}
 			//}
 		} 
@@ -176,10 +183,11 @@ public class TradeGroup {
 				} else {
 					if (getCurrentCarrot() != null) {
 						//seconds getcurrenttime instead of startTime?
-						if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getCurrentTime(), "minute", 4) &&
-								getCurrentCarrot().getEndTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("59"))) {
+						if (getCurrentCarrot().getStartTime().increaseEquals(carrot.getCurrentTime(), "minute", 4) &&
+								getCurrentCarrot().getStartTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("58"))) {
 							getCurrentCarrot().closeCarrot(carrot.getStartTime());
 							getCarrotCache().add(getCurrentCarrot());
+							doDeploy();
 							setCurrentCarrot(null);
 						} else {
 							getCurrentCarrot().setActive(true);
@@ -200,10 +208,11 @@ public class TradeGroup {
 				setCurrentCarrot(carrot);
 			} else {
 				if (getCurrentCarrot() != null) {
-					if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getCurrentTime(), "minute", 9) &&
-							getCurrentCarrot().getEndTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("59"))) {
+					if (getCurrentCarrot().getStartTime().increaseEquals(carrot.getCurrentTime(), "minute", 9) &&
+							getCurrentCarrot().getStartTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("58"))) {
 						getCurrentCarrot().closeCarrot(carrot.getStartTime());
 						getCarrotCache().add(getCurrentCarrot());
+						doDeploy();
 						setCurrentCarrot(null);
 					} else {
 						getCurrentCarrot().setActive(true);
@@ -222,10 +231,11 @@ public class TradeGroup {
 				setCurrentCarrot(carrot);
 			} else {
 				if (getCurrentCarrot() != null) {
-					if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getCurrentTime(), "minute", 14) &&
-							getCurrentCarrot().getEndTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("59"))) {
+					if (getCurrentCarrot().getStartTime().increaseEquals(carrot.getCurrentTime(), "minute", 14) &&
+							getCurrentCarrot().getStartTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("58"))) {
 						getCurrentCarrot().closeCarrot(carrot.getStartTime());
 						getCarrotCache().add(getCurrentCarrot());
+						doDeploy();
 						setCurrentCarrot(null);
 					} else {
 						getCurrentCarrot().setActive(true);
@@ -242,10 +252,11 @@ public class TradeGroup {
 				setCurrentCarrot(carrot);
 			} else {
 				if (getCurrentCarrot() != null) {
-					if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getCurrentTime(), "minute", 29) &&
-							getCurrentCarrot().getEndTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("59"))) {
+					if (getCurrentCarrot().getStartTime().increaseEquals(carrot.getCurrentTime(), "minute", 29) &&
+							getCurrentCarrot().getStartTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("58"))) {
 						getCurrentCarrot().closeCarrot(carrot.getStartTime());
 						getCarrotCache().add(getCurrentCarrot());
+						doDeploy();
 						setCurrentCarrot(null);
 					} else {
 						getCurrentCarrot().setActive(true);
@@ -261,10 +272,11 @@ public class TradeGroup {
 				setCurrentCarrot(carrot);
 			} else {
 				if (getCurrentCarrot() != null) {
-					if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getCurrentTime(), "minute", 59) &&
-							getCurrentCarrot().getEndTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("59"))) {
+					if (getCurrentCarrot().getStartTime().increaseEquals(carrot.getCurrentTime(), "minute", 59) &&
+							getCurrentCarrot().getStartTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("58"))) {
 						getCurrentCarrot().closeCarrot(carrot.getStartTime());
 						getCarrotCache().add(getCurrentCarrot());
+						doDeploy();
 						setCurrentCarrot(null);
 					} else {
 						getCurrentCarrot().setActive(true);
@@ -275,10 +287,7 @@ public class TradeGroup {
 				}
 			}
 		}
-		for (TradeThread t: trades) {
-			t.broadcastCarrot(carrot); //or should I evaluate current
-			//carrot and broadcast that? No, keep as is.
-		}
+		
 		
 //		//Dont forget about carrotCache (the point of
 //		//currentCarrot
@@ -335,58 +344,7 @@ public class TradeGroup {
 			//Carrot reshaping could be handled in tradegroup
 			//instead of frontend (or with frontend).
 			
-			//Ok, first change to single dip
-			if (getState().equals("STANDBY")) {
-				if (getCarrotCache().size() > 0) {
-//					if (getName().contains("One")) {
-//						if (getCarrotCache().size() > 1) {
-//							//if... hit entry point
-//							if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC") && getCarrotCache().get(getCarrotCache().size() - 2).getTrend().equals("DEC")) {
-//								setState("ACTIVE");		
-//								deployThread(getCarrotCache().get(getCarrotCache().size() - 1)); //well?
-//							}
-//						}
-//					}
-					//else {
-						//if (getCarrotCache().size() > 0) {
-							//if... hit entry point
-							if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC")) {
-								setState("ACTIVE");	
-								deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
-							}
-							//INC for buy... but not on standby, only on ACTIVE
-						//}
-					//}
-				}
-			}
-			else if (getState().equals("ACTIVE")) {
-				if (getCarrotCache().size() > 0) {
-//					if (getName().contains("One")) {
-//						if (getCarrotCache().size() > 1) {
-//							//if... hit entry point
-//							if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC") && getCarrotCache().get(getCarrotCache().size() - 2).getTrend().equals("DEC")) {
-//								//setState("ACTIVE");		
-//								deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
-//							}
-//						}
-//					}
-//					else {
-//						if (getCarrotCache().size() > 0) {
-							//if... hit entry point
-							if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC")) {
-								//setState("ACTIVE");
-								deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
-							} 
-							else if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("INC")) {
-								//setState("ACTIVE");
-								//deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
-								attemptSellThread(getCarrotCache().get(getCarrotCache().size() - 1));
-							}
-							//*****INC for buy since ACTIVE here*****
-//						}
-//					}
-				}
-			}
+		
 			
 //			switch(getName()) {
 //				
@@ -403,6 +361,62 @@ public class TradeGroup {
 //	public BigDecimal checkTrade() {
 //		return new BigDecimal("0");
 //	}
+	
+	public void doDeploy() {
+		//Add triggerDeploy method
+		//Ok, first change to single dip
+		if (getState().equals("STANDBY")) {
+			if (getCarrotCache().size() > 0) {
+//				if (getName().contains("One")) {
+//					if (getCarrotCache().size() > 1) {
+//						//if... hit entry point
+//						if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC") && getCarrotCache().get(getCarrotCache().size() - 2).getTrend().equals("DEC")) {
+//							setState("ACTIVE");		
+//							deployThread(getCarrotCache().get(getCarrotCache().size() - 1)); //well?
+//						}
+//					}
+//				}
+				//else {
+					//if (getCarrotCache().size() > 0) {
+						//if... hit entry point
+						if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC")) {
+							setState("ACTIVE");	
+							deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
+						}
+						//INC for buy... but not on standby, only on ACTIVE
+					//}
+				//}
+			}
+		}
+		else if (getState().equals("ACTIVE")) {
+			if (getCarrotCache().size() > 0) {
+//				if (getName().contains("One")) {
+//					if (getCarrotCache().size() > 1) {
+//						//if... hit entry point
+//						if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC") && getCarrotCache().get(getCarrotCache().size() - 2).getTrend().equals("DEC")) {
+//							//setState("ACTIVE");		
+//							deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
+//						}
+//					}
+//				}
+//				else {
+//					if (getCarrotCache().size() > 0) {
+						//if... hit entry point
+						if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC")) {
+							//setState("ACTIVE");
+							deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
+						} 
+						else if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("INC")) {
+							//setState("ACTIVE");
+							//deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
+							attemptSellThread(getCarrotCache().get(getCarrotCache().size() - 1));
+						}
+						//*****INC for buy since ACTIVE here*****
+//					}
+//				}
+			}
+		}
+	}
 	
 	public void updateBalance() {
 		BigDecimal newUsd = new BigDecimal("0");
