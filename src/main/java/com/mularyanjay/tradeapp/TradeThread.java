@@ -8,6 +8,7 @@
 package com.mularyanjay.tradeapp;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -66,7 +67,7 @@ public class TradeThread {
 		//Need to calculate totals and then do transaction
 		//A buy order will deduct dollars and want ltc,
 		//but will possess no ltc until it is met.
-		setRequestedLtc(getUsd().divide(getRequestBuyPrice()));
+		setRequestedLtc(getUsd().divide(getRequestBuyPrice(), 8, RoundingMode.HALF_UP));
 		setLastUsd(getUsd());
 		setUsd(getUsd().subtract(getRequestBuyPrice().multiply(getRequestedLtc())));
 		setBuyProcessState("DESIRED_BUY");
