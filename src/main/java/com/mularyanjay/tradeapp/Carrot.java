@@ -20,6 +20,7 @@ public class Carrot {
 	private String trend; 
 	private ComparableDateTime startTime;
 	private ComparableDateTime endTime;
+	private ComparableDateTime currentTime;
 	
 	//INC, DEC, EQ
 	//Last carrot, current carrot, carrot history
@@ -27,6 +28,8 @@ public class Carrot {
 	//closed, or to check if carrot closed before
 	//checking endtime
 	
+	//Probably should add current time to check for tradegroups
+	//seconds???
 	public Carrot() {
 		
 	}
@@ -34,6 +37,7 @@ public class Carrot {
 	public Carrot(BigDecimal start, ComparableDateTime newStartTime) {
 		
 		startTime = new ComparableDateTime(newStartTime.toString());
+		currentTime = new ComparableDateTime(newStartTime.toString());
 		setActive(true);
 		setOpen(start);
 		setCurrent(start);
@@ -58,6 +62,13 @@ public class Carrot {
 				setTrend("EQ");
 			}
 			
+		}
+	}
+	
+	//*CHANGE CURRENT TIME HERE**
+	public void addCurrentTime(ComparableDateTime ct) {
+		if (isActive()) {
+			setCurrentTime(new ComparableDateTime(ct.toString()));
 		}
 	}
 	
@@ -144,6 +155,14 @@ public class Carrot {
 
 	public void setEndTime(ComparableDateTime endTime) {
 		this.endTime = endTime;
+	}
+
+	public ComparableDateTime getCurrentTime() {
+		return currentTime;
+	}
+
+	public void setCurrentTime(ComparableDateTime currentTime) {
+		this.currentTime = currentTime;
 	}
 	
 	

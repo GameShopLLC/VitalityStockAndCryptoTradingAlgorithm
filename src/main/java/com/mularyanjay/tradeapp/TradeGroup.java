@@ -22,10 +22,12 @@ public class TradeGroup {
 	private int carrotCacheNum;
 	private int minuteTimeSpan;
 	//start a search for entry point
-	private float buyTimeout;
-	private float stuckTimeout;
+	//*CHANGE TIMEOUTS TO LONG
+	private long buyTimeout;
+	private long stuckTimeout;
 	private boolean hasReachedEntryPoint; //Delete?
 	private Carrot currentCarrot;
+	private BigDecimal profit;
 	
 	public TradeGroup() {
 		
@@ -34,7 +36,7 @@ public class TradeGroup {
 	//*Need to apply timeouts*
 	//Obviously, handling logging, statistical data
 	
-	public TradeGroup(String whatName, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, float bto, float sto) {
+	public TradeGroup(String whatName, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
 		//setHasReachedEntryPoint(false);
 		setName(whatName);
 		setAmountThreads(whatAmountThreads);
@@ -171,8 +173,9 @@ public class TradeGroup {
 					setCurrentCarrot(carrot);
 				} else {
 					if (getCurrentCarrot() != null) {
-						if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getStartTime(), "minute", 4) &&
-								getCurrentCarrot().getEndTime().increaseGreater(carrot.getStartTime(), "second", new BigDecimal("59"))) {
+						//seconds getcurrenttime instead of startTime?
+						if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getCurrentTime(), "minute", 4) &&
+								getCurrentCarrot().getEndTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("59"))) {
 							getCurrentCarrot().closeCarrot(carrot.getStartTime());
 							getCarrotCache().add(getCurrentCarrot());
 							setCurrentCarrot(null);
@@ -195,8 +198,8 @@ public class TradeGroup {
 				setCurrentCarrot(carrot);
 			} else {
 				if (getCurrentCarrot() != null) {
-					if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getStartTime(), "minute", 9) &&
-							getCurrentCarrot().getEndTime().increaseGreater(carrot.getStartTime(), "second", new BigDecimal("59"))) {
+					if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getCurrentTime(), "minute", 9) &&
+							getCurrentCarrot().getEndTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("59"))) {
 						getCurrentCarrot().closeCarrot(carrot.getStartTime());
 						getCarrotCache().add(getCurrentCarrot());
 						setCurrentCarrot(null);
@@ -217,8 +220,8 @@ public class TradeGroup {
 				setCurrentCarrot(carrot);
 			} else {
 				if (getCurrentCarrot() != null) {
-					if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getStartTime(), "minute", 14) &&
-							getCurrentCarrot().getEndTime().increaseGreater(carrot.getStartTime(), "second", new BigDecimal("59"))) {
+					if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getCurrentTime(), "minute", 14) &&
+							getCurrentCarrot().getEndTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("59"))) {
 						getCurrentCarrot().closeCarrot(carrot.getStartTime());
 						getCarrotCache().add(getCurrentCarrot());
 						setCurrentCarrot(null);
@@ -237,8 +240,8 @@ public class TradeGroup {
 				setCurrentCarrot(carrot);
 			} else {
 				if (getCurrentCarrot() != null) {
-					if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getStartTime(), "minute", 29) &&
-							getCurrentCarrot().getEndTime().increaseGreater(carrot.getStartTime(), "second", new BigDecimal("59"))) {
+					if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getCurrentTime(), "minute", 29) &&
+							getCurrentCarrot().getEndTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("59"))) {
 						getCurrentCarrot().closeCarrot(carrot.getStartTime());
 						getCarrotCache().add(getCurrentCarrot());
 						setCurrentCarrot(null);
@@ -256,8 +259,8 @@ public class TradeGroup {
 				setCurrentCarrot(carrot);
 			} else {
 				if (getCurrentCarrot() != null) {
-					if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getStartTime(), "minute", 59) &&
-							getCurrentCarrot().getEndTime().increaseGreater(carrot.getStartTime(), "second", new BigDecimal("59"))) {
+					if (getCurrentCarrot().getEndTime().increaseEquals(carrot.getCurrentTime(), "minute", 59) &&
+							getCurrentCarrot().getEndTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("59"))) {
 						getCurrentCarrot().closeCarrot(carrot.getStartTime());
 						getCarrotCache().add(getCurrentCarrot());
 						setCurrentCarrot(null);
@@ -386,7 +389,7 @@ public class TradeGroup {
 //			switch(getName()) {
 //				
 //			}
-			
+			updateBalance();
 		}
 	
 	
@@ -395,8 +398,82 @@ public class TradeGroup {
 	
 	
 	//Change this to check all buy and sold states
-	public BigDecimal checkTrade() {
-		return new BigDecimal("0");
+//	public BigDecimal checkTrade() {
+//		return new BigDecimal("0");
+//	}
+	
+	public void updateBalance() {
+		BigDecimal newUsd = new BigDecimal("0");
+		BigDecimal newLtc = new BigDecimal("0");
+		BigDecimal newProfit = new BigDecimal("0");
+		for (TradeThread t: trades) {
+			newUsd = newUsd.add(t.getUsd());
+			newLtc = newLtc.add(t.getLtc());
+			newProfit = newProfit.add(t.getProfit());
+		}
+		setUsd(newUsd);
+		setLtc(newLtc);
+		setProfit(newProfit);
+	}
+	
+	//Amount buy stuck threads
+	//amount sell stuck threads
+	//Amount idle threads
+	//Amount active threads
+	//Amount buying threads
+	//Amount selling threads
+	//Strongest thread usd/ltc/profit (measured by profit?)
+	public String statusReport() {
+		int idleThreadCount = 0;
+		int activeThreadCount = 0;
+		int buyingThreadCount = 0;
+		int sellingThreadCount = 0;
+		int buyStuckCount = 0;
+		int sellStuckCount = 0;
+		TradeThread highest = null;
+		for (TradeThread t: trades) {
+			if (t.getLifeTimeState().equals("IDLE")) {
+				idleThreadCount++;
+			} else {
+				activeThreadCount++;
+			}
+			if (t.getBuyProcessState().equals("DESIRED_BUY")) {
+				buyingThreadCount++;
+			} else if(t.getBuyProcessState().equals("BOUGHT") || t.getBuyProcessState().equals("DESIRED_SELL")) {
+				sellingThreadCount++;
+			}
+			if (t.getLifeTimeState().equals("BUY_STUCK")) {
+				buyStuckCount++;
+			} else if(t.getLifeTimeState().equals("SELL_STUCK")) {
+				sellStuckCount++;
+			}
+			if (highest == null) {
+				highest = t;
+			} else {
+				if (t.getProfit().compareTo(highest.getProfit()) == 1) {
+					highest = t;
+				}
+			}
+			//sell is bought or desired sell
+		}
+//		int idleThreadCount = 0;
+//		int activeThreadCount = 0;
+//		int buyingThreadCount = 0;
+//		int sellingThreadCount = 0;
+//		int buyStuckCount = 0;
+//		int sellStuckCount = 0;
+		return "Current USD Balance: " + getUsd() + "\n" +
+			   "Current Ltc Balance: " + getLtc() + "\n" +
+			   "Current Profit: " + getProfit() + "\n" +
+			   "Idle Threads: " + idleThreadCount + "\n" +
+			   "Active Threads: " + activeThreadCount + "\n" +
+			   "Buying threads: " + buyingThreadCount + "\n" +
+			   "Selling threads: " + sellingThreadCount + "\n" +
+			   "Stuck buying: " + buyStuckCount + "\n" +
+			   "Stuck selling: " + sellStuckCount + "\n" +
+			   "Strongest thread USD: " + highest.getUsd() + "\n" +
+			   "Strongest thread LTC: " + highest.getLtc() + "\n" +
+			   "Strongest thread profit: " + highest.getProfit();
 	}
 	public String getName() {
 		return name;
@@ -477,19 +554,19 @@ public class TradeGroup {
 		this.minuteTimeSpan = minuteTimeSpan;
 	}
 
-	public float getBuyTimeout() {
+	public long getBuyTimeout() {
 		return buyTimeout;
 	}
 
-	public void setBuyTimeout(float buyTimeout) {
+	public void setBuyTimeout(long buyTimeout) {
 		this.buyTimeout = buyTimeout;
 	}
 
-	public float getStuckTimeout() {
+	public long getStuckTimeout() {
 		return stuckTimeout;
 	}
 
-	public void setStuckTimeout(float stuckTimeout) {
+	public void setStuckTimeout(long stuckTimeout) {
 		this.stuckTimeout = stuckTimeout;
 	}
 
@@ -507,6 +584,14 @@ public class TradeGroup {
 
 	public void setCurrentCarrot(Carrot currentCarrot) {
 		this.currentCarrot = currentCarrot;
+	}
+
+	public BigDecimal getProfit() {
+		return profit;
+	}
+
+	public void setProfit(BigDecimal profit) {
+		this.profit = profit;
 	}
 	
 	

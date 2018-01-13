@@ -8,6 +8,8 @@
 package com.mularyanjay.tradeapp;
 
 import java.math.BigDecimal;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TradeThread {
 
@@ -15,9 +17,9 @@ public class TradeThread {
 	private BigDecimal ltc;
 	//buyprocessstate
 	private String buyProcessState; //STANDBY, DESIRED_BUY, BOUGHT, DESIRED_SELL, SOLD
-	private String lifeTimeState; //IDLE, TRADING, STUCK, RESERVE;
-	private float desiredBuyTimeout; //Depends on tradegroup
-	private float desiredSellToStuckTimeout; //Depends on tradegroup
+	private String lifeTimeState; //IDLE, TRADING, BUY_STUCK, SELL_STUCK, RESERVE;
+	private long desiredBuyTimeout; //Depends on tradegroup, change to BUY_STUCK
+	private long desiredSellToStuckTimeout; //Depends on tradegroup, change to SELL_STUCK
 	//Need to implement a timer (Without thread.sleep???? -_- meh)
 	private BigDecimal requestBuyPrice;
 	private BigDecimal requestSellPrice;
@@ -27,14 +29,16 @@ public class TradeThread {
 	private BigDecimal profit;
 	private BigDecimal profitPercentage;
 	private BigDecimal lastUsd;
-	
+	private Timer timer;
 	//private BigDecimal currentPrice;
-	
+	//flagged bool?
+	//no, do periodic counts in tradegroup to find stuck status
+	//change amount of money now....
 	public TradeThread() {
 		
 	}
 	
-	public TradeThread(BigDecimal initialUSD, float whatDBT, float whatDSTST) {
+	public TradeThread(BigDecimal initialUSD, long whatDBT, long whatDSTST) {
 	
 		setUsd(initialUSD);
 		setLastUsd(initialUSD);
@@ -45,6 +49,7 @@ public class TradeThread {
 		setDesiredSellToStuckTimeout(whatDSTST);
 		setRequestedLtc(new BigDecimal("0"));
 		setCurrentPrice(new BigDecimal("0"));
+		setTimer(new Timer());
 	}
 	
 	//set desired buy and what not.  Timer/timeouts for if it gets stuck
@@ -65,6 +70,26 @@ public class TradeThread {
 		setUsd(getUsd().subtract(getRequestBuyPrice().multiply(getRequestedLtc())));
 		setBuyProcessState("DESIRED_BUY");
 		setLifeTimeState("TRADING");
+		//Sysout?
+		System.out.println("Buy order placed at $" + getRequestBuyPrice());
+		
+		//Make timer change to stuck if not at different
+		//buy process state, otherwise change to trading
+		//Make getCurrentTime for Carrot?
+		//Change type of timeouts to long
+		setTimer(new Timer());
+		getTimer().schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				if (getBuyProcessState().equals("DESIRED_BUY")) {
+					setLifeTimeState("BUY_STUCK");
+				}
+				timer.cancel();
+			}
+			
+		}, getDesiredBuyTimeout());
 		}
 		
 		
@@ -80,9 +105,26 @@ public class TradeThread {
 				setLtc(new BigDecimal("0"));
 				//set Litecoin
 				setBuyProcessState("DESIRED_SELL");
+				setLifeTimeState("TRADING");
+				System.out.println("Sell order placed at $" + getRequestSellPrice());
+				
+				setTimer(new Timer());
+				getTimer().schedule(new TimerTask() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						if (getBuyProcessState().equals("DESIRED_SELL")) {
+							setLifeTimeState("SELL_STUCK");
+						}
+						timer.cancel();
+					}
+					
+				}, getDesiredSellToStuckTimeout());
+				}
 			}
 			
-		}
+		
 	}
 	
 	public void broadcastCarrot(Carrot carrot) {
@@ -110,15 +152,22 @@ public class TradeThread {
 	public void buy() {
 		setLtc(getRequestedLtc());
 		setBuyProcessState("BOUGHT");
+		setLifeTimeState("TRADING");
+		System.out.println("Bought at $" + getRequestBuyPrice());
+		
+		timer.cancel();
 	}
 	
 	public void sell() {
+		
 		setUsd(getRequestedTotal());
 		setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
 		setLastUsd(getUsd());
 		//profit percentage?
 		setBuyProcessState("SOLD");
 		setLifeTimeState("RESERVE");
+		System.out.println("Sold at $" + getRequestSellPrice());
+		timer.cancel();
 	}
 	//request... blah?
 
@@ -154,19 +203,19 @@ public class TradeThread {
 		this.lifeTimeState = lifeTimeState;
 	}
 
-	public float getDesiredBuyTimeout() {
+	public long getDesiredBuyTimeout() {
 		return desiredBuyTimeout;
 	}
 
-	public void setDesiredBuyTimeout(float desiredBuyTimeout) {
+	public void setDesiredBuyTimeout(long desiredBuyTimeout) {
 		this.desiredBuyTimeout = desiredBuyTimeout;
 	}
 
-	public float getDesiredSellToStuckTimeout() {
+	public long getDesiredSellToStuckTimeout() {
 		return desiredSellToStuckTimeout;
 	}
 
-	public void setDesiredSellToStuckTimeout(float desiredSellToStuckTimeout) {
+	public void setDesiredSellToStuckTimeout(long desiredSellToStuckTimeout) {
 		this.desiredSellToStuckTimeout = desiredSellToStuckTimeout;
 	}
 
@@ -232,6 +281,14 @@ public class TradeThread {
 
 	public void setLastUsd(BigDecimal lastUsd) {
 		this.lastUsd = lastUsd;
+	}
+
+	public Timer getTimer() {
+		return timer;
+	}
+
+	public void setTimer(Timer timer) {
+		this.timer = timer;
 	}
 	
 }

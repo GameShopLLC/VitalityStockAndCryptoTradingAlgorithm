@@ -257,7 +257,11 @@ public class MainController {
 		ComparableDateTime cdt = new ComparableDateTime(ajaxJSON.getTime());
 		if (currentCarrot == null) {
 		currentCarrot = new Carrot(ajaxJSON.getPrice(), cdt);
+		try {
 		vitalityInstance.broadcastCarrot(currentCarrot);
+		} catch(Throwable t) {
+			t.printStackTrace();
+		}
 		}
 		
 		System.out.println(cdt.toString() + " " + ajaxJSON.getPrice());	
@@ -269,7 +273,13 @@ public class MainController {
 					//
 					if (currentCarrot != null) {
 						currentCarrot.addCurrent(ajaxJSON.getPrice());
-						vitalityInstance.broadcastCarrot(currentCarrot);
+						//add current time to carrot HERE
+						currentCarrot.addCurrentTime(cdt);
+						try {
+							vitalityInstance.broadcastCarrot(currentCarrot);
+							} catch(Throwable t) {
+								t.printStackTrace();
+							}
 					}
 				}
 				} else {
@@ -282,7 +292,11 @@ public class MainController {
 					increaseSignature = new String(increaseSignature + "minuteIncrease");
 					if (currentCarrot != null && !increaseSignature.contains("nullsecondstart")) {
 						currentCarrot.closeCarrot(cdt);
-						vitalityInstance.broadcastCarrot(currentCarrot);
+						try {
+							vitalityInstance.broadcastCarrot(currentCarrot);
+							} catch(Throwable t) {
+								t.printStackTrace();
+							}
 						carrotHistory.getHistory().add(currentCarrot);
 						currentCarrot = null;
 						int i = 1;
@@ -325,6 +339,20 @@ public class MainController {
 		}
 		
 		return "No Result";
+	}
+	
+	//Return all of the reports o.O
+	@RequestMapping(value="/vitalityInstanceStatus")
+	public @ResponseBody String vitalityInstanceStatus() {
+		StringBuilder tradeGroupStatusReports = new StringBuilder();
+		
+		for (TradeGroup g: vitalityInstance.getGroups()) {
+			tradeGroupStatusReports.append(g.statusReport() + "\n");
+		}
+		return vitalityInstance.entryPointReport() + "\n" +
+			   vitalityInstance.carrotsReport() + "\n" +
+			   vitalityInstance.statusReport() + "\n" +
+			   tradeGroupStatusReports.toString();
 	}
 	
 }

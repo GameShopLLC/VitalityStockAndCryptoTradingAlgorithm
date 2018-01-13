@@ -5,6 +5,7 @@
 $(document).ready(function(){
 	//alert("includes and jquery working");
 	setInterval(ajaxCall, 1000);
+	setInterval(statusCall, 1005);
 	//ajaxCall();
 });
 
@@ -85,8 +86,40 @@ function priceReadResultCall(priceData) {
 //		if (response.includes('true')) {
 //		$('#priceDataList').text($('#priceDataList').text() + "," + response.replace(' true',''));//JSON.stringify(result));
 //		}
-		$('#priceDataList').text($('#priceDataList').text() + "," + response);
-		
+		//$('#priceDataList').text($('#priceDataList').text() + "," + response);
+		$('#priceDataList').text(response);
 	});
 	console.log("In Ajax Call");
+}
+
+function statusCall() {
+	request = $.ajax({
+		//url: 'https://localhost:8080/testbackendrequest',//'https://api.gdax.com/products',
+		url: 'https://ancient-crag-48261.herokuapp.com/vitalityInstanceStatus',//'https://api.gdax.com/products',
+		
+		//dataType: 'application/json',
+		//format:'json',
+		method: 'GET',
+
+//		},
+		//contentType: 'application/json', //text???
+//		xhrFields: {
+//            'withCredentials': true
+//    },
+		//crossDomain: true,
+		success: function(data) {
+			console.log("W00T");
+			console.log("THE FUCK");
+			console.log(data);
+			},
+		error: function(){
+		console.log("FUCK THIS");	
+		}
+	}).then(function(data){
+		//var result = $.parseJSON(data);
+		//$('#counter').text('The current price of Litecoin is' + JSON.stringify(result));
+		//priceReadResultCall(JSON.stringify(result));
+		//RESULT IN STATUS ID
+		$('#algStatus').text(data);
+	});
 }
