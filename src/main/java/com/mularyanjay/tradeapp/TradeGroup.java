@@ -44,6 +44,7 @@ public class TradeGroup {
 		setLtc(new BigDecimal("0"));
 		setMinuteTimeSpan(timeSpan);
 		setCarrotCacheNum(ccn);
+		carrotCache = new ArrayList<Carrot>();
 		setState("STANDBY");
 		trades = new ArrayList<TradeThread>();
 		setBuyTimeout(bto);
@@ -529,6 +530,7 @@ public class TradeGroup {
 	}
 
 	public ArrayList<Carrot> getCarrotCache() {
+		//if(carrotCache != null)
 		if (carrotCache.size() > getCarrotCacheNum()) {
 			carrotCache.remove(0);
 		}
