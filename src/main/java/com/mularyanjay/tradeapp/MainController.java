@@ -316,7 +316,24 @@ public class MainController {
 			lastTime.setDateTime(cdt.toString());
 			//return cdt.toString() + " " + ajaxJSON.getPrice() + " " + increaseSignature + " "+ "true";
 			//return "" + 
-			try {
+//			try {
+//			if (currentCarrot != null) {
+//				
+//				return currentCarrot.toString();
+//			} else {
+//				if (carrotHistory.getHistory().size() > 0) {
+//				return carrotHistory.getHistory().get(carrotHistory.getHistory().size() - 1).toString();
+//				} else {
+//					return "No carrots available????";
+//				}
+//			}
+//			} catch (Throwable t) {
+//				t.printStackTrace();
+//			}
+		}
+		lastTime.setDateTime(cdt.toString());
+		//return "";//cdt.toString() + " " + ajaxJSON.getPrice() + " " + "false";	
+		try {
 			if (currentCarrot != null) {
 				
 				return currentCarrot.toString();
@@ -330,10 +347,6 @@ public class MainController {
 			} catch (Throwable t) {
 				t.printStackTrace();
 			}
-		}
-		lastTime.setDateTime(cdt.toString());
-		return "";//cdt.toString() + " " + ajaxJSON.getPrice() + " " + "false";	
-		
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
