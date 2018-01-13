@@ -43,6 +43,7 @@ public class TradeThread {
 		setUsd(initialUSD);
 		setLastUsd(initialUSD);
 		setLtc(new BigDecimal("0"));
+		setProfit(new BigDecimal("0"));
 		setBuyProcessState("STANDBY");
 		setLifeTimeState("IDLE");
 		setDesiredBuyTimeout(whatDBT);
