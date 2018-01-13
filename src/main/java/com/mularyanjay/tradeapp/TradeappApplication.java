@@ -21,6 +21,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.AbstractConfigurableTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import javax.servlet.ServletContext;
@@ -79,6 +80,20 @@ public class TradeappApplication extends SpringBootServletInitializer  {
 	@Bean
 	CarrotHistory carrotHistory() {
 		return new CarrotHistory();
+	}
+	
+	//Make bean for vi but with better constructor
+	//public TradeGroup(String whatName, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, float bto, float sto) {
+	@Bean
+	VitalityInstance vitalityInstance() {
+		return new VitalityInstance(new BigDecimal("45000"), 
+				new TradeGroup("One-1", 15, new BigDecimal("7500"), 1, 3, 240.0f, 86400.0f),
+				new TradeGroup("Five-1", 15, new BigDecimal("7500"), 5, 3, 1200.0f, 86400.0f),
+				new TradeGroup("Ten-1", 15, new BigDecimal("7500"), 10, 3, 2400.0f, 86400.0f),
+				new TradeGroup("Fifteen-1", 15, new BigDecimal("7500"), 15, 3, 3600.0f, 86400.0f),
+				new TradeGroup("Thirty-1", 15, new BigDecimal("7500"), 30, 3, 7200.0f, 86400.0f),
+				new TradeGroup("Hour-1", 15, new BigDecimal("7500"), 60, 3, 14400.0f, 86400.0f));
+
 	}
 //	@Bean
 //	ApplicationPropertiesValues applicationPropertiesValues() {

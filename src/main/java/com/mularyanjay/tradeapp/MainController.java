@@ -52,6 +52,9 @@ public class MainController {
 	@Autowired
 	CarrotHistory carrotHistory;
 	
+	@Autowired
+	VitalityInstance vitalityInstance;
+	
 	ComparableDateTime lastTime = new ComparableDateTime();
 	Carrot currentCarrot;
 	
@@ -254,6 +257,7 @@ public class MainController {
 		ComparableDateTime cdt = new ComparableDateTime(ajaxJSON.getTime());
 		if (currentCarrot == null) {
 		currentCarrot = new Carrot(ajaxJSON.getPrice(), cdt);
+		vitalityInstance.broadcastCarrot(currentCarrot);
 		}
 		
 		System.out.println(cdt.toString() + " " + ajaxJSON.getPrice());	
@@ -265,6 +269,7 @@ public class MainController {
 					//
 					if (currentCarrot != null) {
 						currentCarrot.addCurrent(ajaxJSON.getPrice());
+						vitalityInstance.broadcastCarrot(currentCarrot);
 					}
 				}
 				} else {
@@ -277,6 +282,7 @@ public class MainController {
 					increaseSignature = new String(increaseSignature + "minuteIncrease");
 					if (currentCarrot != null && !increaseSignature.contains("nullsecondstart")) {
 						currentCarrot.closeCarrot(cdt);
+						vitalityInstance.broadcastCarrot(currentCarrot);
 						carrotHistory.getHistory().add(currentCarrot);
 						currentCarrot = null;
 						int i = 1;
@@ -298,6 +304,7 @@ public class MainController {
 			//return "" + 
 			try {
 			if (currentCarrot != null) {
+				
 				return currentCarrot.toString();
 			} else {
 				if (carrotHistory.getHistory().size() > 0) {
@@ -311,7 +318,8 @@ public class MainController {
 			}
 		}
 		lastTime.setDateTime(cdt.toString());
-		return "";//cdt.toString() + " " + ajaxJSON.getPrice() + " " + "false";		
+		return "";//cdt.toString() + " " + ajaxJSON.getPrice() + " " + "false";	
+		
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}

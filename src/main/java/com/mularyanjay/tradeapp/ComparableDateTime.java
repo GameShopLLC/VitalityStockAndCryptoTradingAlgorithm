@@ -35,6 +35,48 @@ public class ComparableDateTime {
 		
 	}
 	
+	public boolean slotEquals(String timeslot, int equals) {
+		switch(timeslot) {
+		case "year":
+			if (getYear() == equals) {
+				return true;
+			}
+			return false;
+		case "month":
+			if (getMonth() == equals) {
+				return true;
+			}	
+			return false;
+		case "day":
+			if (getDay() == equals) {
+				return true;
+			}	
+			return false;
+		case "hour":
+			if (getHour() == equals) {
+				return true;
+			}	
+			return false;
+		case "minute":
+			if (getMinute() == equals) {
+				return true;
+			}	
+			return false;
+		}
+		return false;
+	}
+	
+	public boolean slotEquals(String timeslot, BigDecimal equals) {
+		switch(timeslot) {
+		case "second":
+			if (getSecond().compareTo(equals) == 0) {
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+	
 	public boolean increaseEquals(ComparableDateTime other, String timeslot, int increase) {
 		
 		switch(timeslot) {
