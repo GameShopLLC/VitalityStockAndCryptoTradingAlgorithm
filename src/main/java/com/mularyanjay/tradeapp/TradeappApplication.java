@@ -87,12 +87,12 @@ public class TradeappApplication extends SpringBootServletInitializer  {
 	@Bean
 	VitalityInstance vitalityInstance() {
 		return new VitalityInstance(new BigDecimal("75000"), 
-				new TradeGroup("One-1", 50, new BigDecimal("25000"), 1, 3, 8L * 60L * 1000L, 24L * 60L * 60L * 1000L),
-				new TradeGroup("Five-1", 20, new BigDecimal("10000"), 5, 3, 40L * 60L * 1000L, 24L * 60L * 60L * 1000L),
-				new TradeGroup("Ten-1", 20, new BigDecimal("10000"), 10, 3, 80L * 60L * 1000L, 24L * 60L * 60L * 1000L),
-				new TradeGroup("Fifteen-1", 20, new BigDecimal("10000"), 15, 3, 120L * 60L * 1000L, 24L * 60L * 60L * 1000L),
-				new TradeGroup("Thirty-1", 20, new BigDecimal("10000"), 30, 3, 240L * 60L * 1000L, 24L * 60L * 60L * 1000L),
-				new TradeGroup("Hour-1", 20, new BigDecimal("10000"), 60, 3, 480L * 60L * 1000L, 24L * 60L * 60L * 1000L));
+				new TradeGroup("One-1", 150, new BigDecimal("75000"), 1, 3, 8L * 60L * 1000L, 24L * 60L * 60L * 1000L));//),
+				//new TradeGroup("Five-1", 20, new BigDecimal("10000"), 5, 3, 40L * 60L * 1000L, 24L * 60L * 60L * 1000L),
+				//new TradeGroup("Ten-1", 20, new BigDecimal("10000"), 10, 3, 80L * 60L * 1000L, 24L * 60L * 60L * 1000L),
+				//new TradeGroup("Fifteen-1", 20, new BigDecimal("10000"), 15, 3, 120L * 60L * 1000L, 24L * 60L * 60L * 1000L),
+				//new TradeGroup("Thirty-1", 20, new BigDecimal("10000"), 30, 3, 240L * 60L * 1000L, 24L * 60L * 60L * 1000L),
+				//new TradeGroup("Hour-1", 20, new BigDecimal("10000"), 60, 3, 480L * 60L * 1000L, 24L * 60L * 60L * 1000L));
 
 	}
 //	@Bean
