@@ -21,7 +21,11 @@ public class CarrotHistory {
 		
 	}
 
+	//Add to database here if database implemented
 	public ArrayList<Carrot> getHistory() {
+		if (history.size() > 5) {
+			history.remove(0);
+		}
 		return history;
 	}
 

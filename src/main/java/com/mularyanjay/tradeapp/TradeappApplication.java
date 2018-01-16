@@ -86,8 +86,8 @@ public class TradeappApplication extends SpringBootServletInitializer  {
 	//public TradeGroup(String whatName, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, float bto, float sto) {
 	@Bean
 	VitalityInstance vitalityInstance() {
-		return new VitalityInstance(new BigDecimal("75000"), 
-				new TradeGroup("One-1", 150, new BigDecimal("75000"), 1, 3, 8L * 60L * 1000L, 24L * 60L * 60L * 1000L));//),
+		return new VitalityInstance(new BigDecimal("100000"), 
+				new TradeGroup("One-1", 200, new BigDecimal("100000"), 1, 3, 8L * 60L * 1000L, 24L * 60L * 60L * 1000L));//),
 				//new TradeGroup("Five-1", 20, new BigDecimal("10000"), 5, 3, 40L * 60L * 1000L, 24L * 60L * 60L * 1000L),
 				//new TradeGroup("Ten-1", 20, new BigDecimal("10000"), 10, 3, 80L * 60L * 1000L, 24L * 60L * 60L * 1000L),
 				//new TradeGroup("Fifteen-1", 20, new BigDecimal("10000"), 15, 3, 120L * 60L * 1000L, 24L * 60L * 60L * 1000L),
