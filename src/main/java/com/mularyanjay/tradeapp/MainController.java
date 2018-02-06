@@ -377,7 +377,7 @@ public class MainController {
 	@RequestMapping(value="/startAlgorithm", method=RequestMethod.POST)
 	public @ResponseBody String startAlgorithm() {
 		algorithmManager.setRunning(true);
-		return "";
+		return Boolean.toString(algorithmManager.isRunning());
 	}
 	
 }

@@ -4,18 +4,19 @@
 //document.domain='api.gdax.com';
 $(document).ready(function(){
 	//alert("includes and jquery working");
+	$('#counter').text(running);
 	$('formStartAlgorithm').submit(function(e){
 		e.preventDefault();
 		$.ajax({
 			url: 'https://ancient-crag-48261.herokuapp.com/startAlgorithm',
 			type: 'POST',
-			success: function() {
-				
+			success: function(s) {
+				$('#counter').text(s);
 			}
 			
 		})
 	})
-	setInterval(updateAlgStatus, 1000);
+//	setInterval(updateAlgStatus, 1000);
 	//Decouple business logic from view logic.
 	//setInterval(ajaxCall, 1000);
 	setInterval(statusCall, 1000);
@@ -26,7 +27,7 @@ $(document).ready(function(){
 });
 
 function updateAlgStatus() {
-	$('#counter').text(running);
+	//$('#counter').text(running);
 }
 
 function ajaxCall() {
