@@ -5,8 +5,8 @@
 $(document).ready(function(){
 	//alert("includes and jquery working");
 	$('#counter').text(running);
-	$('formStartAlgorithm').submit(function(e){
-		e.preventDefault();
+	$('startAlgorithm').click(function(){
+		//e.preventDefault();
 		$.ajax({
 			url: 'https://ancient-crag-48261.herokuapp.com/startAlgorithm',
 			type: 'POST',
