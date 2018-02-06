@@ -47,6 +47,7 @@ public class MainController {
 	HashingAlgorithm hashingAlgorithm;
 
 	@Autowired
+	@Qualifier("main")
 	HttpEntityBean httpEntityBean;
 	
 	@Autowired
@@ -54,6 +55,9 @@ public class MainController {
 	
 	@Autowired
 	VitalityInstance vitalityInstance;
+	
+	@Autowired
+	AlgorithmManager algorithmManager;
 	
 	ComparableDateTime lastTime = new ComparableDateTime();
 	Carrot currentCarrot;
@@ -196,6 +200,7 @@ public class MainController {
 			return response.getBody();
 			
 		}
+			
 		//return "";
 		return null;
 	}

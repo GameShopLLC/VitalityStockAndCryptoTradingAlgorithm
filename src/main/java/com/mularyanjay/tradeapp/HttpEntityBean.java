@@ -44,6 +44,18 @@ public class HttpEntityBean {
 		return new HttpEntity<>("", headers);
 	}
 	
+	public HttpEntity<String> getLocalEntityFromUrl(String url, String type) {
+		headers.clear();
+		
+		return new HttpEntity<>("",headers);
+	}
+	
+	public HttpEntity<String> postLocalEntityFromUrl (String url, String type, String jsonBody) {
+		headers.clear();
+		return new HttpEntity<>(jsonBody, headers);
+		
+	}
+	
 	//the fuck?
 //	public HttpEntity postEntityFromUrl(String url, String body){
 //		//headers.remove(    )

@@ -72,9 +72,19 @@ public class TradeappApplication extends SpringBootServletInitializer  {
 		return new HashingAlgorithm();
 	}
 	
-	@Bean
+	@Bean(name="main")
 	HttpEntityBean httpEntityBean() {
 		return new HttpEntityBean();
+	}
+	
+	@Bean(name="local")
+	HttpEntityBean localHttpEntityBean() {
+		return new HttpEntityBean();
+	}
+	
+	@Bean
+	AlgorithmManager algorithmManager() {
+		return new AlgorithmManager();
 	}
 	
 	@Bean

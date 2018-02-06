@@ -20,7 +20,7 @@
 
 <script th:inline="javascript"> <!-- useless -_- -->
 /*<![CDATA[*/
-var passphrase = /*[[${hashingAlgorithm.passphrase}]] */ 'fail';
+var passphrase = /* [[${hashingAlgorithm.passphrase}]] */ 'fail';
 var signature = /*[[${hashingAlgorithm.getHash('https://api.gdax.com/products')}]] */ 'fail';
 var timestamp = /*[[${hashingAlgorithm.timestamp}]] */ 'fail';
 var key = /*[[${hashingAlgorithm.key}]] */ 'fail';

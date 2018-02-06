@@ -4,8 +4,13 @@
 //document.domain='api.gdax.com';
 $(document).ready(function(){
 	//alert("includes and jquery working");
-	setInterval(ajaxCall, 1000);
-	setInterval(statusCall, 1005);
+	$('#counter').text(passphrase);
+	//Decouple business logic from view logic.
+	//setInterval(ajaxCall, 1000);
+	setInterval(statusCall, 1000);
+	
+	
+	
 	//ajaxCall();
 });
 
