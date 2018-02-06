@@ -4,7 +4,17 @@
 //document.domain='api.gdax.com';
 $(document).ready(function(){
 	//alert("includes and jquery working");
-	
+	$('formStartAlgorithm').submit(function(e){
+		e.preventDefault();
+		$.ajax({
+			url: 'https://ancient-crag-48261.herokuapp.com/startAlgorithm',
+			type: 'POST',
+			success: function() {
+				
+			}
+			
+		})
+	})
 	setInterval(updateAlgStatus, 1000);
 	//Decouple business logic from view logic.
 	//setInterval(ajaxCall, 1000);
