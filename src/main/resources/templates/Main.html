@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:include="Includes :: main">
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
@@ -14,6 +14,11 @@ _
 </div>
 <div id="algStatus">
 _
+</div>
+<div>
+<form action="#" th:action="@{/startAlgorithm}" th:method="post"> <!-- th:object = modelattribute -->
+<input type="submit"  value="Start Algorithm">
+		</form>
 </div>
 </body>
 </html>
