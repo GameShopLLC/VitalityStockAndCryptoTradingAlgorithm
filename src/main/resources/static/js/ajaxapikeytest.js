@@ -10,8 +10,9 @@ $(document).ready(function(){
 		$.ajax({
 			url: 'https://ancient-crag-48261.herokuapp.com/startAlgorithm',
 			type: 'POST',
-			success: function(s) {
-				$('#counter').text(s);
+			success: function(response) {
+				$('#counter').text(response);
+				console.log(response);
 			}
 			
 		})
