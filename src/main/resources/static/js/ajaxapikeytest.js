@@ -5,7 +5,7 @@
 $(document).ready(function(){
 	//alert("includes and jquery working");
 	$('#counter').text(running);
-	$('startAlgorithm').click(function(){
+	$('#startAlgorithm').click(function(){
 		//e.preventDefault();
 		$.ajax({
 			url: 'https://ancient-crag-48261.herokuapp.com/startAlgorithm',
@@ -13,6 +13,7 @@ $(document).ready(function(){
 			success: function(response) {
 				$('#counter').text(response);
 				console.log(response);
+				console.log("INSIDE AJAX BUTTON")
 			}
 			
 		})
