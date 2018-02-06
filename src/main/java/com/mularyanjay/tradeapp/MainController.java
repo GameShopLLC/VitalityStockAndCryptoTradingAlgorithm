@@ -102,7 +102,8 @@ public class MainController {
 		model.addAttribute("errCode", errCode);
 		model.addAttribute("sayHey", sayHey);
 		model.addAttribute("hashingAlgorithm", hashingAlgorithm);
-		 //response.setHeader("Access-Control-Allow-Headers", "CB-ACCESS-KEY, CB-ACCESS-SIGN, CB-ACCESS-TIMESTAMP,CB-ACCESS-PASSPHRASE");
+		model.addAttribute("algorithmManager", algorithmManager);
+		//response.setHeader("Access-Control-Allow-Headers", "CB-ACCESS-KEY, CB-ACCESS-SIGN, CB-ACCESS-TIMESTAMP,CB-ACCESS-PASSPHRASE");
 	       
 		if (isLoggedIn) {
 		return "Main";
@@ -371,6 +372,12 @@ public class MainController {
 			   vitalityInstance.carrotsReport() + "\n" +
 			   vitalityInstance.statusReport() + "\n" +
 			   tradeGroupStatusReports.toString();
+	}
+	
+	@RequestMapping(value="/startAlgorithm", method=RequestMethod.POST)
+	public @ResponseBody String startAlgorithm() {
+		
+		return "";
 	}
 	
 }

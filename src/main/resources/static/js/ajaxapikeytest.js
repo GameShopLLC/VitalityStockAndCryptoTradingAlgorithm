@@ -4,7 +4,7 @@
 //document.domain='api.gdax.com';
 $(document).ready(function(){
 	//alert("includes and jquery working");
-	$('#counter').text(sayHey);
+	$('#counter').text(running);
 	//Decouple business logic from view logic.
 	//setInterval(ajaxCall, 1000);
 	setInterval(statusCall, 1000);
