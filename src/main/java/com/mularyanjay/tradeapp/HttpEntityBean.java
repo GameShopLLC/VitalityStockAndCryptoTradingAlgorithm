@@ -54,7 +54,8 @@ public class HttpEntityBean {
 		return new HttpEntity<>("",headers);
 	}
 	
-	public HttpEntity<String> postLocalEntityFromUrl (String url, String contentType, String dataType, String data) {
+	@SuppressWarnings("unchecked")
+	public <T> HttpEntity<String> postLocalEntityFromUrl (String url, String contentType, String dataType, T data) {
 		headers.clear();
 		if (contentType != null && contentType != "") {
 			headers.add("contentType", contentType);
@@ -67,7 +68,7 @@ public class HttpEntityBean {
 			headers.add("dataType", "text");
 			
 		}
-		return new HttpEntity<>(data, headers);
+		return (HttpEntity<String>) new HttpEntity<>(data, headers);
 		
 	}
 	

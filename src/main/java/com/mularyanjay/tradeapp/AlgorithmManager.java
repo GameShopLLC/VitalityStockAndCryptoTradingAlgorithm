@@ -64,7 +64,7 @@ public class AlgorithmManager {
 				if (tickerData != null) {
 					setLtcPrice("The current price of litecoin is " + tickerData.getPrice());
 					url = new String("https://ancient-crag-48261.herokuapp.com/priceAndResult");
-					response = restTemplate.exchange(url, HttpMethod.POST, localHttpEntityBean.postLocalEntityFromUrl(url, "application/json", "text", gettData()),new ParameterizedTypeReference<String>(){});
+					response = restTemplate.exchange(url, HttpMethod.POST, localHttpEntityBean.postLocalEntityFromUrl(url, "application/json", "text", tickerData),new ParameterizedTypeReference<String>(){});
 					setCarrotData(response.getBody());
 				} else {
 					setLtcPrice("The current price of litecoin is undefined");
