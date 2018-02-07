@@ -44,15 +44,30 @@ public class HttpEntityBean {
 		return new HttpEntity<>("", headers);
 	}
 	
-	public HttpEntity<String> getLocalEntityFromUrl(String url, String type) {
+	public HttpEntity<String> getLocalEntityFromUrl(String url, String contentType) {
 		headers.clear();
-		
+		if (contentType != null && contentType != "") {
+			headers.add("contentType", contentType);
+		} else {
+			headers.add("contentType", "text");
+		}
 		return new HttpEntity<>("",headers);
 	}
 	
-	public HttpEntity<String> postLocalEntityFromUrl (String url, String type, String jsonBody) {
+	public HttpEntity<String> postLocalEntityFromUrl (String url, String contentType, String dataType, String data) {
 		headers.clear();
-		return new HttpEntity<>(jsonBody, headers);
+		if (contentType != null && contentType != "") {
+			headers.add("contentType", contentType);
+		} else {
+			headers.add("contentType", "text");
+		}
+		if (dataType != null && dataType != "") {
+			headers.add("dataType", dataType);
+		} else {
+			headers.add("dataType", "text");
+			
+		}
+		return new HttpEntity<>(data, headers);
 		
 	}
 	

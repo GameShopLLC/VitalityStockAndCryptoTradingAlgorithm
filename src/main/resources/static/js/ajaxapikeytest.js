@@ -1,24 +1,25 @@
-/**
+/** 
  * 
  */
 //document.domain='api.gdax.com';
 $(document).ready(function(){
 	//alert("includes and jquery working");
-	$('#counter').text(running);
+	$('#counter').text('Algorithm not running');
 	$('#startAlgorithm').click(function(){
 		//e.preventDefault();
 		$.ajax({
 			url: 'https://ancient-crag-48261.herokuapp.com/startAlgorithm',
 			type: 'POST',
 			success: function(response) {
-				$('#counter').text(response);
+				//$('#counter').text(response);
 				console.log(response);
 				console.log("INSIDE AJAX BUTTON")
 			}
 			
 		})
 	})
-//	setInterval(updateAlgStatus, 1000);
+	
+	setInterval(updateAlgStatus, 1000);
 	//Decouple business logic from view logic.
 	//setInterval(ajaxCall, 1000);
 	setInterval(statusCall, 1000);
@@ -30,6 +31,30 @@ $(document).ready(function(){
 
 function updateAlgStatus() {
 	//$('#counter').text(running);
+	var counterText = '';
+	 $.ajax({
+		url: 'https://ancient-crag-48261.herokuapp.com/showTickerData',
+		type: 'GET',
+		success: function(response) {
+			//$('#counter').text(response);
+			counterText = response;
+			console.log(response);
+			console.log("SHOWING TICKER DATA")
+		}
+		
+	})
+	
+	 $.ajax({
+		url: 'https://ancient-crag-48261.herokuapp.com/showPrice',
+		type: 'GET',
+		success: function(response) {
+			counterText += '\n' + response;
+			$('#counter').text(counterText);
+			console.log(response);
+			console.log("SHOWING TICKER DATA")
+		}
+		
+	})
 }
 
 function ajaxCall() {

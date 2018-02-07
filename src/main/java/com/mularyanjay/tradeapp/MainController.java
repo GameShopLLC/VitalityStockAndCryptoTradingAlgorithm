@@ -380,4 +380,15 @@ public class MainController {
 		return Boolean.toString(algorithmManager.isRunning());
 	}
 	
+	@RequestMapping(value="/showTickerData")
+	public @ResponseBody String showTickerData() {
+		
+		return algorithmManager.gettData();
+	}
+	
+	@RequestMapping(value="/showPrice")
+	public @ResponseBody String showPrice() {
+	
+		return algorithmManager.getLtcPrice();
+	}
 }
