@@ -11,7 +11,7 @@ $(document).ready(function(){
 			url: 'https://ancient-crag-48261.herokuapp.com/startAlgorithm',
 			type: 'POST',
 			success: function(response) {
-				//$('#counter').text(response);
+				$('#counter').text('Algorithm running');
 				console.log(response);
 				console.log("INSIDE AJAX BUTTON")
 			}
@@ -37,7 +37,7 @@ function updateAlgStatus() {
 		type: 'GET',
 		success: function(response) {
 			//$('#counter').text(response);
-			counterText = response;
+			$('#tickerData').text(response);
 			console.log(response);
 			console.log("SHOWING TICKER DATA")
 		}
@@ -48,8 +48,8 @@ function updateAlgStatus() {
 		url: 'https://ancient-crag-48261.herokuapp.com/showPrice',
 		type: 'GET',
 		success: function(response) {
-			counterText += '\n' + response;
-			$('#counter').text(counterText);
+			//counterText += '\n' + response;
+			$('#currentPrice').text(response);
 			console.log(response);
 			console.log("SHOWING TICKER DATA")
 		}
