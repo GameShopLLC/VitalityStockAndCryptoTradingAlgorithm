@@ -29,6 +29,7 @@ public class AlgorithmManager {
 	private Timer timer;
 	private String ltcPrice;
 	private String tData;
+	private String carrotData;
 	
 	public AlgorithmManager() {
 		//setRunning(false); //redundant, but to be noted
@@ -62,6 +63,9 @@ public class AlgorithmManager {
 				}
 				if (tickerData != null) {
 					setLtcPrice("The current price of litecoin is " + tickerData.getPrice());
+					url = new String("https://ancient-crag-48261.herokuapp.com/priceAndResult");
+					response = restTemplate.exchange(url, HttpMethod.POST, localHttpEntityBean.postLocalEntityFromUrl(url, "application/json", "text", gettData()),new ParameterizedTypeReference<String>(){});
+					setCarrotData(response.getBody());
 				} else {
 					setLtcPrice("The current price of litecoin is undefined");
 				}
@@ -105,6 +109,14 @@ public class AlgorithmManager {
 
 	public void settData(String tData) {
 		this.tData = tData;
+	}
+
+	public String getCarrotData() {
+		return carrotData;
+	}
+
+	public void setCarrotData(String carrotData) {
+		this.carrotData = carrotData;
 	}
 	
 	

@@ -73,6 +73,18 @@ function updateAlgStatus() {
 		}
 		
 	})
+	
+	 $.ajax({
+		url: 'https://ancient-crag-48261.herokuapp.com/showCarrotData',
+		type: 'GET',
+		success: function(response) {
+			//counterText += '\n' + response;
+			$('#priceDataList').text(response);
+			console.log(response);
+			console.log("SHOWING TICKER DATA")
+		}
+		
+	})
 }
 
 function ajaxCall() {

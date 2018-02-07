@@ -396,4 +396,9 @@ public class MainController {
 	
 		return algorithmManager.getLtcPrice();
 	}
+	
+	@RequestMapping(value="/showCarrotData")
+	public @ResponseBody String showCarrotData() {
+		return algorithmManager.getCarrotData();
+	}
 }
