@@ -2,9 +2,27 @@
  * 
  */
 //document.domain='api.gdax.com';
+//var isAlgRunning = false;
 $(document).ready(function(){
 	//alert("includes and jquery working");
-	$('#counter').text('Algorithm not running');
+	$.ajax({
+		url: 'https://ancient-crag-48261.herokuapp.com/isAlgorithmRunning',
+		type: 'GET',
+		success: function(response) {
+			//$('#counter').text(response);
+			//$('#is').text(response);
+			if (response === 'false') {
+			$('#counter').text('Algorithm not running');
+			}
+			else if (response === 'true') {
+				$('#counter').text('Algorithm running');
+			}
+			console.log(response);
+			//console.log("SHOWING TICKER DATA")
+		}
+		
+	})
+	
 	$('#startAlgorithm').click(function(){
 		//e.preventDefault();
 		$.ajax({

@@ -380,6 +380,11 @@ public class MainController {
 		return Boolean.toString(algorithmManager.isRunning());
 	}
 	
+	@RequestMapping(value="/isAlgorithmRunning")
+	public @ResponseBody String isAlgorithmRunning() {
+		return Boolean.toString(algorithmManager.isRunning());
+	}
+	
 	@RequestMapping(value="/showTickerData")
 	public @ResponseBody String showTickerData() {
 		
