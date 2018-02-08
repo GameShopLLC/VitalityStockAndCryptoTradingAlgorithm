@@ -103,6 +103,7 @@ public class MainController {
 		model.addAttribute("sayHey", sayHey);
 		model.addAttribute("hashingAlgorithm", hashingAlgorithm);
 		model.addAttribute("algorithmManager", algorithmManager);
+		
 		//response.setHeader("Access-Control-Allow-Headers", "CB-ACCESS-KEY, CB-ACCESS-SIGN, CB-ACCESS-TIMESTAMP,CB-ACCESS-PASSPHRASE");
 	       
 		if (isLoggedIn) {
@@ -400,5 +401,17 @@ public class MainController {
 	@RequestMapping(value="/showCarrotData")
 	public @ResponseBody String showCarrotData() {
 		return algorithmManager.getCarrotData();
+	}
+	
+	//Note, can only handle a single trade group at the time
+	@RequestMapping(value="/showThreads")
+	public @ResponseBody List<TradeThread> showThreads() {
+		List<TradeThread> threads = new ArrayList<TradeThread>();
+		for(TradeGroup g: vitalityInstance.getGroups()) {
+			for(TradeThread t: g.getTrades()) {
+				threads.add(t);
+			}
+		}
+		return threads;
 	}
 }

@@ -34,6 +34,17 @@ $(document).ready(function(){
 		$('.detailsTab').show();
 	})
 	
+	$.ajax({
+		url: 'https://ancient-crag-48261.herokuapp.com/showThreads',
+		type: 'GET',
+		contentType: 'application/json',
+		success: function(response) {
+			var result = $.parseJSON(response);
+			for (var i = 0; i < result.length; i++){
+				$('#threadList').append('<div id=\"thread-' + i + '\">' + i +'</div>');
+			}
+		}
+	})
 	
 	$('#startAlgorithm').click(function(){
 		//e.preventDefault();
