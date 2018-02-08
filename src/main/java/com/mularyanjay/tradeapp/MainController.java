@@ -135,7 +135,7 @@ public class MainController {
 			            return false;
 			        }
 			    });
-		if (isLoggedIn){
+		//if (isLoggedIn){
 			ObjectMapper mapper = new ObjectMapper();
 			RestTemplate restTemplate = new RestTemplate();
 			String url = "https://api.gdax.com/products/LTC-USD/TICKER";//"https://api.gdax.com/accounts";//"https://api.gdax.com/products/BTC-USD/TICKER";//"https://localhost:8080/testParamType";//"https://api.gdax.com/account";//;
@@ -200,10 +200,10 @@ public class MainController {
 //			}
 			return response.getBody();
 			
-		}
+		//}
 			
 		//return "";
-		return null;
+		//return null;
 	}
 	
 	@RequestMapping(value="/testParamType")

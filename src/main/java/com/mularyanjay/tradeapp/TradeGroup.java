@@ -84,6 +84,11 @@ public class TradeGroup {
 				}
 			}
 		}
+		
+		if (candidates.size() == 0) {
+			System.out.println("No threads available");
+			return;
+		}
 		//Now search through candidates and find most valuable
 		for (TradeThread t: candidates) {
 //			if (candidates.get(0).equals(t)) {
