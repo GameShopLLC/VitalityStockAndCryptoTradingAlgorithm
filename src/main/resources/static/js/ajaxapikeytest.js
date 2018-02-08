@@ -5,6 +5,7 @@
 //var isAlgRunning = false;
 $(document).ready(function(){
 	//alert("includes and jquery working");
+	$('.detailsTab').hide();
 	$.ajax({
 		url: 'https://ancient-crag-48261.herokuapp.com/isAlgorithmRunning',
 		type: 'GET',
@@ -22,6 +23,17 @@ $(document).ready(function(){
 		}
 		
 	})
+	
+	$('#mainButton').click(function(){
+		$('.mainTab').show();
+		$('.detailsTab').hide();
+	})
+	
+	$('#detailsButton').click(function(){
+		$('.mainTab').hide();
+		$('.detailsTab').show();
+	})
+	
 	
 	$('#startAlgorithm').click(function(){
 		//e.preventDefault();
