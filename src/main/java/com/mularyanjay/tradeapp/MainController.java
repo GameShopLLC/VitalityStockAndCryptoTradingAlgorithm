@@ -405,11 +405,24 @@ public class MainController {
 	
 	//Note, can only handle a single trade group at the time
 	@RequestMapping(value="/showThreads")
-	public @ResponseBody List<TradeThread> showThreads() {
-		List<TradeThread> threads = new ArrayList<TradeThread>();
+	public @ResponseBody List<SerializableTradeThread> showThreads() {
+		List<SerializableTradeThread> threads = new ArrayList<SerializableTradeThread>();
 		for(TradeGroup g: vitalityInstance.getGroups()) {
 			for(TradeThread t: g.getTrades()) {
-				threads.add(t);
+				SerializableTradeThread stt = new SerializableTradeThread();
+				stt.setName(g.getName());
+				stt.setBuyProcessState(t.getBuyProcessState());
+				stt.setCurrentPrice(t.getCurrentPrice());
+				stt.setLastUsd(t.getLastUsd());
+				stt.setLifeTimeState(t.getLifeTimeState());
+				stt.setLtc(t.getLtc());
+				stt.setProfit(t.getProfit());
+				stt.setRequestBuyPrice(t.getRequestBuyPrice());
+				stt.setRequestedLtc(t.getRequestedLtc());
+				stt.setRequestedTotal(t.getRequestedTotal());
+				stt.setRequestSellPrice(t.getRequestSellPrice());
+				stt.setUsd(t.getUsd());
+				threads.add(stt);
 			}
 		}
 		return threads;
