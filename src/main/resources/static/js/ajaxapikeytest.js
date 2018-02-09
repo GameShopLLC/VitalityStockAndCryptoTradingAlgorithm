@@ -39,9 +39,9 @@ $(document).ready(function(){
 		type: 'GET',
 		contentType: 'application/json',
 		success: function(response) {
-			var result = $.parseJSON(response);
+			//var result = $.parseJSON(response);
 			for (var i = 0; i < result.length; i++){
-				$('#threadList').append('<div id=\"thread-' + i + '\">' + i + ' ' + result[i].buyProcessState + '</div>');
+				$('#threadList').append('<div id=\"thread-' + i + '\">' + i + ' ' + response[i].buyProcessState + '</div>');
 			}
 		}
 	})
