@@ -34,18 +34,7 @@ $(document).ready(function(){
 		$('.detailsTab').show();
 	})
 	
-	$.ajax({
-		url: 'https://ancient-crag-48261.herokuapp.com/showThreads',
-		type: 'GET',
-		contentType: 'application/json',
-		success: function(response) {
-			//var result = $.parseJSON(response);
-			console.log(response);
-			for (var i = 0; i < response.length; i++){
-				$('#threadList').append('<div id=\"thread-' + i + '\">' + i + ' ' + response[i].buyProcessState + '</div>');
-			}
-		}
-	})
+	
 	
 	$('#startAlgorithm').click(function(){
 		//e.preventDefault();
@@ -61,6 +50,7 @@ $(document).ready(function(){
 		})
 	})
 	
+	setInterval(updateDetails, 1000)
 	setInterval(updateAlgStatus, 1000);
 	//Decouple business logic from view logic.
 	//setInterval(ajaxCall, 1000);
@@ -71,6 +61,29 @@ $(document).ready(function(){
 	//ajaxCall();
 });
 
+function updateDetails(){
+	$.ajax({
+		url: 'https://ancient-crag-48261.herokuapp.com/showThreads',
+		type: 'GET',
+		contentType: 'application/json',
+		success: function(response) {
+			//var result = $.parseJSON(response);
+			$('#threadList').empty();
+			console.log(response);
+			for (var i = 0; i < response.length; i++){
+				$('#threadList').append('<div id=\"thread-' + i + '\">' 
+						+ i + ' ' + response[i].lifeTimeState + ' ' 
+						+ response[i].buyProcessState
+						+ ' Group ' + response[i].name
+						+ ' USD: $' + response[i].usd 
+						+ ' LTC: ' + response[i].ltc 
+						+ ' Profit: $' + response[i].profit
+						+ ' RequestBuyPrice: $' + response[i].requestBuyPrice 
+						+ ' RequestSellPrice: $'+ response[i].requestSellPrice +'</div>');
+			}
+		}
+	})
+}
 function updateAlgStatus() {
 	//$('#counter').text(running);
 	var counterText = '';
@@ -109,6 +122,8 @@ function updateAlgStatus() {
 		}
 		
 	})
+	
+	
 }
 
 function ajaxCall() {
