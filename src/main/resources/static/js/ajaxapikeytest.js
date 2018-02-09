@@ -40,7 +40,8 @@ $(document).ready(function(){
 		contentType: 'application/json',
 		success: function(response) {
 			//var result = $.parseJSON(response);
-			for (var i = 0; i < result.length; i++){
+			console.log(response);
+			for (var i = 0; i < response.length; i++){
 				$('#threadList').append('<div id=\"thread-' + i + '\">' + i + ' ' + response[i].buyProcessState + '</div>');
 			}
 		}
