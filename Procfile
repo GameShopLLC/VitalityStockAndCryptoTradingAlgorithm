@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -Xmx6g -jar target/*.jar
+web: java -Dserver.port=$PORT $JAVA_OPTS -Xmx12g -jar target/*.jar
