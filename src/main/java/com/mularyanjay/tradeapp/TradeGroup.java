@@ -51,7 +51,7 @@ public class TradeGroup {
 		setBuyTimeout(bto);
 		setStuckTimeout(sto);
 		setProfit(new BigDecimal("0"));
-		BigDecimal threadUSD = new BigDecimal(initialUSD.toString()).divide(BigDecimal.valueOf(getAmountThreads()), 2, RoundingMode.HALF_DOWN);
+		BigDecimal threadUSD = new BigDecimal(initialUSD.toString()).divide(BigDecimal.valueOf(getAmountThreads()), 2, RoundingMode.FLOOR);
 		System.out.println("TradeGroup $" + getUsd() + " thread amount $" + threadUSD);
 		for(int i = 0; i < getAmountThreads(); i++) {
 			//BigDecimal initialUSD, float whatDBT, float whatDSTST) {
