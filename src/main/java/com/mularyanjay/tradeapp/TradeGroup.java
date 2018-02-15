@@ -8,6 +8,7 @@
 package com.mularyanjay.tradeapp;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class TradeGroup {
@@ -50,7 +51,7 @@ public class TradeGroup {
 		setBuyTimeout(bto);
 		setStuckTimeout(sto);
 		setProfit(new BigDecimal("0"));
-		BigDecimal threadUSD = new BigDecimal(initialUSD.toString()).divide(BigDecimal.valueOf(getAmountThreads()));
+		BigDecimal threadUSD = new BigDecimal(initialUSD.toString()).divide(BigDecimal.valueOf(getAmountThreads()), 2, RoundingMode.HALF_DOWN);
 		System.out.println("TradeGroup $" + getUsd() + " thread amount $" + threadUSD);
 		for(int i = 0; i < getAmountThreads(); i++) {
 			//BigDecimal initialUSD, float whatDBT, float whatDSTST) {
