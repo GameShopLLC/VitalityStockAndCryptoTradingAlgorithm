@@ -15,13 +15,30 @@ import org.springframework.stereotype.Component;
 @Component
 public class VitalityInstance {
 
+	//simMode //SIMULATION, REALTIME
 	private ArrayList<TradeGroup> groups;
 	//Define entry point?
 	private boolean hasReachedEntryPoint;
 	private BigDecimal usd;
 	private BigDecimal ltc;
 	private BigDecimal profit;
+	private BigDecimal loss;
+	private BigDecimal net;
 	private String entryPointStatus;
+	private ArrayList<Dock> docks;
+	private String simMode;
+	
+	//Docks: deposit, preinput, profit, withdrawal,
+	//(Maybe for advance algo, interTradeGroup)
+	//Messages: Strings that allow calls for higher
+	//up on the class hierarchy
+	//checkMessages() (check message array)
+	//message destination:vitalityinstance void:whatever
+	//delete messages from array after checked.
+	
+	//triggerRally(nameoftradegroup)
+	//triggerRallyAll()
+	
 	//poll entry point?
 	//Use string to capture states?
 	//Triggers? 
@@ -37,17 +54,39 @@ public class VitalityInstance {
 		
 	}
 	
-	public VitalityInstance(BigDecimal initialUSD, TradeGroup... whatGroups) {
+	//Set simMode in constructor
+	public VitalityInstance(String simMode, BigDecimal initialUSD, TradeGroup... whatGroups) {
+		setSimMode(simMode);
 		
+		//Set initial shit through docks
 		setUsd(initialUSD);
 		setLtc(new BigDecimal("0"));
 		setProfit(new BigDecimal("0"));
 		groups = new ArrayList<TradeGroup>();
 		setEntryPointStatus("");
 		for(TradeGroup g: whatGroups) {
+			g.setSimMode(simMode);
 			groups.add(g);
 		}
+		
+		docks = new ArrayList<Dock>();
+		docks.add(new Dock("DEPOSIT"));
+		docks.add(new Dock("PREINPUT"));
+		docks.add(new Dock("PROFIT"));
+		docks.add(new Dock("WITHDRAWAL"));
+		
 	}
+	
+	public Dock getDockByName(String name) {
+		for (Dock d: docks) {
+			if (d.getName().equals(name)) {
+				return d;
+			}
+		}
+		System.out.println("No such dock with that name");
+		return null;
+	}
+	
 	public void onReachEntryPoint(ComparableDateTime cdt, BigDecimal price) {
 		//System.out.println("Entry point reached " + cdt.toString() + " " + price);
 		setEntryPointStatus("Entry point reached " + cdt.toString() + " " + price);
@@ -61,6 +100,48 @@ public class VitalityInstance {
 		
 	}
 	
+	public void triggerRally() {
+		for (TradeGroup g: groups) {
+			g.setState("RALLYING");
+		}
+	}
+	
+	//need to add name collisions btw to avoid adding
+	//same name multiple times
+	public void triggerRallyByName(String name) {
+	
+		for (TradeGroup g: groups) {
+			if (g.getName().equals(name)) {
+				g.setState("RALLYING");
+			}
+		}
+	}
+	
+	public void cancelAllRallies() {
+		for (TradeGroup g: groups) {
+			if (g.getState().equals("RALLYING")) {
+				g.setState("ACTIVE");
+			}
+		}
+	}
+	
+	public void cancelRallyByName(String name) {
+		for (TradeGroup g: groups) {
+			if (g.getName().equals(name)) {
+				if (g.getState().equals("RALLYING")) {
+					g.setState("ACTIVE");
+				}
+			}
+		}
+	}
+	
+	public void restartTradeGroups() {
+		for (TradeGroup g: groups) {
+			if(g.getRunningState().equals("STOPPED")) {
+			g.setRunningState("GOING");	
+			}
+		}
+	}
 	//Necessary? can be done with onReachEntryPoint
 //	public void triggerEntryPoint() {
 //		setHasReachedEntryPoint(true)
@@ -265,6 +346,38 @@ public class VitalityInstance {
 
 	public void setEntryPointStatus(String entryPointStatus) {
 		this.entryPointStatus = entryPointStatus;
+	}
+
+	public ArrayList<Dock> getDocks() {
+		return docks;
+	}
+
+	public void setDocks(ArrayList<Dock> docks) {
+		this.docks = docks;
+	}
+
+	public String getSimMode() {
+		return simMode;
+	}
+
+	public void setSimMode(String simMode) {
+		this.simMode = simMode;
+	}
+
+	public BigDecimal getLoss() {
+		return loss;
+	}
+
+	public void setLoss(BigDecimal loss) {
+		this.loss = loss;
+	}
+
+	public BigDecimal getNet() {
+		return net;
+	}
+
+	public void setNet(BigDecimal net) {
+		this.net = net;
 	}
 	
 	

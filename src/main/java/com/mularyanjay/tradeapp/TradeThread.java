@@ -9,11 +9,13 @@ package com.mularyanjay.tradeapp;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class TradeThread {
 
+	//simMode
 	private BigDecimal usd;
 	private BigDecimal ltc;
 	//buyprocessstate
@@ -31,6 +33,15 @@ public class TradeThread {
 	private BigDecimal profitPercentage;
 	private BigDecimal lastUsd;
 	private Timer timer;
+	private String simMode; //SIMULATION, REALTIME
+	private ArrayList<Dock> docks;
+	private BigDecimal stepTotal;
+	private String stepMode; //NONE, STEPSHED
+	private BigDecimal loss;
+	private BigDecimal net;
+	private String stepStatus; //CHARGING, MAXED
+	private long secondTick;
+	private long lastSecondTick;
 	//private BigDecimal currentPrice;
 	//flagged bool?
 	//no, do periodic counts in tradegroup to find stuck status
@@ -41,6 +52,12 @@ public class TradeThread {
 	
 	public TradeThread(BigDecimal initialUSD, long whatDBT, long whatDSTST) {
 	
+		setStepTotal(new BigDecimal("0"));
+		setLoss(new BigDecimal("0"));
+		setNet(new BigDecimal("0"));
+		setLastSecondTick(-1L);
+		setSecondTick(0L);
+		setStepStatus("CHARGING");
 		setUsd(initialUSD);
 		setLastUsd(initialUSD);
 		setLtc(new BigDecimal("0"));
@@ -52,8 +69,65 @@ public class TradeThread {
 		setRequestedLtc(new BigDecimal("0"));
 		setCurrentPrice(new BigDecimal("0"));
 		setTimer(new Timer());
+		docks = new ArrayList<Dock>();
+		docks.add(new Dock("INCOMING"));
+		docks.add(new Dock("TOSTEPSHED"));
 	}
 	
+	public void evaluateSimulationTimeout() {
+		if (getBuyProcessState().equals("DESIRED_BUY")) {
+			if (getSecondTick() - getLastSecondTick() > getDesiredBuyTimeout()/1000) {
+				setLifeTimeState("BUY_STUCK");
+			}
+		} else if (getBuyProcessState().equals("DESIRED_SELL")) {
+			if (getSecondTick() - getLastSecondTick() > getDesiredSellToStuckTimeout()/1000) {
+				setLifeTimeState("SELL_STUCK");
+			}
+		}
+	}
+	
+	public void incrementSecondTick() {
+		setSecondTick(getSecondTick() + 1L);
+	}
+	public void checkMaxed() {
+		if (getUsd().compareTo(getStepTotal()) >= 0) {
+			setStepStatus("MAXED");
+		}
+	}
+	
+	public Dock getDockByName(String name) {
+		for (Dock d: docks) {
+			if (d.getName().equals(name)) {
+				return d;
+			}
+		}
+		System.out.println("No such dock with that name");
+		return null;
+	}
+	
+	public void shedAllFromIncoming() {
+		BigDecimal incomingTotal = new BigDecimal(getDockByName("INCOMING").getUsd().toString());
+		setUsd(getUsd().add(incomingTotal));
+		getDockByName("INCOMING").setUsd(new BigDecimal("0"));
+	}
+	
+	public void shedExcessToShedStep() {
+		BigDecimal amountToSubtract = new BigDecimal("0");
+		if (getUsd().compareTo(getStepTotal()) == 1) {
+			amountToSubtract = getUsd().subtract(getStepTotal());
+		}
+		setUsd(getUsd().subtract(amountToSubtract));
+		setProfit(getProfit().subtract(amountToSubtract));
+		getDockByName("TOSTEPSHED").addUsd(amountToSubtract);
+	}
+	
+	public void resetTick() {
+		if(getBuyProcessState().equals("DESIRED_BUY") || getBuyProcessState().equals("DESIRED_SELL")) {
+			setLastSecondTick(getSecondTick());
+		} else {
+			setLastSecondTick(-1L);
+		}
+	}
 	//set desired buy and what not.  Timer/timeouts for if it gets stuck
 	//Remember to set timer/timeouts
 	public void deploy(Carrot carrot) {
@@ -79,6 +153,7 @@ public class TradeThread {
 		//buy process state, otherwise change to trading
 		//Make getCurrentTime for Carrot?
 		//Change type of timeouts to long
+		if (getSimMode().equals("REALTIME")) {
 		setTimer(new Timer());
 		getTimer().schedule(new TimerTask() {
 
@@ -92,6 +167,12 @@ public class TradeThread {
 			}
 			
 		}, getDesiredBuyTimeout());
+		
+		} else if (getSimMode().equals("SIMULATION")) {
+			//setLastSecondTick(getSecondTick());
+			//,,,
+			resetTick();
+		}
 		}
 		
 		
@@ -110,6 +191,7 @@ public class TradeThread {
 				setLifeTimeState("TRADING");
 				System.out.println("Sell order placed at $" + getRequestSellPrice());
 				
+				if(getSimMode().equals("REALTIME")) {
 				setTimer(new Timer());
 				getTimer().schedule(new TimerTask() {
 
@@ -123,6 +205,10 @@ public class TradeThread {
 					}
 					
 				}, getDesiredSellToStuckTimeout());
+				} else if (getSimMode().equals("SIMULATION")) {
+					//setLastSecondTick(getSecondTick());
+					resetTick();
+				}
 				}
 			}
 			
@@ -156,8 +242,11 @@ public class TradeThread {
 		setBuyProcessState("BOUGHT");
 		setLifeTimeState("TRADING");
 		System.out.println("Bought at $" + getRequestBuyPrice());
-		
+		if (getSimMode().equals("REALTIME")) {
 		timer.cancel();
+		} else if (getSimMode().equals("SIMULATION")) {
+			resetTick();
+		}
 	}
 	
 	public void sell() {
@@ -169,7 +258,11 @@ public class TradeThread {
 		setBuyProcessState("SOLD");
 		setLifeTimeState("RESERVE");
 		System.out.println("Sold at $" + getRequestSellPrice());
-		timer.cancel();
+		if (getSimMode().equals("REALTIME")) {
+			timer.cancel();
+			} else if (getSimMode().equals("SIMULATION")) {
+				resetTick();
+			}
 	}
 	//request... blah?
 
@@ -291,6 +384,70 @@ public class TradeThread {
 
 	public void setTimer(Timer timer) {
 		this.timer = timer;
+	}
+
+	public String getSimMode() {
+		return simMode;
+	}
+
+	public void setSimMode(String simMode) {
+		this.simMode = simMode;
+	}
+
+	public BigDecimal getStepTotal() {
+		return stepTotal;
+	}
+
+	public void setStepTotal(BigDecimal stepTotal) {
+		this.stepTotal = stepTotal;
+	}
+
+	public String getStepMode() {
+		return stepMode;
+	}
+
+	public void setStepMode(String stepMode) {
+		this.stepMode = stepMode;
+	}
+
+	public BigDecimal getLoss() {
+		return loss;
+	}
+
+	public void setLoss(BigDecimal loss) {
+		this.loss = loss;
+	}
+
+	public BigDecimal getNet() {
+		return net;
+	}
+
+	public void setNet(BigDecimal net) {
+		this.net = net;
+	}
+
+	public String getStepStatus() {
+		return stepStatus;
+	}
+
+	public void setStepStatus(String stepStatus) {
+		this.stepStatus = stepStatus;
+	}
+
+	public long getSecondTick() {
+		return secondTick;
+	}
+
+	public void setSecondTick(long secondTick) {
+		this.secondTick = secondTick;
+	}
+
+	public long getLastSecondTick() {
+		return lastSecondTick;
+	}
+
+	public void setLastSecondTick(long lastSecondTick) {
+		this.lastSecondTick = lastSecondTick;
 	}
 	
 }

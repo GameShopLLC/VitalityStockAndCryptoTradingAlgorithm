@@ -26,7 +26,19 @@ import java.util.Arrays;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+//Needs to make "RALLYING" state.  Rally/cancel rally
+//So therefore, not rallying, rally, cancel rally, rally complete
+//RALLYING State done
 
+//Needs to make docks
+//Must enforce single dock per transaction
+//policy to avoid manipulating nonexistent money
+
+//Needs to make shedding functions
+//Needs to do remainder shedding for large
+//numbers
+//Need to implement splitting (hard part)
+//
 @SpringBootApplication
 @ComponentScan("com.mularyanjay.tradeapp")
 public class TradeappApplication extends SpringBootServletInitializer  {
@@ -96,8 +108,8 @@ public class TradeappApplication extends SpringBootServletInitializer  {
 	//public TradeGroup(String whatName, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, float bto, float sto) {
 	@Bean
 	VitalityInstance vitalityInstance() {
-		return new VitalityInstance(new BigDecimal("25000000"), 
-				new TradeGroup("One-1", 3600, new BigDecimal("25000000"), 1, 3, 8L * 60L * 1000L, 24L * 60L * 60L * 1000L));//),
+		return new VitalityInstance("SIMULATION", new BigDecimal("25000000"), 
+				new TradeGroup("One-1", "NONE", 3600, new BigDecimal("25000000"), 1, 3, 8L * 60L * 1000L, 24L * 60L * 60L * 1000L));//),
 				//new TradeGroup("Five-1", 20, new BigDecimal("10000"), 5, 3, 40L * 60L * 1000L, 24L * 60L * 60L * 1000L),
 				//new TradeGroup("Ten-1", 20, new BigDecimal("10000"), 10, 3, 80L * 60L * 1000L, 24L * 60L * 60L * 1000L),
 				//new TradeGroup("Fifteen-1", 20, new BigDecimal("10000"), 15, 3, 120L * 60L * 1000L, 24L * 60L * 60L * 1000L),

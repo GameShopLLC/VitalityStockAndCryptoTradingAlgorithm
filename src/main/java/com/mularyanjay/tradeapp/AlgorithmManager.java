@@ -91,7 +91,7 @@ public class AlgorithmManager {
 		this.running = running;
 		if (running) {
 			runAlgorithm();
-		}
+		} 
 	}
 
 	public Timer getTimer() {

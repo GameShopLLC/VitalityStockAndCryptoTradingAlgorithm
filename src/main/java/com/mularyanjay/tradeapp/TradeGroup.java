@@ -17,7 +17,8 @@ public class TradeGroup {
 	private BigDecimal ltc;
 	private ArrayList<TradeThread> trades;
 	private String name;
-	private String state; //STANDBY, ACTIVE
+	private String state; //STANDBY, ACTIVE, RALLYING
+	private String runningState; //GOING, STOPPED
 	private int amountThreads;
 	private ArrayList<Carrot> carrotCache;
 	private int carrotCacheNum;
@@ -29,7 +30,16 @@ public class TradeGroup {
 	private boolean hasReachedEntryPoint; //Delete?
 	private Carrot currentCarrot;
 	private BigDecimal profit;
+	private ArrayList<Dock> docks;
+	private BigDecimal loss;
+	private BigDecimal net;
+	private int step; //how many temporary maximums were there
+	private int maxStep; //maximum amount of temporary maximums
+	private BigDecimal stepTotal; //temporary maximum of thread size
+	private String stepMode; //NONE, STEPSHED
+	private String simMode;//SIMULATION, REALTIME
 	
+	//private int steppedThreads make local
 	public TradeGroup() {
 		
 	}
@@ -37,8 +47,14 @@ public class TradeGroup {
 	//*Need to apply timeouts*
 	//Obviously, handling logging, statistical data
 	
-	public TradeGroup(String whatName, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
+	public TradeGroup(String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
 		//setHasReachedEntryPoint(false);
+		setLoss(new BigDecimal("0"));
+		setNet(new BigDecimal("0"));
+		setStepTotal(new BigDecimal("0"));
+		setStepMode(stepMode);
+		setStep(0);
+		setMaxStep(2);
 		setName(whatName);
 		setAmountThreads(whatAmountThreads);
 		setUsd(initialUSD);
@@ -47,19 +63,71 @@ public class TradeGroup {
 		setCarrotCacheNum(ccn);
 		carrotCache = new ArrayList<Carrot>();
 		setState("STANDBY");
+		setRunningState("GOING");
 		trades = new ArrayList<TradeThread>();
 		setBuyTimeout(bto);
 		setStuckTimeout(sto);
 		setProfit(new BigDecimal("0"));
-		BigDecimal threadUSD = new BigDecimal(initialUSD.toString()).divide(BigDecimal.valueOf(getAmountThreads()), 2, RoundingMode.FLOOR);
+		docks = new ArrayList<Dock>();
+		docks.add(new Dock("REMAINDER"));
+		docks.add(new Dock("STEPSHED"));
+		docks.add(new Dock("TOPROFIT"));
+		partitionThreads();
+		
+	}
+	
+	public void shedFromOutgoingToStep() {
+		
+		for(TradeThread t: trades) {
+		
+			if(t.getDockByName("TOSTEPSHED").getUsd().compareTo(new BigDecimal("0")) == 1) {
+				getDockByName("STEPSHED").addUsd(t.getDockByName("TOSTEPSHED").getUsd());
+				t.getDockByName("TOSTEPSHED").setUsd(new BigDecimal("0"));
+			}
+			
+		}
+	}
+	
+	public void shedFromThreadsToProfit() {
+		
+	}
+	
+	public void shedFromRemainderToStep() {
+		
+	}
+	
+	public void partitionThreads() {
+		//getUsd was initialUsd
+		BigDecimal threadUSD = new BigDecimal(getUsd().toString()).divide(BigDecimal.valueOf(getAmountThreads()), 2, RoundingMode.FLOOR);
+		
 		System.out.println("TradeGroup $" + getUsd() + " thread amount $" + threadUSD);
 		for(int i = 0; i < getAmountThreads(); i++) {
 			//BigDecimal initialUSD, float whatDBT, float whatDSTST) {
 			trades.add(new TradeThread(threadUSD, getBuyTimeout(), getStuckTimeout()));
 		}
 		
+		setStepTotal(threadUSD.multiply(new BigDecimal("10")));
+		BigDecimal total = threadUSD.multiply(BigDecimal.valueOf(getAmountThreads()));
+		BigDecimal remainder = getUsd().subtract(total);
+		getDockByName("REMAINDER").addUsd(remainder);
+		System.out.println("Step Total: " + getStepTotal());
+		System.out.println("Remainder: " + remainder);
+		
+		for (TradeThread t: trades) {
+			t.setSimMode(getSimMode());
+			t.setStepTotal(getStepTotal());
+		}
 	}
 	
+	public Dock getDockByName(String name) {
+		for (Dock d: docks) {
+			if (d.getName().equals(name)) {
+				return d;
+			}
+		}
+		System.out.println("No such dock with that name");
+		return null;
+	}
 	//Deploy methods will handle attempts, refresh methods
 	//will handle transactions (passing current carrot data).
 	
@@ -356,6 +424,12 @@ public class TradeGroup {
 //				
 //			}
 			updateBalance();
+			if (getSimMode().equals("SIMULATION")) {
+			for (TradeThread t: trades) {
+				t.incrementSecondTick();
+				t.evaluateSimulationTimeout();
+			}
+			}
 		}
 	
 	
@@ -371,6 +445,7 @@ public class TradeGroup {
 	public void doDeploy() {
 		//Add triggerDeploy method
 		//Ok, first change to single dip
+		if (getRunningState().equals("GOING")) {
 		if (getState().equals("STANDBY")) {
 			if (getCarrotCache().size() > 0) {
 //				if (getName().contains("One")) {
@@ -421,9 +496,34 @@ public class TradeGroup {
 //					}
 //				}
 			}
+		} else if (getState().equals("RALLYING")) {
+			if (getCarrotCache().size() > 0) {
+				if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("INC")) {
+					//setState("ACTIVE");
+					//deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
+					attemptSellThread(getCarrotCache().get(getCarrotCache().size() - 1));
+				}
+			}
 		}
+		checkDoneRallying();
 	}
 	
+	}
+	
+	public void checkDoneRallying() {
+		if (getState().equals("RALLYING")) {
+			for(TradeThread t: trades) {
+				if (!t.getBuyProcessState().equals("SOLD")) {
+					break;
+				} else {
+					setState("STANDBY");
+					setRunningState("STOPPED");
+					//need to set to standby,
+					//need a stop and go state
+				}
+			}
+		}
+	}
 	public void updateBalance() {
 		BigDecimal newUsd = new BigDecimal("0");
 		BigDecimal newLtc = new BigDecimal("0");
@@ -615,6 +715,70 @@ public class TradeGroup {
 
 	public void setProfit(BigDecimal profit) {
 		this.profit = profit;
+	}
+
+	public String getRunningState() {
+		return runningState;
+	}
+
+	public void setRunningState(String runningState) {
+		this.runningState = runningState;
+	}
+
+	public BigDecimal getLoss() {
+		return loss;
+	}
+
+	public void setLoss(BigDecimal loss) {
+		this.loss = loss;
+	}
+
+	public BigDecimal getNet() {
+		return net;
+	}
+
+	public void setNet(BigDecimal net) {
+		this.net = net;
+	}
+
+	public int getStep() {
+		return step;
+	}
+
+	public void setStep(int step) {
+		this.step = step;
+	}
+
+	public BigDecimal getStepTotal() {
+		return stepTotal;
+	}
+
+	public void setStepTotal(BigDecimal stepTotal) {
+		this.stepTotal = stepTotal;
+	}
+
+	public String getSimMode() {
+		return simMode;
+	}
+
+	public void setSimMode(String simMode) {
+		this.simMode = simMode;
+	}
+
+	public String getStepMode() {
+		return stepMode;
+	}
+
+	public void setStepMode(String stepMode) {
+		this.stepMode = stepMode;
+	}
+
+	public int getMaxStep() {
+		return maxStep;
+	}
+
+	public void setMaxStep(int maxStep) {
+		this.maxStep = maxStep;
 	}
 	
 	

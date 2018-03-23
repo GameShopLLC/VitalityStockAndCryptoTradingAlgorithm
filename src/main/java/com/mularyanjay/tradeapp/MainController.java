@@ -107,7 +107,11 @@ public class MainController {
 		//response.setHeader("Access-Control-Allow-Headers", "CB-ACCESS-KEY, CB-ACCESS-SIGN, CB-ACCESS-TIMESTAMP,CB-ACCESS-PASSPHRASE");
 	       
 		if (isLoggedIn) {
-		return "Main";
+			if(vitalityInstance.getSimMode().equals("REALTIME")) {
+				return "Main";
+			} else if (vitalityInstance.getSimMode().equals("SIMULATION")) {
+				return "SimMain";
+			}
 		}
 		
 		return "redirect://";
@@ -244,7 +248,8 @@ public class MainController {
 //		return list;
 //		
 //	}
-	
+//	@RequestMapping(value="/performSimulation", method=RequestMethod.POST)
+//	public @ResponseBody String performSimulation()
 	@RequestMapping(value="/priceReadResult", method=RequestMethod.POST)
 	public @ResponseBody String priceReadResult(@RequestBody TickerData ajaxJSON) {
 		//initstarttime
@@ -378,8 +383,24 @@ public class MainController {
 	@RequestMapping(value="/startAlgorithm", method=RequestMethod.POST)
 	public @ResponseBody String startAlgorithm() {
 		algorithmManager.setRunning(true);
+		//vitalityInstance.restartTradeGroups();
 		return Boolean.toString(algorithmManager.isRunning());
 	}
+	
+	@RequestMapping(value="/rallyAlgorithm", method=RequestMethod.POST)
+	public @ResponseBody String rallyAlgorithm() {
+		vitalityInstance.triggerRally();
+		//vitalityInstance.
+		return Boolean.toString(algorithmManager.isRunning());
+	}
+	
+	@RequestMapping(value="/restartAlgorithm", method=RequestMethod.POST)
+	public @ResponseBody String restartAlgorithm() {
+		vitalityInstance.restartTradeGroups();
+		//vitalityInstance.
+		return Boolean.toString(algorithmManager.isRunning());
+	}
+	
 	
 	@RequestMapping(value="/isAlgorithmRunning")
 	public @ResponseBody String isAlgorithmRunning() {
