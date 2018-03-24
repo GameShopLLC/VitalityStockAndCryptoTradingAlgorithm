@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	$('getEpochTimeResult').click(function(){
-		$('getEpochTimeResult').text($('testEpochTime').val());
+	$('#getEpochTimeResult').click(function(){
+		$('#getEpochTimeResult').text($('#testEpochTime').val());
 	});
 });
