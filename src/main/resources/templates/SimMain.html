@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="Includes :: simmain">
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 </head>
 <body>
 <p>Welcome to SimMode</p>
+<input type="text" id="testEpochTime">
+<button id="getEpochTimeResult">Result</button>
+<div id = "epochTimeResult">
+_
+</div>
 </body>
 </html>
