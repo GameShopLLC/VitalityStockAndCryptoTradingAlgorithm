@@ -9,6 +9,7 @@ $(document).ready(function(){
 			},
 		success: function(response) {
 			$('#epochTimeResult').text(response.open);
+			console.log(response);
 		}
 		})
 		//$('#getEpochTimeResult').text($('#testEpochTime').val());
