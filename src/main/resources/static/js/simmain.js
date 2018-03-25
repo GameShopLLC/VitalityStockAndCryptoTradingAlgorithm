@@ -6,7 +6,7 @@ $(document).ready(function(){
 			type: 'POST',
 			data: {"from":$('#testEpochTime').val(),
 					"to":$('#testEpochTime').val()
-			}
+			},
 		success: function(response) {
 			$('#epochTimeResult').text(response.open);
 		}
