@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class SerializableCandle {
 
-	private Long time;
+	private String time;
 	private BigDecimal low;
 	private BigDecimal high;
 	private BigDecimal open;
@@ -15,11 +15,11 @@ public class SerializableCandle {
 		
 	}
 
-	public Long getTime() {
+	public String getTime() {
 		return time;
 	}
 
-	public void setTime(Long time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
 
