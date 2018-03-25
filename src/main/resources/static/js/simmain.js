@@ -7,7 +7,7 @@ $(document).ready(function(){
 			url:'https://ancient-crag-48261.herokuapp.com/showEpochTimeCandle',
 			type: 'POST',
 			data: {"from":$('#testEpochTime').val(),
-					"to": "" + (parseInt($('#testEpochTime').val()) + 1)
+					"to": "" + (parseInt($('#testEpochTime').val()) + 59)
 			},
 		success: function(response) {
 			$('#epochTimeResult').text(JSON.stringify(response));

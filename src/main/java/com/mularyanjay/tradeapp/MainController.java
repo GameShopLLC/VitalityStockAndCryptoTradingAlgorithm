@@ -455,6 +455,7 @@ public class MainController {
 	public @ResponseBody SerializableCandle showEpochTimeCandle(@RequestBody Map<String, String> map) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		RestTemplate restTemplate = new RestTemplate();
+		
 		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + map.get("from") + "&end=" + map.get("to") + "&grandularity=60";
 		ResponseEntity<SerializableCandle> response = null;
 		try {
