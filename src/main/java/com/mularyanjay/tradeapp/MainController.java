@@ -7,10 +7,12 @@
 
 package com.mularyanjay.tradeapp;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -447,5 +449,32 @@ public class MainController {
 			}
 		}
 		return threads;
+	}
+	
+	@RequestMapping(value="/showEpochTimeCandle", method=RequestMethod.POST)
+	public @ResponseBody SerializableCandle showEpochTimeCandle(@RequestBody Map<String, String> map) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		RestTemplate restTemplate = new RestTemplate();
+		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + map.get("from") + "&end=" + map.get("to") + "&grandularity=60";
+		ResponseEntity<SerializableCandle> response;
+		response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<SerializableCandle>(){});//restTemplate.exchange(requestEntity, responseType)//
+		//settData(response.getBody());
+		//TickerData tickerData = null;
+//		try {
+//			tickerData = objectMapper.readValue(response.getBody(), TickerData.class);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		if (tickerData != null) {
+//			//setLtcPrice("The current price of litecoin is " + tickerData.getPrice());
+//			url = new String("https://ancient-crag-48261.herokuapp.com/priceReadResult");
+//			response = restTemplate.exchange(url, HttpMethod.POST, localHttpEntityBean.postLocalEntityFromUrl(url, "application/json", "text", tickerData),new ParameterizedTypeReference<String>(){});
+//			//setCarrotData(response.getBody());
+//		} else {
+//			//setLtcPrice("The current price of litecoin is undefined");
+//		}
+		return response.getBody();
+		
 	}
 }
