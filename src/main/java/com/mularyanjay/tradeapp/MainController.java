@@ -456,8 +456,13 @@ public class MainController {
 		ObjectMapper objectMapper = new ObjectMapper();
 		RestTemplate restTemplate = new RestTemplate();
 		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + map.get("from") + "&end=" + map.get("to") + "&grandularity=60";
-		ResponseEntity<SerializableCandle> response;
+		ResponseEntity<SerializableCandle> response = null;
+		try {
 		response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<SerializableCandle>(){});//restTemplate.exchange(requestEntity, responseType)//
+		} catch(Throwable t) {
+			t.printStackTrace();
+		}
+		System.out.println(response.getBody());
 		//settData(response.getBody());
 		//TickerData tickerData = null;
 //		try {
