@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
 	$('#getEpochTimeResult').click(function(){
-		$.ajax1({
+		$.ajax({
 			url:'https://ancient-crag-48261.herokuapp.com/startAlgorithm',
 			type: 'POST',
 			data: {"from":$('#testEpochTime').val(),
