@@ -461,11 +461,11 @@ public class MainController {
 		// Sunday, March 25, 2018 11:07:04
 		System.out.println("in");
 		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + "2018-03-25T11:07:04Z" + "&end=" + "2018-03-25T11:09:04Z" + "&granularity=60";
-		ResponseEntity<List<SerializableCandle>> response = null;
+		ResponseEntity<List<List<String>>> response = null;
 
 		System.out.println("mid");
 		try {
-		response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<List<SerializableCandle>>(){});//restTemplate.exchange(requestEntity, responseType)//
+		response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<List<List<String>>>(){});//restTemplate.exchange(requestEntity, responseType)//
 
 		System.out.println("try");
 		} catch(Throwable t) {
@@ -495,7 +495,24 @@ public class MainController {
 //		} else {
 //			//setLtcPrice("The current price of litecoin is undefined");
 //		}
-		return response.getBody();
+		List<SerializableCandle> list = new ArrayList<SerializableCandle>();
+		
+		for (List<String> s: response.getBody()) {
+			SerializableCandle candle = new SerializableCandle();
+			candle.setTime(Long.parseLong(s.get(0)));
+			candle.setLow(new BigDecimal(s.get(1)));
+			candle.setHigh(new BigDecimal(s.get(2)));
+			candle.setOpen(new BigDecimal(s.get(3)));
+			candle.setClose(new BigDecimal(s.get(4)));
+			candle.setVolume(new BigDecimal(s.get(5)));
+//			private BigDecimal low;
+//			private BigDecimal high;
+//			private BigDecimal open;
+//			private BigDecimal close;
+//			private BigDecimal volume;
+			list.add(candle);
+		}
+		return list;
 		
 	}
 }
