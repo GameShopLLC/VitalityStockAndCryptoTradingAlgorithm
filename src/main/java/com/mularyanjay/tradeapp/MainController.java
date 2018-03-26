@@ -473,7 +473,12 @@ public class MainController {
 		}
 		System.out.println("out");
 
-		System.out.println(response.getBody());
+		try {
+			System.out.println(objectMapper.writeValueAsString(Arrays.asList(response.getBody())));
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//settData(response.getBody());
 		//TickerData tickerData = null;
 //		try {

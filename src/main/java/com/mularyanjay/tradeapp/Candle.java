@@ -9,9 +9,9 @@ public class Candle extends SerializableCandle implements Comparable<Candle> {
 	@Override
 	public int compareTo(Candle candle) {
 		// TODO Auto-generated method stub
-		long compareTime = Long.parseLong(candle.getTime());
+		long compareTime = candle.getTime();
 		
-		return (int)(Long.parseLong(this.getTime()) - compareTime);
+		return (int)(this.getTime() - compareTime);
 	}
 	
 	
