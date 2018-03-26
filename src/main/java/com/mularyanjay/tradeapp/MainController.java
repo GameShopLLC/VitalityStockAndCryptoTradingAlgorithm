@@ -448,11 +448,12 @@ public class MainController {
 				threads.add(stt);
 			}
 		}
+		
 		return threads;
 	}
 	
 	@RequestMapping(value="/showEpochTimeCandle", method=RequestMethod.POST)
-	public @ResponseBody String showEpochTimeCandle() {//@RequestBody Map<String, String> map) {
+	public @ResponseBody List<SerializableCandle> showEpochTimeCandle() {//@RequestBody Map<String, String> map) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		RestTemplate restTemplate = new RestTemplate();
 //1522019164
@@ -460,11 +461,11 @@ public class MainController {
 		// Sunday, March 25, 2018 11:07:04
 		System.out.println("in");
 		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + "2018-03-25T11:07:04Z" + "&end=" + "2018-03-25T11:09:04Z" + "&granularity=60";
-		ResponseEntity<String> response = null;
+		ResponseEntity<List<SerializableCandle>> response = null;
 
 		System.out.println("mid");
 		try {
-		response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+		response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<List<SerializableCandle>>(){});//restTemplate.exchange(requestEntity, responseType)//
 
 		System.out.println("try");
 		} catch(Throwable t) {
