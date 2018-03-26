@@ -455,14 +455,21 @@ public class MainController {
 	public @ResponseBody SerializableCandle showEpochTimeCandle(@RequestBody Map<String, String> map) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		RestTemplate restTemplate = new RestTemplate();
-		
+
+		System.out.println("in");
 		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + "1522019164" + "&end=" + "1522019224" + "&granularity=60";
 		ResponseEntity<SerializableCandle> response = null;
+
+		System.out.println("mid");
 		try {
 		response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<SerializableCandle>(){});//restTemplate.exchange(requestEntity, responseType)//
+
+		System.out.println("try");
 		} catch(Throwable t) {
 			t.printStackTrace();
 		}
+		System.out.println("out");
+
 		System.out.println(response.getBody());
 		//settData(response.getBody());
 		//TickerData tickerData = null;
