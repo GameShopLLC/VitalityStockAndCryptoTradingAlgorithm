@@ -452,7 +452,7 @@ public class MainController {
 	}
 	
 	@RequestMapping(value="/showEpochTimeCandle", method=RequestMethod.POST)
-	public @ResponseBody SerializableCandle showEpochTimeCandle(@RequestBody Map<String, String> map) {
+	public @ResponseBody SerializableCandle showEpochTimeCandle() {//@RequestBody Map<String, String> map) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		RestTemplate restTemplate = new RestTemplate();
 
