@@ -455,9 +455,11 @@ public class MainController {
 	public @ResponseBody String showEpochTimeCandle() {//@RequestBody Map<String, String> map) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		RestTemplate restTemplate = new RestTemplate();
-
+//1522019164
+		//1522019224
+		// Sunday, March 25, 2018 11:07:04
 		System.out.println("in");
-		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + "1522019164" + "&end=" + "1522019224" + "&granularity=60";
+		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + "2018-03-25T11:07:04Z" + "&end=" + "2018-03-25T11:08:04Z" + "&granularity=60";
 		ResponseEntity<String> response = null;
 
 		System.out.println("mid");
