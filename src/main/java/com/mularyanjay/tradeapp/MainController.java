@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -453,14 +454,15 @@ public class MainController {
 	}
 	
 	@RequestMapping(value="/showEpochTimeCandle", method=RequestMethod.POST)
-	public @ResponseBody List<SerializableCandle> showEpochTimeCandle() {//@RequestBody Map<String, String> map) {
+	public @ResponseBody List<SerializableCandle> showEpochTimeCandle(@RequestBody HashMap<String, String> map) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		RestTemplate restTemplate = new RestTemplate();
 //1522019164
 		//1522019224
 		// Sunday, March 25, 2018 11:07:04
 		System.out.println("in");
-		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + "2018-03-25T11:07:04Z" + "&end=" + "2018-03-25T11:09:04Z" + "&granularity=60";
+		//"2018-03-25T11:07:04Z"
+		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + map.get("from") + "&end=" + map.get("to") + "&granularity=60";
 		ResponseEntity<List<List<String>>> response = null;
 
 		System.out.println("mid");

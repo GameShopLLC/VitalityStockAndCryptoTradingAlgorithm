@@ -505,6 +505,11 @@ public class TradeGroup {
 				}
 			}
 		}
+		if (getSimMode().equals("SIMULATION")) {
+			for (TradeThread t: trades) {
+				t.incrementSecondTick(60L);
+			}
+		}
 		checkDoneRallying();
 	}
 	

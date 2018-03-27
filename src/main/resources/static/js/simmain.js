@@ -3,14 +3,14 @@ $(document).ready(function(){
 	$('#getEpochTimeResult').click(function(){
 		$.ajax({
 			contentType:'application/json',
-			//dataType:'',
+			dataType:'application/json',
 			url:'https://ancient-crag-48261.herokuapp.com/showEpochTimeCandle',
 			type: 'POST',
-			//data: {"from":$('#testEpochTime').val(),
-			//		"to": "" + (parseInt($('#testEpochTime').val()) + 59)
-			//},
+			data: {"from":"2018-03-25T11:07:04Z",
+					"to":"2018-03-25T11:09:04Z"
+			},
 		success: function(response) {
-			$('#epochTimeResult').text(response);
+			$('#epochTimeResult').text(JSON.stringify(response));
 			console.log(response);
 //			$('#epochTimeResult').text(JSON.stringify(response));
 //			console.log(JSON.stringify(response));
