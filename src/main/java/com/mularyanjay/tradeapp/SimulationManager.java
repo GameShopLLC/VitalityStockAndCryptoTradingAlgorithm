@@ -61,6 +61,8 @@ public class SimulationManager {
 	}
 	
 	public List<Candle> getCandleData(){
+		ObjectMapper objectMapper = new ObjectMapper();
+		
 		List<SerializableCandle> data = new ArrayList<SerializableCandle>();
 		HashMap<String, String> map = new HashMap<String, String>();
 		ComparableDateTime cdt = new ComparableDateTime("2018-02-1T00:00:00Z");
@@ -79,6 +81,14 @@ public class SimulationManager {
 			candleData.add((Candle)s);
 		}
 		Collections.sort(candleData);
+		System.out.println("donewitharray");
+		try {
+			System.out.println(objectMapper.writeValueAsString(Arrays.asList(candleData)));
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return candleData;
 	}
 	
@@ -89,6 +99,12 @@ public class SimulationManager {
 		//1522019224
 		// Sunday, March 25, 2018 11:07:04
 		System.out.println("in");
+		try {
+			Thread.sleep(1000L);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		//"2018-03-25T11:07:04Z"
 		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + map.get("from") + "&end=" + map.get("to") + "&granularity=60";
 		ResponseEntity<List<List<String>>> response = null;
