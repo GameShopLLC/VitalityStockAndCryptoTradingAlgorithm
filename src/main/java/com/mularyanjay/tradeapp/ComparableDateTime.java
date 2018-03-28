@@ -35,6 +35,78 @@ public class ComparableDateTime {
 		
 	}
 	
+	public void incrementSecond(int amount) {
+		if ((getSecond().add(new BigDecimal("" + amount))).compareTo(new BigDecimal("60")) == -1) {
+			setSecond(getSecond().add(new BigDecimal("" + amount)));
+			
+		} else {
+			int remainder = 0;
+			int minuteAdd = 0;
+			remainder = amount % 60;
+			minuteAdd = (amount - remainder) / 60;
+			setSecond(getSecond().add(new BigDecimal("" + remainder)));
+			incrementMinute(minuteAdd);
+			
+		}
+	}
+	
+	public void incrementMinute(int amount) {
+	
+		if ((getMinute() + amount) < 60) {
+			setMinute (getMinute() + amount);
+		} else {
+			int remainder = 0;
+			int hourAdd = 0;
+			remainder = amount % 60;
+			hourAdd = (amount - remainder) / 60;
+			setMinute(getMinute() + remainder);
+			incrementHour(hourAdd);
+		}
+	}
+	
+	public void incrementHour(int amount) {
+		if ((getHour() + amount) < 24) {
+			setHour (getHour() + amount);
+		} else {
+			int remainder = 0;
+			int dayAdd = 0;
+			remainder = amount % 24;
+			dayAdd = (amount - remainder) / 24;
+			setHour(getHour() + remainder);
+			incrementDay(dayAdd);
+		}
+	}
+	
+	public void incrementDay(int amount) {
+		if ((getDay() + amount) < 30) {
+			setDay (getDay() + amount);
+		} else {
+			int remainder = 0;
+			int monthAdd = 0;
+			remainder = amount % 30;
+			monthAdd = (amount - remainder) / 30;
+			setHour(getHour() + remainder);
+			incrementDay(monthAdd);
+		}
+	}
+	
+	public void incrementMonth(int amount) {
+		if ((getMonth() + amount) < 12) {
+			setMonth (getMonth() + amount);
+		} else {
+			int remainder = 0;
+			int yearAdd = 0;
+			remainder = getMonth() % 12;
+			yearAdd = (getMonth() - remainder) / 12;
+			setMonth(getMonth() + remainder);
+			incrementYear(yearAdd);
+		}
+	}
+	
+	public void incrementYear(int amount) {
+		setYear(getYear() + amount);
+	}
+	
 	public boolean slotEquals(String timeslot, int equals) {
 		switch(timeslot) {
 		case "year":

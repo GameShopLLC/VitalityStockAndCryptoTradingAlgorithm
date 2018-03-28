@@ -62,6 +62,9 @@ public class MainController {
 	@Autowired
 	AlgorithmManager algorithmManager;
 	
+	@Autowired
+	SimulationManager simulationManager;
+	
 	ComparableDateTime lastTime = new ComparableDateTime();
 	Carrot currentCarrot;
 	
@@ -455,66 +458,24 @@ public class MainController {
 	
 	@RequestMapping(value="/showEpochTimeCandle", method=RequestMethod.POST)
 	public @ResponseBody List<SerializableCandle> showEpochTimeCandle(@RequestBody HashMap<String, String> map) {
-		ObjectMapper objectMapper = new ObjectMapper();
-		RestTemplate restTemplate = new RestTemplate();
-//1522019164
-		//1522019224
-		// Sunday, March 25, 2018 11:07:04
-		System.out.println("in");
-		//"2018-03-25T11:07:04Z"
-		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + map.get("from") + "&end=" + map.get("to") + "&granularity=60";
-		ResponseEntity<List<List<String>>> response = null;
-
-		System.out.println("mid");
-		try {
-		response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<List<List<String>>>(){});//restTemplate.exchange(requestEntity, responseType)//
-
-		System.out.println("try");
-		} catch(Throwable t) {
-			t.printStackTrace();
-		}
-		System.out.println("out");
-
-		try {
-			System.out.println(objectMapper.writeValueAsString(Arrays.asList(response.getBody())));
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//settData(response.getBody());
-		//TickerData tickerData = null;
-//		try {
-//			tickerData = objectMapper.readValue(response.getBody(), TickerData.class);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		if (tickerData != null) {
-//			//setLtcPrice("The current price of litecoin is " + tickerData.getPrice());
-//			url = new String("https://ancient-crag-48261.herokuapp.com/priceReadResult");
-//			response = restTemplate.exchange(url, HttpMethod.POST, localHttpEntityBean.postLocalEntityFromUrl(url, "application/json", "text", tickerData),new ParameterizedTypeReference<String>(){});
-//			//setCarrotData(response.getBody());
-//		} else {
-//			//setLtcPrice("The current price of litecoin is undefined");
-//		}
-		List<SerializableCandle> list = new ArrayList<SerializableCandle>();
 		
-		for (List<String> s: response.getBody()) {
-			SerializableCandle candle = new SerializableCandle();
-			candle.setTime(Long.parseLong(s.get(0)));
-			candle.setLow(new BigDecimal(s.get(1)));
-			candle.setHigh(new BigDecimal(s.get(2)));
-			candle.setOpen(new BigDecimal(s.get(3)));
-			candle.setClose(new BigDecimal(s.get(4)));
-			candle.setVolume(new BigDecimal(s.get(5)));
-//			private BigDecimal low;
-//			private BigDecimal high;
-//			private BigDecimal open;
-//			private BigDecimal close;
-//			private BigDecimal volume;
-			list.add(candle);
-		}
-		return list;
+		return simulationManager.getEpochTimeCandles(map);
 		
+	}
+	@RequestMapping(value="/runSimulation", method=RequestMethod.POST)
+	public @ResponseBody String runSimulation() {
+
+		simulationManager.runSimulation();
+		return "done";
+	}
+	
+	@RequestMapping(value="/simulationStatusReport")
+	public @ResponseBody String simulationStatusReport() {
+		StringBuilder t = new StringBuilder();
+		
+		for (String s: simulationManager.checkpointMessages) {
+			t.append(s + "\n");
+		}
+		return t.toString();
 	}
 }

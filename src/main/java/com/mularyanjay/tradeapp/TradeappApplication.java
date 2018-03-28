@@ -99,6 +99,11 @@ public class TradeappApplication extends SpringBootServletInitializer  {
 		return new AlgorithmManager();
 	}
 	
+	@Bean 
+	SimulationManager simulationManager() {
+		return new SimulationManager();
+	}
+	
 	@Bean
 	CarrotHistory carrotHistory() {
 		return new CarrotHistory();

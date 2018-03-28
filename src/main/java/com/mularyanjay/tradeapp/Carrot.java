@@ -65,6 +65,15 @@ public class Carrot {
 		}
 	}
 	
+	public void evaluateTrend() {
+		if(getOpen().subtract(getClose()).compareTo(new BigDecimal("0")) == 1) {
+			setTrend("DEC");
+		} else if (getOpen().subtract(getClose()).compareTo(new BigDecimal("0")) == -1) {	
+			setTrend("INC");
+		} else {
+			setTrend("EQ");
+		}
+	}
 	//*CHANGE CURRENT TIME HERE**
 	public void addCurrentTime(ComparableDateTime ct) {
 		if (isActive()) {
