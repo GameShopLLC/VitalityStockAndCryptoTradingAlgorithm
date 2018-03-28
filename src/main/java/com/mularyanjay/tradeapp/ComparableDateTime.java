@@ -240,7 +240,41 @@ public boolean increaseGreater(ComparableDateTime other, String timeslot, int in
 	}
 	
 	public String toString() {
-		return "" + getYear() + "-" + getMonth() + "-" + getDay() + "T" + getHour() + ":" + getMinute() + ":" + getSecond() + "Z";
+		String secondString;
+		String minuteString;
+		String hourString;
+		String dayString;
+		String monthString;
+		if (getSecond().compareTo(new BigDecimal("10")) == -1) {
+			secondString = "0" + getSecond().toString();
+		} else {
+			secondString = getSecond().toString();
+		}
+		
+		if (getMinute() < 10) {
+			minuteString = "0" + getMinute();
+		} else {
+			minuteString = "" + getMinute();
+		}
+		
+		if (getHour() < 10) {
+			hourString = "0" + getHour();
+		} else {
+			hourString = "" + getHour();
+		}
+		
+		if (getDay() < 10) {
+			dayString = "0" + getDay();
+		} else {
+			dayString = "" + getDay();
+		}
+		
+		if (getMonth() < 10) {
+			monthString = "0" + getMonth();
+		} else {
+			monthString = "" + getMonth();
+		}
+		return "" + getYear() + "-" + monthString + "-" + dayString + "T" + hourString + ":" + minuteString + ":" + secondString + "Z";
 	}
 	
 	public int getYear() {
