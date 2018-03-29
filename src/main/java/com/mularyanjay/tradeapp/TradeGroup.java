@@ -225,16 +225,16 @@ public class TradeGroup {
 		
 		//Problem solved ^.^
 		//Move on to threads
-		if (getSimMode().equals("REALTIME")) {
+		//if (getSimMode().equals("REALTIME")) {
 		for (TradeThread t: trades) {
 			t.broadcastCarrot(carrot); //or should I evaluate current
 			//carrot and broadcast that? No, keep as is.
 		}
-		} else if (getSimMode().equals("SIMULATION")) {
-			for (TradeThread t: trades) {
-				t.refresh();
-			}
-		}
+//		} else if (getSimMode().equals("SIMULATION")) {
+//			for (TradeThread t: trades) {
+//				t.refresh();
+//			}
+//		}
 		
 		if(getName().contains("One")) {
 			//if (getCurrentCarrot() == null) {

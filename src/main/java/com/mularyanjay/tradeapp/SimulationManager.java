@@ -49,6 +49,7 @@ public class SimulationManager {
 			car.setClose(c.getClose());
 			car.setLow(c.getLow());
 			car.setHigh(c.getHigh());
+			car.setCurrent(c.getClose());
 			car.setActive(false);
 			car.evaluateTrend();
 			System.out.println(car.toString());
