@@ -184,6 +184,19 @@ public class TradeThread {
 		}
 		}
 		
+		} else {
+			if (getSimMode() == null) {
+				System.out.println("sim mode null");
+			}
+			if (getCurrentPrice() == null) {
+				System.out.println("current price null");
+			}
+			if (carrot == null) {
+				System.out.println("carrot null");
+			}
+			if (carrot.getLow() == null) {
+				System.out.println("carrot low null");
+			}
 		}
 	}
 	
@@ -221,6 +234,19 @@ public class TradeThread {
 					resetTick();
 				}
 				}
+			}
+		} else {
+			if (getSimMode() == null) {
+				System.out.println("sim mode null");
+			}
+			if (getCurrentPrice() == null) {
+				System.out.println("current price null");
+			}
+			if (carrot == null) {
+				System.out.println("carrot null");
+			}
+			if (carrot.getHigh() == null) {
+				System.out.println("carrot high null");
 			}
 		}
 		
