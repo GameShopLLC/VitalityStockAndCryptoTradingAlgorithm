@@ -95,7 +95,7 @@ public class SimulationManager {
 			c.setOpen(s.getOpen());
 			c.setTime(s.getTime());
 			c.setVolume(s.getVolume());
-			System.out.println("candle array at " + c.getTime());
+			//System.out.println("candle array at " + c.getTime());
 			candleData.add(c);
 		}
 		Collections.sort(candleData);
