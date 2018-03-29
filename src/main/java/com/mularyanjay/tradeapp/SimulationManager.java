@@ -50,6 +50,7 @@ public class SimulationManager {
 			car.setLow(c.getLow());
 			car.setHigh(c.getHigh());
 			car.setActive(false);
+			car.evaluateTrend();
 			vitalityInstance.broadcastCarrot(car);
 			checkpoint++;
 			if (checkpoint == 3599) {
