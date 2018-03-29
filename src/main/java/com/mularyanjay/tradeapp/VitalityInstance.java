@@ -160,7 +160,11 @@ public class VitalityInstance {
 			for (TradeGroup g: groups) {
 				if (g.getState().equals("ACTIVE")) {
 					setHasReachedEntryPoint(true);
+					if (getSimMode().equals("REALTIME")) {
 					onReachEntryPoint(carrot.getEndTime(), carrot.getCurrent());
+					} else {
+						System.out.println("Entered at" + carrot.getCurrent());
+					}
 					//deployThread?  Maybe thread will be deployed
 					//before entry point log recognized.
 					break;
