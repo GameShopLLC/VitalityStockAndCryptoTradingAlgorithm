@@ -57,10 +57,17 @@ public class ComparableDateTime {
 		} else {
 			int remainder = 0;
 			int hourAdd = 0;
+			if (amount >= 60) {
 			remainder = amount % 60;
 			hourAdd = (amount - remainder) / 60;
 			setMinute(getMinute() + remainder);
 			incrementHour(hourAdd);
+			} else {
+				remainder = (getMinute() + amount) % 60;
+				setMinute(0);
+				setMinute(remainder);
+				incrementHour(1);
+			}
 		}
 	}
 	
@@ -70,10 +77,17 @@ public class ComparableDateTime {
 		} else {
 			int remainder = 0;
 			int dayAdd = 0;
+			if (amount >= 24) {
 			remainder = amount % 24;
 			dayAdd = (amount - remainder) / 24;
 			setHour(getHour() + remainder);
 			incrementDay(dayAdd);
+			} else {
+				remainder = (getHour() + amount) % 24;
+				setHour(0);
+				setHour(remainder);
+				incrementDay(1);
+			}
 		}
 	}
 	
@@ -83,10 +97,17 @@ public class ComparableDateTime {
 		} else {
 			int remainder = 0;
 			int monthAdd = 0;
+			if (amount >= 30) {
 			remainder = amount % 30;
 			monthAdd = (amount - remainder) / 30;
-			setHour(getHour() + remainder);
-			incrementDay(monthAdd);
+			setDay(getDay() + remainder);
+			incrementMonth(monthAdd);
+			} else {
+				remainder = (getDay() + amount) % 30;
+				setDay(0);
+				setDay(remainder);
+				incrementMonth(1);
+			}
 		}
 	}
 	
