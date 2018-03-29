@@ -78,7 +78,15 @@ public class SimulationManager {
 		
 		List<Candle> candleData = new ArrayList<Candle>();
 		for (SerializableCandle s: data) {
-			candleData.add((Candle)s);
+			Candle c = new Candle();
+			c.setClose(s.getClose());
+			c.setHigh(s.getHigh());
+			c.setLow(s.getLow());
+			c.setOpen(s.getOpen());
+			c.setTime(s.getTime());
+			c.setVolume(s.getVolume());
+			System.out.println("candle array at " + c.getTime());
+			candleData.add(c);
 		}
 		Collections.sort(candleData);
 		System.out.println("donewitharray");
