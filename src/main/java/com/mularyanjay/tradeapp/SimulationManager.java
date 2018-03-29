@@ -51,9 +51,10 @@ public class SimulationManager {
 			car.setHigh(c.getHigh());
 			car.setActive(false);
 			car.evaluateTrend();
+			System.out.println(car.toString());
 			vitalityInstance.broadcastCarrot(car);
 			checkpoint++;
-			if (checkpoint == 3599) {
+			if (checkpoint > 300) {
 				checkpointMessages.add(vitalityInstance.searchTradeGroupByName("One-1").statusReport());
 				System.out.println(vitalityInstance.searchTradeGroupByName("One-1").statusReport());
 				checkpoint = 0;
