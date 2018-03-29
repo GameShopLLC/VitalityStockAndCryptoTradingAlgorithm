@@ -196,6 +196,12 @@ public class TradeGroup {
 				selectedIndex = candidates.indexOf(t);
 			}
 		}
+		
+		if (candidates.size() == 0) {
+			System.out.println("No threads available");
+			return;
+		}
+		
 		for (TradeThread t: trades) {
 			if (t.equals(candidates.get(selectedIndex))) {
 				t.attemptSell(carrot); //Broadcast data needed
