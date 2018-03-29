@@ -42,6 +42,7 @@ public class TradeThread {
 	private String stepStatus; //CHARGING, MAXED
 	private long secondTick;
 	private long lastSecondTick;
+	private Carrot simCarrot;
 	//private BigDecimal currentPrice;
 	//flagged bool?
 	//no, do periodic counts in tradegroup to find stuck status
@@ -227,6 +228,7 @@ public class TradeThread {
 	
 	public void broadcastCarrot(Carrot carrot) {
 		setCurrentPrice(carrot.getCurrent());
+		setSimCarrot(carrot);
 		refresh();
 	}
 	
@@ -236,12 +238,24 @@ public class TradeThread {
 			//if current price lower then desired buy then 
 			//processBuy(which is buy()), store requested ltc
 			//into ltc
+			if (getSimMode().equals("REALTIME")) {
 			if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
 				buy();
 			}
+			} else if(getSimMode().equals("SIMULATION")) {
+				if (getRequestBuyPrice().compareTo(getSimCarrot().getHigh()) == -1) {
+					buy();
+				}
+			}
 		} else if (getBuyProcessState().equals("DESIRED_SELL")) {
+			if (getSimMode().equals("REALTIME")) {
 			if(getCurrentPrice().compareTo(getRequestSellPrice()) == 1) {
 				sell();
+			}
+			} else if(getSimMode().equals("SIMULATION")) {
+				if (getRequestBuyPrice().compareTo(getSimCarrot().getLow()) == 1) {
+					sell();
+				}
 			}
 		}
 	}
@@ -458,6 +472,14 @@ public class TradeThread {
 
 	public void setLastSecondTick(long lastSecondTick) {
 		this.lastSecondTick = lastSecondTick;
+	}
+
+	public Carrot getSimCarrot() {
+		return simCarrot;
+	}
+
+	public void setSimCarrot(Carrot simCarrot) {
+		this.simCarrot = simCarrot;
 	}
 	
 }
