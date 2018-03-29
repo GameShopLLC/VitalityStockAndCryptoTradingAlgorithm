@@ -253,7 +253,7 @@ public class TradeThread {
 				sell();
 			}
 			} else if(getSimMode().equals("SIMULATION")) {
-				if (getRequestBuyPrice().compareTo(getSimCarrot().getLow()) == 1) {
+				if (getRequestSellPrice().compareTo(getSimCarrot().getLow()) == 1) {
 					sell();
 				}
 			}
