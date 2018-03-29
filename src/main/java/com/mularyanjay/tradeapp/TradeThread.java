@@ -52,6 +52,7 @@ public class TradeThread {
 	
 	public TradeThread(BigDecimal initialUSD, long whatDBT, long whatDSTST) {
 	
+		//setSimMode("");
 		setStepTotal(new BigDecimal("0"));
 		setLoss(new BigDecimal("0"));
 		setNet(new BigDecimal("0"));
@@ -139,7 +140,7 @@ public class TradeThread {
 	//Remember to set timer/timeouts
 	public void deploy(Carrot carrot) {
 		
-		if ((getCurrentPrice().compareTo(carrot.getLow().subtract(new BigDecimal(".01"))) == 1) || (getSimMode().equals("SIMULATION"))) {
+		if ((getSimMode().equals("SIMULATION")) | (getCurrentPrice().compareTo(carrot.getLow().subtract(new BigDecimal(".01"))) == 1)) {
 		//Have to make sure things are set up correctly
 			
 		//At this point I would place buy order with api	
@@ -187,7 +188,7 @@ public class TradeThread {
 	
 	//Make sure carrot sell price is more than buy price
 	public void attemptSell(Carrot carrot) {
-		if ((getCurrentPrice().compareTo(carrot.getHigh().add(new BigDecimal("0.01"))) == -1) || (getSimMode().equals("SIMULATION"))) {
+		if ((getSimMode().equals("SIMULATION")) | (getCurrentPrice().compareTo(carrot.getHigh().add(new BigDecimal("0.01"))) == -1)) {
 			setRequestSellPrice(carrot.getHigh().add(new BigDecimal("0.01")));
 			if (getRequestSellPrice().compareTo(getRequestBuyPrice()) == 1) {
 			
