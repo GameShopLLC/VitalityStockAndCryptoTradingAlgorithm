@@ -55,7 +55,7 @@ public class SimulationManager {
 			System.out.println(car.toString());
 			vitalityInstance.broadcastCarrot(car);
 			checkpoint++;
-			if (checkpoint > 300) {
+			if (checkpoint > 3599) {
 				checkpointMessages.add(vitalityInstance.searchTradeGroupByName("One-1").statusReport());
 				System.out.println(vitalityInstance.searchTradeGroupByName("One-1").statusReport());
 				checkpoint = 0;
@@ -69,8 +69,8 @@ public class SimulationManager {
 		
 		List<SerializableCandle> data = new ArrayList<SerializableCandle>();
 		HashMap<String, String> map = new HashMap<String, String>();
-		ComparableDateTime cdt = new ComparableDateTime("2018-02-1T00:00:00Z");
-		for (int i = 0; i < 129; i++) {
+		ComparableDateTime cdt = new ComparableDateTime("2017-01-1T00:00:00Z");
+		for (int i = 0; i < 1750; i++) {
 			map.clear();
 			String from = cdt.toString();
 			cdt.incrementMinute(300);
