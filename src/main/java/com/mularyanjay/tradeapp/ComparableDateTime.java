@@ -152,7 +152,7 @@ public class ComparableDateTime {
 	}
 	
 	public void incrementMonth(int amount) {
-		if ((getMonth() + amount) < 12) {
+		if ((getMonth() + amount) <= 12) {
 			setMonth (getMonth() + amount);
 		} else {
 			int remainder = 0;
