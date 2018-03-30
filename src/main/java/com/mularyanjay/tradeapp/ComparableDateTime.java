@@ -132,7 +132,7 @@ public class ComparableDateTime {
 			monthDays = 30;
 			break;
 		}
-		if ((getDay() + amount) < monthDays) {
+		if ((getDay() + amount) <= monthDays) {
 			setDay (getDay() + amount);
 		} else {
 			int remainder = 0;
