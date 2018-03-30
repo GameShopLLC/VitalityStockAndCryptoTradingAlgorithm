@@ -140,12 +140,12 @@ public class ComparableDateTime {
 			if (amount >= monthDays) {
 			remainder = amount % monthDays;
 			monthAdd = (amount - remainder) / monthDays;
-			setDay(getDay() + remainder);
+			setDay(getDay() + remainder + 1);
 			incrementMonth(monthAdd);
 			} else {
 				remainder = (getDay() + amount) % monthDays;
 				setDay(0);
-				setDay(remainder);
+				setDay(remainder + 1);
 				incrementMonth(1);
 			}
 		}
