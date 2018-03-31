@@ -43,6 +43,7 @@ public class SimulationManager {
 		List<Candle> data = new ArrayList<Candle>();
 		data = getCandleData();
 		int checkpoint = 0;
+		
 		for (Candle c: data) {
 			Carrot car = new Carrot();
 			car.setOpen(c.getOpen());
@@ -59,6 +60,9 @@ public class SimulationManager {
 				checkpointMessages.add(vitalityInstance.searchTradeGroupByName("One-1").statusReport());
 				System.out.println(vitalityInstance.searchTradeGroupByName("One-1").statusReport());
 				checkpoint = 0;
+			}
+			if (vitalityInstance.getProfit().compareTo(new BigDecimal("14000000")) == 1) {
+				vitalityInstance.triggerRally();
 			}
 				}
 		//if checkpoint = 3599
