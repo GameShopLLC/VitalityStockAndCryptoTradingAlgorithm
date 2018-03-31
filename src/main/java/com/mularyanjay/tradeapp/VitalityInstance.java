@@ -102,7 +102,7 @@ public class VitalityInstance {
 	
 	public void triggerRally() {
 		for (TradeGroup g: groups) {
-			g.setState("RALLYING");
+			g.setState(new String("RALLYING"));
 		}
 	}
 	
@@ -112,7 +112,7 @@ public class VitalityInstance {
 	
 		for (TradeGroup g: groups) {
 			if (g.getName().equals(name)) {
-				g.setState("RALLYING");
+				g.setState(new String("RALLYING"));
 			}
 		}
 	}

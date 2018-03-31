@@ -523,7 +523,7 @@ public class TradeGroup {
 				t.incrementSecondTick(60L);
 			}
 		}
-		checkDoneRallying();
+		//checkDoneRallying();
 	}
 	
 	}

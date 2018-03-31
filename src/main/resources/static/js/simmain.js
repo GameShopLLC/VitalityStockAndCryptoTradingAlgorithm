@@ -36,7 +36,7 @@ function updateStatus(){
 		type: 'GET',
 		success: function(response){
 			console.log(response);
-			$('epochTimeResult').text(response);
+			$('#epochTimeResult').text(response);
 		}
 	})
 }
