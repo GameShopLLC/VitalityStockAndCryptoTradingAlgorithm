@@ -38,7 +38,12 @@ public class TradeGroup {
 	private BigDecimal stepTotal; //temporary maximum of thread size
 	private String stepMode; //NONE, STEPSHED
 	private String simMode;//SIMULATION, REALTIME
-	
+	private int idleThreadCount;
+	private int activeThreadCount;
+	private int buyingThreadCount;
+	private int sellingThreadCount;
+	private int buyStuckCount;
+	private int sellStuckCount;
 	//private int steppedThreads make local
 	public TradeGroup() {
 		
@@ -564,29 +569,10 @@ public class TradeGroup {
 	//Amount selling threads
 	//Strongest thread usd/ltc/profit (measured by profit?)
 	public String statusReport() {
-		int idleThreadCount = 0;
-		int activeThreadCount = 0;
-		int buyingThreadCount = 0;
-		int sellingThreadCount = 0;
-		int buyStuckCount = 0;
-		int sellStuckCount = 0;
+		
 		TradeThread highest = null;
 		for (TradeThread t: trades) {
-			if (t.getLifeTimeState().equals("IDLE")) {
-				idleThreadCount++;
-			} else {
-				activeThreadCount++;
-			}
-			if (t.getBuyProcessState().equals("DESIRED_BUY")) {
-				buyingThreadCount++;
-			} else if(t.getBuyProcessState().equals("BOUGHT") || t.getBuyProcessState().equals("DESIRED_SELL")) {
-				sellingThreadCount++;
-			}
-			if (t.getLifeTimeState().equals("BUY_STUCK")) {
-				buyStuckCount++;
-			} else if(t.getLifeTimeState().equals("SELL_STUCK")) {
-				sellStuckCount++;
-			}
+			
 			if (highest == null) {
 				highest = t;
 			} else {
@@ -605,12 +591,12 @@ public class TradeGroup {
 		return 	"Current USD Balance: " + getUsd() + "\n" +
 			   "Current Ltc Balance: " + getLtc() + "\n" +
 			   "Current Profit: " + getProfit() + "\n" +
-			   "Idle Threads: " + idleThreadCount + "\n" +
-			   "Active Threads: " + activeThreadCount + "\n" +
-			   "Buying threads: " + buyingThreadCount + "\n" +
-			   "Selling threads: " + sellingThreadCount + "\n" +
-			   "Stuck buying: " + buyStuckCount + "\n" +
-			   "Stuck selling: " + sellStuckCount + "\n" +
+			   "Idle Threads: " + getIdleThreadCount() + "\n" +
+			   "Active Threads: " + getActiveThreadCount() + "\n" +
+			   "Buying threads: " + getBuyingThreadCount() + "\n" +
+			   "Selling threads: " + getSellingThreadCount() + "\n" +
+			   "Stuck buying: " + getBuyStuckCount() + "\n" +
+			   "Stuck selling: " + getSellStuckCount() + "\n" +
 			   "Strongest thread USD: " + highest.getUsd() + "\n" +
 			   "Strongest thread LTC: " + highest.getLtc() + "\n" +
 			   "Strongest thread profit: " + highest.getProfit();
@@ -797,6 +783,81 @@ public class TradeGroup {
 
 	public void setMaxStep(int maxStep) {
 		this.maxStep = maxStep;
+	}
+
+//	if (t.getLifeTimeState().equals("IDLE")) {
+//		idleThreadCount++;
+//	} else {
+//		activeThreadCount++;
+//	}
+//	if (t.getBuyProcessState().equals("DESIRED_BUY")) {
+//		buyingThreadCount++;
+//	} else if(t.getBuyProcessState().equals("BOUGHT") || t.getBuyProcessState().equals("DESIRED_SELL")) {
+//		sellingThreadCount++;
+//	}
+//	if (t.getLifeTimeState().equals("BUY_STUCK")) {
+//		buyStuckCount++;
+//	} else if(t.getLifeTimeState().equals("SELL_STUCK")) {
+//		sellStuckCount++;
+//	}
+	public int getIdleThreadCount() {
+		idleThreadCount = 0;
+		for (TradeThread t: trades) {
+			if (t.getLifeTimeState().equals("IDLE")) {
+				idleThreadCount++;
+			}
+		}
+		return idleThreadCount;
+	}
+
+	public int getActiveThreadCount() {
+		activeThreadCount = 0;
+		for (TradeThread t: trades) {
+			if (!t.getLifeTimeState().equals("IDLE")) {
+				activeThreadCount++;
+			}
+		}
+		return activeThreadCount;
+	}
+
+	public int getBuyingThreadCount() {
+		buyingThreadCount = 0;
+		for (TradeThread t: trades) {
+		if (t.getBuyProcessState().equals("DESIRED_BUY")) {
+			buyingThreadCount++;
+		}
+		}
+		return buyingThreadCount;
+	}
+
+	public int getSellingThreadCount() {
+		sellingThreadCount = 0;
+		for (TradeThread t: trades) {
+			 if(t.getBuyProcessState().equals("BOUGHT") || t.getBuyProcessState().equals("DESIRED_SELL")) {
+					sellingThreadCount++;
+				}
+		}
+		return sellingThreadCount;
+	}
+
+	public int getBuyStuckCount() {
+		buyStuckCount = 0;
+		for (TradeThread t: trades) {
+		if (t.getLifeTimeState().equals("BUY_STUCK")) {
+			buyStuckCount++;
+		}
+		}
+		return buyStuckCount;
+	}
+
+	public int getSellStuckCount() {
+		sellStuckCount = 0;
+		for (TradeThread t: trades) {
+		 if(t.getLifeTimeState().equals("SELL_STUCK")) {
+				sellStuckCount++;
+			}
+		}
+		return sellStuckCount;
 	}
 	
 	

@@ -120,7 +120,7 @@ public class VitalityInstance {
 	public void cancelAllRallies() {
 		for (TradeGroup g: groups) {
 			if (g.getState().equals("RALLYING")) {
-				g.setState("ACTIVE");
+				g.setState(new String("ACTIVE"));
 			}
 		}
 	}
@@ -129,7 +129,7 @@ public class VitalityInstance {
 		for (TradeGroup g: groups) {
 			if (g.getName().equals(name)) {
 				if (g.getState().equals("RALLYING")) {
-					g.setState("ACTIVE");
+					g.setState(new String("ACTIVE"));
 				}
 			}
 		}
@@ -138,7 +138,7 @@ public class VitalityInstance {
 	public void restartTradeGroups() {
 		for (TradeGroup g: groups) {
 			if(g.getRunningState().equals("STOPPED")) {
-			g.setRunningState("GOING");	
+			g.setRunningState(new String("GOING"));	
 			}
 		}
 	}

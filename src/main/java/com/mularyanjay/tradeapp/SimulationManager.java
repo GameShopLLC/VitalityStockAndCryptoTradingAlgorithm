@@ -61,9 +61,15 @@ public class SimulationManager {
 				System.out.println(vitalityInstance.searchTradeGroupByName("One-1").statusReport());
 				checkpoint = 0;
 			}
-			if (vitalityInstance.getProfit().compareTo(new BigDecimal("14000000")) == 1) {
+			if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("ACTIVE") && vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() == 3600) {
 				vitalityInstance.triggerRally();
+			} else if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("RALLYING") && (vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() - vitalityInstance.searchTradeGroupByName("One-1").getSellStuckCount()) == 0) {
+				vitalityInstance.cancelAllRallies();
 			}
+//			if (vitalityInstance.getProfit().compareTo(new BigDecimal("14000000")) == 1) {
+//				vitalityInstance.triggerRally();
+//			}
+			//if (vitalityInstance.searchTradeGroupByName("One-1").get)
 				}
 		//if checkpoint = 3599
 	}
