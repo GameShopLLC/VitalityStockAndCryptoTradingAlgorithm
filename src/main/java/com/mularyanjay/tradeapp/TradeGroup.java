@@ -588,7 +588,9 @@ public class TradeGroup {
 //		int sellingThreadCount = 0;
 //		int buyStuckCount = 0;
 //		int sellStuckCount = 0;
-		return 	"Current USD Balance: " + getUsd() + "\n" +
+		return 	"Current Time: " + getCurrentCarrot().getCurrentTime() + "\n" +
+				"Current Price: " + getCurrentCarrot().getCurrent() + "\n" +
+				"Current USD Balance: " + getUsd() + "\n" +
 			   "Current Ltc Balance: " + getLtc() + "\n" +
 			   "Current Profit: " + getProfit() + "\n" +
 			   "Idle Threads: " + getIdleThreadCount() + "\n" +

@@ -1,6 +1,9 @@
 package com.mularyanjay.tradeapp;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ComparableDateTime {
 
@@ -17,6 +20,14 @@ public class ComparableDateTime {
 	
 	public ComparableDateTime(String epochDateTime) {
 		setDateTime(epochDateTime);
+	}
+	
+	public ComparableDateTime(long time) {
+		Date date = new Date(time);
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String formatted = df.format(date);
+		String[] updateFormat = formatted.split(" ");
+		setDateTime(updateFormat[0] + "T" + updateFormat[1] + "Z");
 	}
 	
 	public void setDateTime (String epochDateTime) {

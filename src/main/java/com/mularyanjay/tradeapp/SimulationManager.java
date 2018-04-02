@@ -53,6 +53,10 @@ public class SimulationManager {
 			car.setCurrent(c.getClose());
 			car.setActive(false);
 			car.evaluateTrend();
+			long oldTime = c.getTime() - 1800L;
+			car.setStartTime(new ComparableDateTime(oldTime));
+			car.setCurrentTime(new ComparableDateTime(c.getTime()));
+			car.setEndTime(new ComparableDateTime(c.getTime()));
 			System.out.println(car.toString());
 			vitalityInstance.broadcastCarrot(car);
 			checkpoint++;
@@ -61,7 +65,7 @@ public class SimulationManager {
 				System.out.println(vitalityInstance.searchTradeGroupByName("One-1").statusReport());
 				checkpoint = 0;
 			}
-			if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("ACTIVE") && (vitalityInstance.searchTradeGroupByName("One-1").getBuyStuckCount() + vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() == 3600)) {
+			if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("ACTIVE") && (vitalityInstance.searchTradeGroupByName("One-1").getBuyStuckCount() + vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() >= 3600)) {
 				vitalityInstance.triggerRally();
 			} else if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("RALLYING") && (vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() - vitalityInstance.searchTradeGroupByName("One-1").getSellStuckCount()) == 0) {
 				vitalityInstance.cancelAllRallies();
