@@ -80,7 +80,7 @@ public class SimulationManager {
 		List<SerializableCandle> data = new ArrayList<SerializableCandle>();
 		HashMap<String, String> map = new HashMap<String, String>();
 		ComparableDateTime cdt = new ComparableDateTime("2017-01-1T00:00:00Z");
-		for (int i = 0; i < 1632; i++) {
+		for (int i = 0; i < 1782; i++) {
 			map.clear();
 			String from = cdt.toString();
 			cdt.incrementMinute(300);

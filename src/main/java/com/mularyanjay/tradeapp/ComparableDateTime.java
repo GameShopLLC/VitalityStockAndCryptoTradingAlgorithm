@@ -157,10 +157,17 @@ public class ComparableDateTime {
 		} else {
 			int remainder = 0;
 			int yearAdd = 0;
+			if (amount >= 12) {
 			remainder = getMonth() % 12;
 			yearAdd = (getMonth() - remainder) / 12;
 			setMonth(getMonth() + remainder);
 			incrementYear(yearAdd);
+			} else {
+				remainder = (getMonth() + amount) % 12;
+				setMonth(0);
+				setMonth(remainder);
+				incrementYear(1);
+			}
 		}
 	}
 	
