@@ -23,7 +23,7 @@ public class ComparableDateTime {
 	}
 	
 	public ComparableDateTime(long time) {
-		Date date = new Date(time);
+		Date date = new Date(time * 1000L);
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String formatted = df.format(date);
 		String[] updateFormat = formatted.split(" ");
