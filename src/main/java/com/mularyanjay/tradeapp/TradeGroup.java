@@ -44,6 +44,7 @@ public class TradeGroup {
 	private int sellingThreadCount;
 	private int buyStuckCount;
 	private int sellStuckCount;
+	private String dumpingMode; //NONE, DUMP_ALL
 	//private int steppedThreads make local
 	public TradeGroup() {
 		
@@ -79,6 +80,7 @@ public class TradeGroup {
 		docks.add(new Dock("REMAINDER"));
 		docks.add(new Dock("STEPSHED"));
 		docks.add(new Dock("TOPROFIT"));
+		
 		partitionThreads();
 		
 	}
@@ -861,6 +863,14 @@ public class TradeGroup {
 
 	public void setSimMode(SimulationMode simMode) {
 		this.simMode = simMode;
+	}
+
+	public String getDumpingMode() {
+		return dumpingMode;
+	}
+
+	public void setDumpingMode(String dumpingMode) {
+		this.dumpingMode = dumpingMode;
 	}
 	
 	

@@ -54,7 +54,7 @@ public class TradeThread {
 	public TradeThread(SimulationMode sm, BigDecimal initialUSD, long whatDBT, long whatDSTST) {
 	
 		//setSimMode(sm);
-		setSimMode(SimulationMode.REALTIME);
+		setSimMode(sm);
 		setStepTotal(new BigDecimal("0"));
 		setLoss(new BigDecimal("0"));
 		setNet(new BigDecimal("0"));
