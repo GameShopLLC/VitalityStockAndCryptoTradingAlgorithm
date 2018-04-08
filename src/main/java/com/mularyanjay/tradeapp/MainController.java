@@ -113,9 +113,9 @@ public class MainController {
 		//response.setHeader("Access-Control-Allow-Headers", "CB-ACCESS-KEY, CB-ACCESS-SIGN, CB-ACCESS-TIMESTAMP,CB-ACCESS-PASSPHRASE");
 	       
 		if (isLoggedIn) {
-			if(vitalityInstance.getSimMode().equals("REALTIME")) {
+			if(vitalityInstance.getSimMode() == SimulationMode.REALTIME) {
 				return "Main";
-			} else if (vitalityInstance.getSimMode().equals("SIMULATION")) {
+			} else if (vitalityInstance.getSimMode() == SimulationMode.SIMULATION) {
 				return "SimMain";
 			}
 		}
