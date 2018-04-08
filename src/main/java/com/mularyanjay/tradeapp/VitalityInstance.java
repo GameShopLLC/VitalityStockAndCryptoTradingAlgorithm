@@ -65,7 +65,7 @@ public class VitalityInstance {
 		groups = new ArrayList<TradeGroup>();
 		setEntryPointStatus("");
 		for(TradeGroup g: whatGroups) {
-			g.setSimMode(simMode);
+			//g.setSimMode(simMode);
 			groups.add(g);
 		}
 		

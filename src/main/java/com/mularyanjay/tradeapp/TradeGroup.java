@@ -52,10 +52,10 @@ public class TradeGroup {
 	//*Need to apply timeouts*
 	//Obviously, handling logging, statistical data
 	
-	public TradeGroup(String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
+	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
-		setSimMode(SimulationMode.SIMULATION);
+		setSimMode(sm);
 		setLoss(new BigDecimal("0"));
 		setNet(new BigDecimal("0"));
 		setStepTotal(new BigDecimal("0"));
@@ -110,7 +110,7 @@ public class TradeGroup {
 		System.out.println("TradeGroup $" + getUsd() + " thread amount $" + threadUSD);
 		for(int i = 0; i < getAmountThreads(); i++) {
 			//BigDecimal initialUSD, float whatDBT, float whatDSTST) {
-			trades.add(new TradeThread(threadUSD, getBuyTimeout(), getStuckTimeout()));
+			trades.add(new TradeThread(getSimMode(), threadUSD, getBuyTimeout(), getStuckTimeout()));
 		}
 		
 		setStepTotal(threadUSD.multiply(new BigDecimal("10")));
@@ -121,7 +121,7 @@ public class TradeGroup {
 		System.out.println("Remainder: " + remainder);
 		
 		for (TradeThread t: trades) {
-			t.setSimMode(getSimMode());
+			//t.setSimMode(getSimMode());
 			t.setStepTotal(getStepTotal());
 		}
 	}
