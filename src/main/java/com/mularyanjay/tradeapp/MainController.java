@@ -65,7 +65,7 @@ public class MainController {
 	@Autowired
 	SimulationManager simulationManager;
 	
-	ComparableDateTime lastTime = new ComparableDateTime();
+	ComparableDateTime lastTime = new ComparableDateTime(0L);
 	Carrot currentCarrot;
 	
     boolean isLoggedIn;
