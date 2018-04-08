@@ -65,11 +65,12 @@ public class SimulationManager {
 				System.out.println(vitalityInstance.searchTradeGroupByName("One-1").statusReport());
 				checkpoint = 0;
 			}
-			if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("ACTIVE") && (vitalityInstance.searchTradeGroupByName("One-1").getBuyStuckCount() + vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() >= 3600)) {
-				vitalityInstance.triggerRally();
-			} else if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("RALLYING") && (vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() - vitalityInstance.searchTradeGroupByName("One-1").getSellStuckCount()) == 0) {
-				vitalityInstance.cancelAllRallies();
-			}
+//			if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("ACTIVE") && (vitalityInstance.searchTradeGroupByName("One-1").getBuyStuckCount() + vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() >= 3600)) {
+//				vitalityInstance.triggerRally();
+//			} else if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("RALLYING") && (vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() - vitalityInstance.searchTradeGroupByName("One-1").getSellStuckCount()) == 0) {
+//				vitalityInstance.cancelAllRallies();
+//			}
+			
 //			if (vitalityInstance.getProfit().compareTo(new BigDecimal("14000000")) == 1) {
 //				vitalityInstance.triggerRally();
 //			}
@@ -83,8 +84,8 @@ public class SimulationManager {
 		
 		List<SerializableCandle> data = new ArrayList<SerializableCandle>();
 		HashMap<String, String> map = new HashMap<String, String>();
-		ComparableDateTime cdt = new ComparableDateTime("2018-02-1T00:00:00Z");
-		for (int i = 0; i < 273; i++) { //1882 for a year
+		ComparableDateTime cdt = new ComparableDateTime("2018-03-1T00:00:00Z");
+		for (int i = 0; i < 144; i++) { //1882 for a year //273 for feb and march
 			map.clear();
 			String from = cdt.toString();
 			cdt.incrementMinute(300);
