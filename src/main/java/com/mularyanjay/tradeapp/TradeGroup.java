@@ -55,6 +55,7 @@ public class TradeGroup {
 	public TradeGroup(String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
+		setSimMode(SimulationMode.SIMULATION);
 		setLoss(new BigDecimal("0"));
 		setNet(new BigDecimal("0"));
 		setStepTotal(new BigDecimal("0"));
