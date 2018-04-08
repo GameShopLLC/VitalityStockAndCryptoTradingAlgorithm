@@ -230,6 +230,11 @@ public class TradeGroup {
 				}
 			}
 			
+			if (candidates.size() == 0) {
+				System.out.println("No threads available");
+				return;
+			}
+			
 			for (TradeThread t: candidates) {
 				//if (t.equals(candidates.get(selectedIndex))) {
 					t.attemptSell(carrot); //Broadcast data needed
