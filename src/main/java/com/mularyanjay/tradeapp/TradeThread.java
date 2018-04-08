@@ -33,7 +33,7 @@ public class TradeThread {
 	private BigDecimal profitPercentage;
 	private BigDecimal lastUsd;
 	private Timer timer;
-	private String simMode; //SIMULATION, REALTIME
+	private SimulationMode simMode; //SIMULATION, REALTIME
 	private ArrayList<Dock> docks;
 	private BigDecimal stepTotal;
 	private String stepMode; //NONE, STEPSHED
@@ -53,7 +53,7 @@ public class TradeThread {
 	
 	public TradeThread(BigDecimal initialUSD, long whatDBT, long whatDSTST) {
 	
-		setSimMode(new String("SIMULATION"));
+		//setSimMode(new String("SIMULATION"));
 		setStepTotal(new BigDecimal("0"));
 		setLoss(new BigDecimal("0"));
 		setNet(new BigDecimal("0"));
@@ -141,7 +141,7 @@ public class TradeThread {
 	//Remember to set timer/timeouts
 	public void deploy(Carrot carrot) {
 		if (getSimMode() != null && getCurrentPrice() != null &&carrot != null && carrot.getLow() != null) {
-		if ((getSimMode().equals("SIMULATION")) || (getCurrentPrice().compareTo(carrot.getLow().subtract(new BigDecimal(".01"))) == 1)) {
+		if ((getSimMode() == SimulationMode.SIMULATION) || (getCurrentPrice().compareTo(carrot.getLow().subtract(new BigDecimal(".01"))) == 1)) {
 		//Have to make sure things are set up correctly
 			
 		//At this point I would place buy order with api	
@@ -162,7 +162,7 @@ public class TradeThread {
 		//buy process state, otherwise change to trading
 		//Make getCurrentTime for Carrot?
 		//Change type of timeouts to long
-		if (getSimMode().equals("REALTIME")) {
+		if (getSimMode() == SimulationMode.REALTIME) {
 		setTimer(new Timer());
 		getTimer().schedule(new TimerTask() {
 
@@ -177,7 +177,7 @@ public class TradeThread {
 			
 		}, getDesiredBuyTimeout());
 		
-		} else if (getSimMode().equals("SIMULATION")) {
+		} else if (getSimMode() == SimulationMode.SIMULATION) {
 			//setLastSecondTick(getSecondTick());
 			//,,,
 			resetTick();
@@ -204,7 +204,7 @@ public class TradeThread {
 	public void attemptSell(Carrot carrot) {
 		if (getSimMode() != null && getCurrentPrice() != null &&carrot != null && carrot.getHigh() != null) {
 			
-		if ((getSimMode().equals("SIMULATION")) || (getCurrentPrice().compareTo(carrot.getHigh().add(new BigDecimal("0.01"))) == -1)) {
+		if ((getSimMode() == SimulationMode.SIMULATION) || (getCurrentPrice().compareTo(carrot.getHigh().add(new BigDecimal("0.01"))) == -1)) {
 			setRequestSellPrice(carrot.getHigh().add(new BigDecimal("0.01")));
 			if (getRequestSellPrice().compareTo(getRequestBuyPrice()) == 1) {
 			
@@ -215,7 +215,7 @@ public class TradeThread {
 				setLifeTimeState("TRADING");
 				System.out.println("Sell order placed at $" + getRequestSellPrice());
 				
-				if(getSimMode().equals("REALTIME")) {
+				if(getSimMode() == SimulationMode.REALTIME) {
 				setTimer(new Timer());
 				getTimer().schedule(new TimerTask() {
 
@@ -229,7 +229,7 @@ public class TradeThread {
 					}
 					
 				}, getDesiredSellToStuckTimeout());
-				} else if (getSimMode().equals("SIMULATION")) {
+				} else if (getSimMode() == SimulationMode.SIMULATION) {
 					//setLastSecondTick(getSecondTick());
 					resetTick();
 				}
@@ -264,21 +264,21 @@ public class TradeThread {
 			//if current price lower then desired buy then 
 			//processBuy(which is buy()), store requested ltc
 			//into ltc
-			if (getSimMode().equals("REALTIME")) {
+			if (getSimMode() == SimulationMode.REALTIME) {
 			if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
 				buy();
 			}
-			} else if(getSimMode().equals("SIMULATION")) {
+			} else if(getSimMode() == SimulationMode.SIMULATION) {
 				if (getRequestBuyPrice().compareTo(getSimCarrot().getHigh()) == -1) {
 					buy();
 				}
 			}
 		} else if (getBuyProcessState().equals("DESIRED_SELL")) {
-			if (getSimMode().equals("REALTIME")) {
+			if (getSimMode() == SimulationMode.REALTIME) {
 			if(getCurrentPrice().compareTo(getRequestSellPrice()) == 1) {
 				sell();
 			}
-			} else if(getSimMode().equals("SIMULATION")) {
+			} else if(getSimMode() == SimulationMode.SIMULATION) {
 				if (getRequestSellPrice().compareTo(getSimCarrot().getLow()) == 1) {
 					sell();
 				}
@@ -292,9 +292,9 @@ public class TradeThread {
 		setBuyProcessState("BOUGHT");
 		setLifeTimeState("TRADING");
 		System.out.println("Bought at $" + getRequestBuyPrice());
-		if (getSimMode().equals("REALTIME")) {
+		if (getSimMode() == SimulationMode.REALTIME) {
 		timer.cancel();
-		} else if (getSimMode().equals("SIMULATION")) {
+		} else if (getSimMode() == SimulationMode.SIMULATION) {
 			resetTick();
 		}
 	}
@@ -308,9 +308,9 @@ public class TradeThread {
 		setBuyProcessState("SOLD");
 		setLifeTimeState("RESERVE");
 		System.out.println("Sold at $" + getRequestSellPrice());
-		if (getSimMode().equals("REALTIME")) {
+		if (getSimMode() == SimulationMode.REALTIME) {
 			timer.cancel();
-			} else if (getSimMode().equals("SIMULATION")) {
+			} else if (getSimMode() == SimulationMode.SIMULATION) {
 				resetTick();
 			}
 	}
@@ -436,14 +436,6 @@ public class TradeThread {
 		this.timer = timer;
 	}
 
-	public String getSimMode() {
-		return simMode;
-	}
-
-	public void setSimMode(String simMode) {
-		this.simMode = simMode;
-	}
-
 	public BigDecimal getStepTotal() {
 		return stepTotal;
 	}
@@ -506,6 +498,14 @@ public class TradeThread {
 
 	public void setSimCarrot(Carrot simCarrot) {
 		this.simCarrot = simCarrot;
+	}
+
+	public SimulationMode getSimMode() {
+		return simMode;
+	}
+
+	public void setSimMode(SimulationMode simMode) {
+		this.simMode = simMode;
 	}
 	
 }

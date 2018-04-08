@@ -26,7 +26,7 @@ public class VitalityInstance {
 	private BigDecimal net;
 	private String entryPointStatus;
 	private ArrayList<Dock> docks;
-	private String simMode;
+	private SimulationMode simMode;
 	
 	//Docks: deposit, preinput, profit, withdrawal,
 	//(Maybe for advance algo, interTradeGroup)
@@ -55,7 +55,7 @@ public class VitalityInstance {
 	}
 	
 	//Set simMode in constructor
-	public VitalityInstance(String simMode, BigDecimal initialUSD, TradeGroup... whatGroups) {
+	public VitalityInstance(SimulationMode simMode, BigDecimal initialUSD, TradeGroup... whatGroups) {
 		setSimMode(simMode);
 		
 		//Set initial shit through docks
@@ -160,7 +160,7 @@ public class VitalityInstance {
 			for (TradeGroup g: groups) {
 				if (g.getState().equals("ACTIVE")) {
 					setHasReachedEntryPoint(true);
-					if (getSimMode().equals("REALTIME")) {
+					if (getSimMode() == SimulationMode.REALTIME) {
 					onReachEntryPoint(carrot.getEndTime(), carrot.getCurrent());
 					} else {
 						System.out.println("Entered at" + carrot.getCurrent());
@@ -360,14 +360,6 @@ public class VitalityInstance {
 		this.docks = docks;
 	}
 
-	public String getSimMode() {
-		return simMode;
-	}
-
-	public void setSimMode(String simMode) {
-		this.simMode = simMode;
-	}
-
 	public BigDecimal getLoss() {
 		return loss;
 	}
@@ -382,6 +374,14 @@ public class VitalityInstance {
 
 	public void setNet(BigDecimal net) {
 		this.net = net;
+	}
+
+	public SimulationMode getSimMode() {
+		return simMode;
+	}
+
+	public void setSimMode(SimulationMode simMode) {
+		this.simMode = simMode;
 	}
 	
 	

@@ -37,7 +37,7 @@ public class TradeGroup {
 	private int maxStep; //maximum amount of temporary maximums
 	private BigDecimal stepTotal; //temporary maximum of thread size
 	private String stepMode; //NONE, STEPSHED
-	private String simMode;//SIMULATION, REALTIME
+	private SimulationMode simMode;//SIMULATION, REALTIME
 	private int idleThreadCount;
 	private int activeThreadCount;
 	private int buyingThreadCount;
@@ -54,7 +54,7 @@ public class TradeGroup {
 	
 	public TradeGroup(String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
 		//setHasReachedEntryPoint(false);
-		setSimMode(new String("SIMULATION"));
+		//setSimMode(new String("SIMULATION"));
 		setLoss(new BigDecimal("0"));
 		setNet(new BigDecimal("0"));
 		setStepTotal(new BigDecimal("0"));
@@ -120,7 +120,7 @@ public class TradeGroup {
 		System.out.println("Remainder: " + remainder);
 		
 		for (TradeThread t: trades) {
-			//t.setSimMode(getSimMode());
+			t.setSimMode(getSimMode());
 			t.setStepTotal(getStepTotal());
 		}
 	}
@@ -442,7 +442,7 @@ public class TradeGroup {
 //				
 //			}
 			updateBalance();
-			if (getSimMode().equals("SIMULATION")) {
+			if (getSimMode() == SimulationMode.SIMULATION) {
 			for (TradeThread t: trades) {
 				t.incrementSecondTick();
 				t.evaluateSimulationTimeout();
@@ -523,7 +523,7 @@ public class TradeGroup {
 				}
 			}
 		}
-		if (getSimMode().equals("SIMULATION")) {
+		if (getSimMode() == SimulationMode.SIMULATION) {
 			for (TradeThread t: trades) {
 				t.incrementSecondTick(60L);
 			}
@@ -763,14 +763,6 @@ public class TradeGroup {
 		this.stepTotal = stepTotal;
 	}
 
-	public String getSimMode() {
-		return simMode;
-	}
-
-	public void setSimMode(String simMode) {
-		this.simMode = simMode;
-	}
-
 	public String getStepMode() {
 		return stepMode;
 	}
@@ -860,6 +852,14 @@ public class TradeGroup {
 			}
 		}
 		return sellStuckCount;
+	}
+
+	public SimulationMode getSimMode() {
+		return simMode;
+	}
+
+	public void setSimMode(SimulationMode simMode) {
+		this.simMode = simMode;
 	}
 	
 	
