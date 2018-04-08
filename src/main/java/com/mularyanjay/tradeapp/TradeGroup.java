@@ -56,6 +56,7 @@ public class TradeGroup {
 	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
+		setDumpingMode(new String("DUMP_ALL"));
 		setSimMode(sm);
 		setLoss(new BigDecimal("0"));
 		setNet(new BigDecimal("0"));
@@ -150,6 +151,7 @@ public class TradeGroup {
 		int selectedIndex = 0; //??? ArrayList process of elimination?
 		ArrayList<TradeThread> candidates = new ArrayList<TradeThread>();
 		
+		//if (getDumpingMode().equals("NONE")) {
 		for (TradeThread t: trades) {
 			if (t.getLifeTimeState().equals("RESERVE")) {
 				candidates.add(t);
@@ -184,13 +186,16 @@ public class TradeGroup {
 				break;
 			}
 		}
+	//} else if (getDumpingMode().equals("DUMP_ALL")) {
 		
+	//}
 	}
 	
 	//With most ltc
 	public void attemptSellThread(Carrot carrot) {
 		int selectedIndex = 0;
 		ArrayList<TradeThread> candidates = new ArrayList<TradeThread>();
+		if (getDumpingMode().equals("NONE")) {
 		for (TradeThread t: trades) {
 			if (t.getBuyProcessState().equals("BOUGHT")) {
 				candidates.add(t);
@@ -215,6 +220,21 @@ public class TradeGroup {
 			if (t.equals(candidates.get(selectedIndex))) {
 				t.attemptSell(carrot); //Broadcast data needed
 				break;
+			}
+		}
+		} else if (getDumpingMode().equals("DUMP_ALL")) {
+			for (TradeThread t: trades) {
+				if (t.getBuyProcessState().equals("BOUGHT")) {
+					candidates.add(t);
+					//TBC
+				}
+			}
+			
+			for (TradeThread t: candidates) {
+				//if (t.equals(candidates.get(selectedIndex))) {
+					t.attemptSell(carrot); //Broadcast data needed
+					//break;
+				//}
 			}
 		}
 	}
