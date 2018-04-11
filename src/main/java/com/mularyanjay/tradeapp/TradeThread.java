@@ -98,7 +98,7 @@ public class TradeThread {
 		if (getRequestedTotal().compareTo(forceTotal) == 1) {
 		setLoss(getLoss().add(getRequestedTotal().subtract(forceTotal)));
 		setBuyProcessState("SOLD");//idle
-		setLifeTimeState("RESERVE");
+		setLifeTimeState("IDLE");
 		} else {
 			setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
 			setBuyProcessState("SOLD");
@@ -108,12 +108,17 @@ public class TradeThread {
 			if (getRequestBuyPrice().compareTo(getCurrentPrice()) == 1) {
 				setLoss(getLoss().add((getRequestBuyPrice().multiply(forceLtc))).subtract(forceTotal));
 				setBuyProcessState("SOLD");//idle
-				setLifeTimeState("RESERVE");
+				setLifeTimeState("IDLE");
 				} else {
 					setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
 					setBuyProcessState("SOLD");
 					setLifeTimeState("RESERVE");
 				}
+			}
+		if (getSimMode() == SimulationMode.REALTIME) {
+			timer.cancel();
+			} else if (getSimMode() == SimulationMode.SIMULATION) {
+				resetTick();
 			}
 		setLtc(new BigDecimal("0"));
 		setLastUsd(forceTotal);
