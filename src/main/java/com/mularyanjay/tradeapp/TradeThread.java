@@ -130,6 +130,7 @@ public class TradeThread {
 		setNet(getProfit().subtract(getLoss()));
 	}
 	public void evaluateSimulationTimeout() {
+		if (getLastSecondTick() > -1L) {
 		if (getBuyProcessState().equals("DESIRED_BUY")) {
 			if (getSecondTick() - getLastSecondTick() > getDesiredBuyTimeout()/1000) {
 				setLifeTimeState("BUY_STUCK");
@@ -138,6 +139,7 @@ public class TradeThread {
 			if (getSecondTick() - getLastSecondTick() > getDesiredSellToStuckTimeout()/1000) {
 				setLifeTimeState("SELL_STUCK");
 			}
+		}
 		}
 	}
 	
@@ -184,7 +186,7 @@ public class TradeThread {
 	}
 	
 	public void resetTick() {
-		if(getBuyProcessState().equals("DESIRED_BUY") || getBuyProcessState().equals("DESIRED_SELL")) {
+		if(getBuyProcessState().equals("DESIRED_BUY") || getBuyProcessState().equals("BOUGHT")) {
 			setLastSecondTick(getSecondTick());
 		} else {
 			setLastSecondTick(-1L);
