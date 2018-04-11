@@ -100,7 +100,7 @@ public class TradeThread {
 		setBuyProcessState("STANDBY");
 		setLifeTimeState("IDLE");
 		} else {
-			setProfit(getProfit().add(forceTotal));
+			setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
 			setBuyProcessState("SOLD");
 			setLifeTimeState("RESERVE");
 		}
@@ -110,7 +110,7 @@ public class TradeThread {
 				setBuyProcessState("STANDBY");
 				setLifeTimeState("IDLE");
 				} else {
-					setProfit(getProfit().add(forceTotal));
+					setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
 					setBuyProcessState("SOLD");
 					setLifeTimeState("RESERVE");
 				}
