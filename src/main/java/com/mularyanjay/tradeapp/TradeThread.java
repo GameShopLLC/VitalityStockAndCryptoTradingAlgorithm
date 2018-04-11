@@ -115,7 +115,7 @@ public class TradeThread {
 					setLifeTimeState("RESERVE");
 				}
 			}
-		
+		setLtc(new BigDecimal("0"));
 		setLastUsd(forceTotal);
 		
 		
