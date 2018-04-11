@@ -45,6 +45,7 @@ public class TradeGroup {
 	private int buyStuckCount;
 	private int sellStuckCount;
 	private String dumpingMode; //NONE, DUMP_ALL
+	private String sellingMode; //NONE, IMMEDIATESELL
 	//private int steppedThreads make local
 	public TradeGroup() {
 		
@@ -533,7 +534,7 @@ public class TradeGroup {
 							//setState("ACTIVE");
 							deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
 						} 
-						else if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("INC")) {
+						else if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("INC") || getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC") ) {
 							//setState("ACTIVE");
 							//deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
 							attemptSellThread(getCarrotCache().get(getCarrotCache().size() - 1));
@@ -544,7 +545,7 @@ public class TradeGroup {
 			}
 		} else if (getState().equals("RALLYING")) {
 			if (getCarrotCache().size() > 0) {
-				if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("INC")) {
+				if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("INC") || getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC")) {
 					//setState("ACTIVE");
 					//deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
 					attemptSellThread(getCarrotCache().get(getCarrotCache().size() - 1));
