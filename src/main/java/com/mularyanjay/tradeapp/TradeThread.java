@@ -74,6 +74,8 @@ public class TradeThread {
 		setDesiredSellToStuckTimeout(whatDSTST);
 		setRequestedLtc(new BigDecimal("0"));
 		setCurrentPrice(new BigDecimal("0"));
+		setRequestSellPrice(new BigDecimal("0"));
+		setRequestedTotal(new BigDecimal("0"));
 		setTimer(new Timer());
 		docks = new ArrayList<Dock>();
 		docks.add(new Dock("INCOMING"));
@@ -81,9 +83,12 @@ public class TradeThread {
 	}
 	
 	public void forceSell() {
-		BigDecimal sellPrice = getCurrentPrice().subtract(getCurrentPrice().multiply(getForceSellFee()));
-		BigDecimal forceLtc = getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_UP);
-		BigDecimal forceTotal = sellPrice.multiply(forceLtc);
+		BigDecimal sellPrice = new BigDecimal("0");
+		sellPrice = getCurrentPrice().subtract(getCurrentPrice().multiply(getForceSellFee()));
+		BigDecimal forceLtc = new BigDecimal("0");
+		forceLtc = getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_UP);
+		BigDecimal forceTotal = new BigDecimal("0");
+		forceTotal = sellPrice.multiply(forceLtc);
 		setUsd(forceTotal);
 		if (getRequestedTotal().compareTo(forceTotal) == 1) {
 		setLoss(getLoss().add(getRequestedTotal().subtract(forceTotal)));
