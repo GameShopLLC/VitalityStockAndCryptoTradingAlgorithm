@@ -60,7 +60,7 @@ public class TradeGroup {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
 		setLossMode(new String("IMMEDIATE"));
-		setDumpingMode(new String("DUMP_ALL"));
+		setDumpingMode(new String("NONE"));
 		setSimMode(sm);
 		setLoss(new BigDecimal("0"));
 		setNet(new BigDecimal("0"));
