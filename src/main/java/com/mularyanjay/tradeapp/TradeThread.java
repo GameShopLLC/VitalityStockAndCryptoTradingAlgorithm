@@ -97,8 +97,8 @@ public class TradeThread {
 		if (getBuyProcessState().equals("DESIRED_SELL")) {
 		if (getRequestedTotal().compareTo(forceTotal) == 1) {
 		setLoss(getLoss().add(getRequestedTotal().subtract(forceTotal)));
-		setBuyProcessState("STANDBY");
-		setLifeTimeState("IDLE");
+		setBuyProcessState("SOLD");//idle
+		setLifeTimeState("RESERVE");
 		} else {
 			setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
 			setBuyProcessState("SOLD");
@@ -107,8 +107,8 @@ public class TradeThread {
 		} else if (getBuyProcessState().equals("BOUGHT")) {
 			if (getRequestBuyPrice().compareTo(getCurrentPrice()) == 1) {
 				setLoss(getLoss().add((getRequestBuyPrice().multiply(forceLtc))).subtract(forceTotal));
-				setBuyProcessState("STANDBY");
-				setLifeTimeState("IDLE");
+				setBuyProcessState("SOLD");//idle
+				setLifeTimeState("RESERVE");
 				} else {
 					setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
 					setBuyProcessState("SOLD");
