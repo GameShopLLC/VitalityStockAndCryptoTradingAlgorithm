@@ -60,12 +60,12 @@ public class SimulationManager {
 			System.out.println(car.toString());
 			vitalityInstance.broadcastCarrot(car);
 			checkpoint++;
-			if (checkpoint > 3599) {
+			if (checkpoint > 1799) {
 				checkpointMessages.add(vitalityInstance.searchTradeGroupByName("One-1").statusReport());
 				System.out.println(vitalityInstance.searchTradeGroupByName("One-1").statusReport());
 				checkpoint = 0;
 			}
-			if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("ACTIVE") && (vitalityInstance.searchTradeGroupByName("One-1").getBuyStuckCount() + vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() >= 256)) {//14400)) {//1800)) {//7200)) {//3600)) {
+			if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("ACTIVE") && (vitalityInstance.searchTradeGroupByName("One-1").getBuyStuckCount() + vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() >= 14400)) {//14400)) {//1800)) {//7200)) {//3600)) {
 				vitalityInstance.triggerRally();
 			} else if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("RALLYING") && (vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() - vitalityInstance.searchTradeGroupByName("One-1").getSellStuckCount()) == 0) {
 				vitalityInstance.cancelAllRallies();
@@ -85,7 +85,7 @@ public class SimulationManager {
 		List<SerializableCandle> data = new ArrayList<SerializableCandle>();
 		HashMap<String, String> map = new HashMap<String, String>();
 		ComparableDateTime cdt = new ComparableDateTime("2018-03-1T00:00:00Z");
-		for (int i = 0; i < 144; i++) { //1882 for a year //273 for feb and march //144 march 129 feb
+		for (int i = 0; i < 173; i++) { //1882 for a year //273 for feb and march //144 march 129 feb
 			map.clear();
 			String from = cdt.toString();
 			cdt.incrementMinute(300);
