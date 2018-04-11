@@ -483,7 +483,7 @@ public class TradeGroup {
 			
 			if (getLossMode().equals("IMMEDIATE")) {
 			for (TradeThread t: trades) {
-				if (t.getBuyProcessState().equals("SELL_STUCK")) {
+				if (t.getLifeTimeState().equals("SELL_STUCK")) {
 					t.forceSell();
 				}
 			}
