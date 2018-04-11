@@ -43,6 +43,7 @@ public class TradeThread {
 	private long secondTick;
 	private long lastSecondTick;
 	private Carrot simCarrot;
+	private BigDecimal forceSellFee;
 	//private boolean traded
 	//private BigDecimal currentPrice;
 	//flagged bool?
@@ -56,6 +57,7 @@ public class TradeThread {
 	
 		//setSimMode(sm);
 		setSimMode(sm);
+		setForceSellFee(new BigDecimal("0.003"));
 		setStepTotal(new BigDecimal("0"));
 		setLoss(new BigDecimal("0"));
 		setNet(new BigDecimal("0"));
@@ -78,6 +80,28 @@ public class TradeThread {
 		docks.add(new Dock("TOSTEPSHED"));
 	}
 	
+	public void forceSell() {
+		BigDecimal sellPrice = getCurrentPrice().subtract(getCurrentPrice().multiply(getForceSellFee()));
+		BigDecimal forceLtc = getRequestedTotal().divide(getRequestSellPrice());
+		BigDecimal forceTotal = sellPrice.multiply(forceLtc);
+		setUsd(forceTotal);
+		if (getRequestedTotal().compareTo(forceTotal) == 1) {
+		setLoss(getLoss().add(getRequestedTotal().subtract(forceTotal)));
+		setBuyProcessState("STANDBY");
+		setLifeTimeState("IDLE");
+		} else {
+			setProfit(getProfit().add(forceTotal));
+			setBuyProcessState("SOLD");
+			setLifeTimeState("RESERVE");
+		}
+		setLastUsd(forceTotal);
+		
+		
+	}
+	
+	public void calculateNet() {
+		setNet(getProfit().subtract(getLoss()));
+	}
 	public void evaluateSimulationTimeout() {
 		if (getBuyProcessState().equals("DESIRED_BUY")) {
 			if (getSecondTick() - getLastSecondTick() > getDesiredBuyTimeout()/1000) {
@@ -511,6 +535,14 @@ public class TradeThread {
 
 	public void setSimMode(SimulationMode simMode) {
 		this.simMode = simMode;
+	}
+
+	public BigDecimal getForceSellFee() {
+		return forceSellFee;
+	}
+
+	public void setForceSellFee(BigDecimal forceSellFee) {
+		this.forceSellFee = forceSellFee;
 	}
 	
 }

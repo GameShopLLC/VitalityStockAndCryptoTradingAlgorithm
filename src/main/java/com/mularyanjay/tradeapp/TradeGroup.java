@@ -59,7 +59,7 @@ public class TradeGroup {
 	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
-		//setLossMode(new String("IMMEDIATE"));
+		setLossMode(new String("IMMEDIATE"));
 		setDumpingMode(new String("NONE"));
 		setSimMode(sm);
 		setLoss(new BigDecimal("0"));
@@ -480,7 +480,19 @@ public class TradeGroup {
 				t.evaluateSimulationTimeout();
 			}
 			}
-		}
+			
+			if (getLossMode().equals("IMMEDIATE")) {
+			for (TradeThread t: trades) {
+				if (t.getBuyProcessState().equals("SELL_STUCK")) {
+					t.forceSell();
+				}
+			}
+			}
+			for (TradeThread t: trades) {
+				t.calculateNet();
+			}
+		
+	}
 	
 	
 	//Threads need to make request through hierarchy so that
@@ -583,14 +595,21 @@ public class TradeGroup {
 		BigDecimal newUsd = new BigDecimal("0");
 		BigDecimal newLtc = new BigDecimal("0");
 		BigDecimal newProfit = new BigDecimal("0");
+		BigDecimal newLoss = new BigDecimal("0");
+		BigDecimal newNet = new BigDecimal("0");
+		
 		for (TradeThread t: trades) {
 			newUsd = newUsd.add(t.getUsd());
 			newLtc = newLtc.add(t.getLtc());
 			newProfit = newProfit.add(t.getProfit());
+			newLoss = newLoss.add(t.getLoss());
+			newNet = newNet.add(t.getNet());
 		}
 		setUsd(newUsd);
 		setLtc(newLtc);
 		setProfit(newProfit);
+		setLoss(newLoss);
+		setNet(newNet);
 	}
 	
 	//Amount buy stuck threads
@@ -625,6 +644,8 @@ public class TradeGroup {
 				"Current USD Balance: " + getUsd() + "\n" +
 			   "Current Ltc Balance: " + getLtc() + "\n" +
 			   "Current Profit: " + getProfit() + "\n" +
+			   "Current Loss: " + getLoss() + "\n" +
+			   "Current Net: " + getNet() + "\n" +
 			   "Idle Threads: " + getIdleThreadCount() + "\n" +
 			   "Active Threads: " + getActiveThreadCount() + "\n" +
 			   "Buying threads: " + getBuyingThreadCount() + "\n" +
@@ -633,7 +654,9 @@ public class TradeGroup {
 			   "Stuck selling: " + getSellStuckCount() + "\n" +
 			   "Strongest thread USD: " + highest.getUsd() + "\n" +
 			   "Strongest thread LTC: " + highest.getLtc() + "\n" +
-			   "Strongest thread profit: " + highest.getProfit();
+			   "Strongest thread profit: " + highest.getProfit() + "\n" +
+			   "Strongest thread loss: " + highest.getLoss() + "\n" +
+			   "Strongest thread net: " + highest.getNet() + "\n";
 	}
 	public String getName() {
 		return name;
