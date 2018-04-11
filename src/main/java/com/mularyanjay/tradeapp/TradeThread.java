@@ -83,7 +83,7 @@ public class TradeThread {
 			if (getSecondTick() - getLastSecondTick() > getDesiredBuyTimeout()/1000) {
 				setLifeTimeState("BUY_STUCK");
 			}
-		} else if (getBuyProcessState().equals("DESIRED_SELL")) {
+		} else if (getBuyProcessState().equals("BOUGHT") || getBuyProcessState().equals("DESIRED_SELL")) {
 			if (getSecondTick() - getLastSecondTick() > getDesiredSellToStuckTimeout()/1000) {
 				setLifeTimeState("SELL_STUCK");
 			}
