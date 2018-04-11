@@ -65,7 +65,7 @@ public class SimulationManager {
 				System.out.println(vitalityInstance.searchTradeGroupByName("One-1").statusReport());
 				checkpoint = 0;
 			}
-			if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("ACTIVE") && (vitalityInstance.searchTradeGroupByName("One-1").getBuyStuckCount() + vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() >= 14400)) {//14400)) {//1800)) {//7200)) {//3600)) {
+			if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("ACTIVE") && (vitalityInstance.searchTradeGroupByName("One-1").getBuyStuckCount() + vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() >= 3600)) {//14400)) {//1800)) {//7200)) {//3600)) {
 				vitalityInstance.triggerRally();
 			} else if (vitalityInstance.searchTradeGroupByName("One-1").getState().equals("RALLYING") && (vitalityInstance.searchTradeGroupByName("One-1").getSellingThreadCount() - vitalityInstance.searchTradeGroupByName("One-1").getSellStuckCount()) == 0) {
 				vitalityInstance.cancelAllRallies();
