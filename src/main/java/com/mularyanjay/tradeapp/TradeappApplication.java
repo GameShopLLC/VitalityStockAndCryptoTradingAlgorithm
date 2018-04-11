@@ -114,7 +114,7 @@ public class TradeappApplication extends SpringBootServletInitializer  {
 	@Bean
 	VitalityInstance vitalityInstance() {
 		return new VitalityInstance(SimulationMode.SIMULATION, new BigDecimal("25000000"), //Original 25000000
-				new TradeGroup(SimulationMode.SIMULATION, "One-1", "NONE", 3600, new BigDecimal("25000000"), 1, 3, 8L * 60L * 1000L, 24L * 60L * 60L * 1000L));//),
+				new TradeGroup(SimulationMode.SIMULATION, "One-1", "NONE", 3600, new BigDecimal("25000000"), 1, 3, 8L * 60L * 1000L, 12L * 60L * 60L * 1000L));//),
 				//new TradeGroup("Five-1", 20, new BigDecimal("10000"), 5, 3, 40L * 60L * 1000L, 24L * 60L * 60L * 1000L),
 				//new TradeGroup("Ten-1", 20, new BigDecimal("10000"), 10, 3, 80L * 60L * 1000L, 24L * 60L * 60L * 1000L),
 				//new TradeGroup("Fifteen-1", 20, new BigDecimal("10000"), 15, 3, 120L * 60L * 1000L, 24L * 60L * 60L * 1000L),
