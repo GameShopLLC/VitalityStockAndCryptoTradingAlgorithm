@@ -45,7 +45,9 @@ public class TradeGroup {
 	private int buyStuckCount;
 	private int sellStuckCount;
 	private String dumpingMode; //NONE, DUMP_ALL
-	private String sellingMode; //NONE, IMMEDIATESELL
+	private String lossMode; //NONE, IMMEDIATE, SPLIT
+	//forceLossagent
+	//private String sellingMode; //NONE, IMMEDIATESELL
 	//private int steppedThreads make local
 	public TradeGroup() {
 		
@@ -57,6 +59,7 @@ public class TradeGroup {
 	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
+		//setLossMode(new String("IMMEDIATE"));
 		setDumpingMode(new String("NONE"));
 		setSimMode(sm);
 		setLoss(new BigDecimal("0"));
@@ -897,6 +900,14 @@ public class TradeGroup {
 
 	public void setDumpingMode(String dumpingMode) {
 		this.dumpingMode = dumpingMode;
+	}
+
+	public String getLossMode() {
+		return lossMode;
+	}
+
+	public void setLossMode(String lossMode) {
+		this.lossMode = lossMode;
 	}
 	
 	

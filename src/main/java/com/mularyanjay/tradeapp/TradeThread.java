@@ -43,6 +43,7 @@ public class TradeThread {
 	private long secondTick;
 	private long lastSecondTick;
 	private Carrot simCarrot;
+	//private boolean traded
 	//private BigDecimal currentPrice;
 	//flagged bool?
 	//no, do periodic counts in tradegroup to find stuck status
@@ -216,24 +217,7 @@ public class TradeThread {
 				setLifeTimeState("TRADING");
 				System.out.println("Sell order placed at $" + getRequestSellPrice());
 				
-				if(getSimMode() == SimulationMode.REALTIME) {
-				setTimer(new Timer());
-				getTimer().schedule(new TimerTask() {
-
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						if (getBuyProcessState().equals("DESIRED_SELL")) {
-							setLifeTimeState("SELL_STUCK");
-						}
-						timer.cancel();
-					}
-					
-				}, getDesiredSellToStuckTimeout());
-				} else if (getSimMode() == SimulationMode.SIMULATION) {
-					//setLastSecondTick(getSecondTick());
-					resetTick();
-				}
+	
 				}
 			}
 		} else {
@@ -298,6 +282,24 @@ public class TradeThread {
 		} else if (getSimMode() == SimulationMode.SIMULATION) {
 			resetTick();
 		}
+		if(getSimMode() == SimulationMode.REALTIME) {
+			setTimer(new Timer());
+			getTimer().schedule(new TimerTask() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					if (getBuyProcessState().equals("BOUGHT") || getBuyProcessState().equals("DESIRED_SELL")) { //"DESIRED_SELL"
+						setLifeTimeState("SELL_STUCK");
+					}
+					timer.cancel();
+				}
+				
+			}, getDesiredSellToStuckTimeout());
+			} else if (getSimMode() == SimulationMode.SIMULATION) {
+				//setLastSecondTick(getSecondTick());
+				resetTick();
+			}
 	}
 	
 	public void sell() {
