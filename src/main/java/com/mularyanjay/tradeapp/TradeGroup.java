@@ -45,7 +45,7 @@ public class TradeGroup {
 	private int buyStuckCount;
 	private int sellStuckCount;
 	private String dumpingMode; //NONE, DUMP_ALL
-	private String lossMode; //NONE, IMMEDIATE, SPLIT
+	private String lossMode; //NONE, IMMEDIATE, SPLIT, INSTANT
 	//forceLossagent
 	//private String sellingMode; //NONE, IMMEDIATESELL
 	//private int steppedThreads make local
@@ -487,6 +487,21 @@ public class TradeGroup {
 					t.forceSell();
 				}
 			}
+			} else if (getLossMode().equals("INSTANT")) {
+				boolean sellAll = false;
+				for (TradeThread t: trades) {
+					if (t.getLifeTimeState().equals("SELL_STUCK")) {
+						sellAll = true;
+						break;
+					}
+					
+				}
+				
+				for (TradeThread t: trades) {
+					if (t.getBuyProcessState().equals("BOUGHT") || t.getBuyProcessState().equals("DESIRED_SELL")) {
+						t.forceSell();
+					}
+				}
 			}
 			for (TradeThread t: trades) {
 				t.calculateNet();
