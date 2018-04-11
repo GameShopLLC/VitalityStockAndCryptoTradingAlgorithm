@@ -82,7 +82,7 @@ public class TradeThread {
 	
 	public void forceSell() {
 		BigDecimal sellPrice = getCurrentPrice().subtract(getCurrentPrice().multiply(getForceSellFee()));
-		BigDecimal forceLtc = getRequestedTotal().divide(getRequestSellPrice());
+		BigDecimal forceLtc = getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_UP);
 		BigDecimal forceTotal = sellPrice.multiply(forceLtc);
 		setUsd(forceTotal);
 		if (getRequestedTotal().compareTo(forceTotal) == 1) {
