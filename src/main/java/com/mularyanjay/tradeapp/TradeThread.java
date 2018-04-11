@@ -303,7 +303,9 @@ public class TradeThread {
 	public void sell() {
 		
 		setUsd(getRequestedTotal());
+		if ((getUsd().subtract(getLastUsd())).compareTo(new BigDecimal(".01")) == 1){
 		setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
+		}
 		setLastUsd(getUsd());
 		//profit percentage?
 		setBuyProcessState("SOLD");
