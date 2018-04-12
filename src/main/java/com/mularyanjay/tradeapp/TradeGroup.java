@@ -90,7 +90,7 @@ public class TradeGroup {
 		docks.add(new Dock("STEPSHED"));
 		docks.add(new Dock("TOPROFIT"));
 		
-		setSplitNum(getAmountThreads() * 2 / 3);
+		setSplitNum(getAmountThreads() * 1 / 2);
 		partitionThreads();
 		
 	}
@@ -292,7 +292,7 @@ public class TradeGroup {
 	public void checkSplit() {
 		if (getActiveThreadCount() >= getSplitNum()) {
 			 performSplit();
-			 setSplitNum(getSplitNum() + (getSplitNum() * 2 / 3));
+			 setSplitNum(getSplitNum() + (getSplitNum() * 1 / 2));
 		}
 		System.out.println("Split num: " + getSplitNum());
 		System.out.println("Active threads:" + getActiveThreadCount());
