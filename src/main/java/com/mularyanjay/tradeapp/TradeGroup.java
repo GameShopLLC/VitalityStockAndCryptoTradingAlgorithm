@@ -10,6 +10,7 @@ package com.mularyanjay.tradeapp;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class TradeGroup {
 
@@ -47,6 +48,7 @@ public class TradeGroup {
 	private String dumpingMode; //NONE, DUMP_ALL
 	private String lossMode; //NONE, IMMEDIATE, SPLIT, INSTANT
 	private String splitMode;//NONE, ZENO_CLASSIC, ZENO_RALLY
+	private int splitNum;
 	//forceLossagent
 	//private String sellingMode; //NONE, IMMEDIATESELL
 	//private int steppedThreads make local
@@ -60,8 +62,8 @@ public class TradeGroup {
 	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
-		setSplitMode(new String("ZENO_CLASSIC"));
-		setLossMode(new String("INSTANT")); //IMMEDIATE
+		setSplitMode(new String("ZENO_CLASSIC"));  //if contains zeno
+		setLossMode(new String("NONE")); //IMMEDIATE
 		setDumpingMode(new String("NONE"));
 		setSimMode(sm);
 		setLoss(new BigDecimal("0"));
@@ -88,6 +90,7 @@ public class TradeGroup {
 		docks.add(new Dock("STEPSHED"));
 		docks.add(new Dock("TOPROFIT"));
 		
+		setSplitNum(getAmountThreads() * 2 / 3);
 		partitionThreads();
 		
 	}
@@ -250,6 +253,49 @@ public class TradeGroup {
 		}
 	}
 	
+	public void performSplit() {
+		//ArrayList<TradeThread> halvedTrades = new ArrayList<TradeThread>();
+		int idleTrades = getIdleThreadCount();
+		BigDecimal idleUsd = new BigDecimal("0");
+		for (TradeThread t: trades) {
+			if (t.getLifeTimeState().equals("IDLE")) {
+				idleUsd = t.getUsd().divide(new BigDecimal("2"), 8, RoundingMode.FLOOR);
+				break;
+			}
+			//TradeThread temp = t.
+			//MUST MAKE COPY CONSTRUCTOR 
+		}
+//		List<String> names = ....
+//				Iterator<String> i = names.iterator();
+//				while (i.hasNext()) {
+//				   String s = i.next(); // must be called before you can call i.remove()
+//				   // Do something
+//				   i.remove();
+//				}
+		Iterator<TradeThread> i = trades.iterator();
+		while (i.hasNext()) {
+			TradeThread t = i.next();
+			if (t.getLifeTimeState().equals("IDLE")) {
+			i.remove();
+			}
+		}
+		
+		for (int j = 0; j < idleTrades * 2; j++) {
+			trades.add(new TradeThread(getSimMode(), idleUsd, getBuyTimeout(), getStuckTimeout()));
+		}
+//		for (TradeThread t: trades) {
+//			if (t.getLifeTimeState().equals("IDLE")) {
+//				trades.remove(t);
+//			}
+//		}
+	}
+	public void checkSplit() {
+		if (getActiveThreadCount() >= getSplitNum()) {
+			 performSplit();
+		}
+		setSplitNum(getSplitNum() + (getSplitNum() * 2 / 3));
+		//split num must be new number num + 2/3
+	}
 	//:D
 	public void broadcastCarrot (Carrot carrot) {
 		//Make "currentCarrot" variable and resize
@@ -281,6 +327,11 @@ public class TradeGroup {
 //				t.refresh();
 //			}
 //		}
+		
+		//CHECK SPLIT
+		if (getSplitMode().equals("ZENO_CLASSIC")) {
+			checkSplit();
+		}
 		
 		if(getName().contains("One")) {
 			//if (getCurrentCarrot() == null) {
@@ -956,6 +1007,14 @@ public class TradeGroup {
 
 	public void setSplitMode(String splitMode) {
 		this.splitMode = splitMode;
+	}
+
+	public int getSplitNum() {
+		return splitNum;
+	}
+
+	public void setSplitNum(int splitNum) {
+		this.splitNum = splitNum;
 	}
 	
 	
