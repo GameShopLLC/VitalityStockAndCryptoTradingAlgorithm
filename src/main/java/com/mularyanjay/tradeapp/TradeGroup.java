@@ -61,7 +61,7 @@ public class TradeGroup {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
 		setSplitMode(new String("ZENO_CLASSIC"));
-		setLossMode(new String("IMMEDIATE")); //IMMEDIATE
+		setLossMode(new String("INSTANT")); //IMMEDIATE
 		setDumpingMode(new String("NONE"));
 		setSimMode(sm);
 		setLoss(new BigDecimal("0"));
