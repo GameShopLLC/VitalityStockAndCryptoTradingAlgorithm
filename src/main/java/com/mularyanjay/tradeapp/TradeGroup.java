@@ -63,8 +63,8 @@ public class TradeGroup {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
 		setSplitMode(new String("ZENO_CLASSIC"));  //if contains zeno
-		setLossMode(new String("NONE")); //IMMEDIATE
-		setDumpingMode(new String("NONE"));
+		setLossMode(new String("IMMEDIATE")); //IMMEDIATE
+		setDumpingMode(new String("DUMP_ALL"));
 		setSimMode(sm);
 		setLoss(new BigDecimal("0"));
 		setNet(new BigDecimal("0"));
