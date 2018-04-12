@@ -294,6 +294,10 @@ public class TradeGroup {
 			 performSplit();
 		}
 		setSplitNum(getSplitNum() + (getSplitNum() * 2 / 3));
+		System.out.println("Split num: " + getSplitNum());
+		System.out.println("Active threads:" + getActiveThreadCount());
+		System.out.println("Idle threads:" + getIdleThreadCount());
+		
 		//split num must be new number num + 2/3
 	}
 	//:D
@@ -330,6 +334,7 @@ public class TradeGroup {
 		
 		//CHECK SPLIT
 		if (getSplitMode().equals("ZENO_CLASSIC")) {
+			System.out.println("Checking split");
 			checkSplit();
 		}
 		
