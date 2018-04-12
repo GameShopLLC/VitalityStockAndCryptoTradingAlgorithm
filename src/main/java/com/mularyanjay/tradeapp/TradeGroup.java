@@ -62,7 +62,7 @@ public class TradeGroup {
 	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
-		setSplitMode(new String("ZENO_CLASSIC"));  //if contains zeno
+		setSplitMode(new String("NONE"));  //if contains zeno
 		setLossMode(new String("IMMEDIATE")); //IMMEDIATE
 		setDumpingMode(new String("DUMP_ALL"));
 		setSimMode(sm);
