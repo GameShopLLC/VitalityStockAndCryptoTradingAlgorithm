@@ -100,9 +100,15 @@ public class TradeThread {
 		setBuyProcessState("SOLD");//idle
 		setLifeTimeState("IDLE");
 		} else {
+			if (getUsd().compareTo(getLastUsd()) == 1) {
 			setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
 			setBuyProcessState("SOLD");
 			setLifeTimeState("RESERVE");
+			} else {
+				setLoss(getLoss().add((getLastUsd()).subtract(getUsd())));
+				setBuyProcessState("SOLD");//idle
+				setLifeTimeState("IDLE");
+			}
 		}
 		} else if (getBuyProcessState().equals("BOUGHT")) {
 			if (getRequestBuyPrice().compareTo(getCurrentPrice()) == 1) {
@@ -110,9 +116,15 @@ public class TradeThread {
 				setBuyProcessState("SOLD");//idle
 				setLifeTimeState("IDLE");
 				} else {
+					if (getUsd().compareTo(getLastUsd()) == 1) {
 					setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
 					setBuyProcessState("SOLD");
 					setLifeTimeState("RESERVE");
+					} else {
+						setLoss(getLoss().add((getLastUsd()).subtract(getUsd())));
+						setBuyProcessState("SOLD");//idle
+						setLifeTimeState("IDLE");	
+					}
 				}
 			}
 		if (getSimMode() == SimulationMode.REALTIME) {
