@@ -292,8 +292,8 @@ public class TradeGroup {
 	public void checkSplit() {
 		if (getActiveThreadCount() >= getSplitNum()) {
 			 performSplit();
+			 setSplitNum(getSplitNum() + (getSplitNum() * 2 / 3));
 		}
-		setSplitNum(getSplitNum() + (getSplitNum() * 2 / 3));
 		System.out.println("Split num: " + getSplitNum());
 		System.out.println("Active threads:" + getActiveThreadCount());
 		System.out.println("Idle threads:" + getIdleThreadCount());
