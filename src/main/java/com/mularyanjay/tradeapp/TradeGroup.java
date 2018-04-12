@@ -324,6 +324,7 @@ public class TradeGroup {
 		for (TradeThread t: trades) {
 			t.forceLoss();
 		}
+		updateBalance();
 		setAccountSnapshot(getUsd());
 	}
 	//:D
