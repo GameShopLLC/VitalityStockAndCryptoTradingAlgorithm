@@ -93,7 +93,9 @@ public class TradeThread {
 		}
 		BigDecimal forceTotal = new BigDecimal("0");
 		forceTotal = sellPrice.multiply(forceLtc);
-		setUsd(forceTotal);
+		
+		if (getUsd().compareTo(getLastUsd()) == 1) {
+			setUsd(forceTotal);
 		if (getBuyProcessState().equals("DESIRED_SELL")) {
 		if (getRequestedTotal().compareTo(forceTotal) == 1) {
 		setLoss(getLoss().add(getRequestedTotal().subtract(forceTotal)));
@@ -127,6 +129,7 @@ public class TradeThread {
 					}
 				}
 			}
+		
 		if (getSimMode() == SimulationMode.REALTIME) {
 			timer.cancel();
 			} else if (getSimMode() == SimulationMode.SIMULATION) {
@@ -134,7 +137,7 @@ public class TradeThread {
 			}
 		setLtc(new BigDecimal("0"));
 		setLastUsd(forceTotal);
-		
+		}
 		
 	}
 	
