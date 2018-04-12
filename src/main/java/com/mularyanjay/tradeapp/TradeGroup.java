@@ -324,6 +324,7 @@ public class TradeGroup {
 		for (TradeThread t: trades) {
 			t.forceLoss();
 		}
+		setAccountSnapshot(getUsd());
 	}
 	//:D
 	public void broadcastCarrot (Carrot carrot) {
@@ -584,9 +585,9 @@ public class TradeGroup {
 			//if (getSimMode() == SimulationMode)
 			
 			if (getSimMode() == SimulationMode.SIMULATION) {
-				setTick(getTick() + 60L);
+				setTick(getTick() + 1L);
 			for (TradeThread t: trades) {
-				t.incrementSecondTick(60L);
+				t.incrementSecondTick();
 				//t.evaluateSimulationTimeout();
 			}
 			}
