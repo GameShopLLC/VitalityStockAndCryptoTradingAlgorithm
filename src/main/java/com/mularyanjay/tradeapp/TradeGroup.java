@@ -46,6 +46,7 @@ public class TradeGroup {
 	private int sellStuckCount;
 	private String dumpingMode; //NONE, DUMP_ALL
 	private String lossMode; //NONE, IMMEDIATE, SPLIT, INSTANT
+	private String splitMode;//NONE, ZENO_CLASSIC, ZENO_RALLY
 	//forceLossagent
 	//private String sellingMode; //NONE, IMMEDIATESELL
 	//private int steppedThreads make local
@@ -59,7 +60,8 @@ public class TradeGroup {
 	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
-		setLossMode(new String("IMMEDIATE"));
+		setSplitMode(new String("ZENO_CLASSIC"));
+		setLossMode(new String("IMMEDIATE")); //IMMEDIATE
 		setDumpingMode(new String("NONE"));
 		setSimMode(sm);
 		setLoss(new BigDecimal("0"));
@@ -946,6 +948,14 @@ public class TradeGroup {
 
 	public void setLossMode(String lossMode) {
 		this.lossMode = lossMode;
+	}
+
+	public String getSplitMode() {
+		return splitMode;
+	}
+
+	public void setSplitMode(String splitMode) {
+		this.splitMode = splitMode;
 	}
 	
 	

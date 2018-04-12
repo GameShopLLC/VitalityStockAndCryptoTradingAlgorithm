@@ -44,6 +44,7 @@ public class TradeThread {
 	private long lastSecondTick;
 	private Carrot simCarrot;
 	private BigDecimal forceSellFee;
+	private int splitDepth;
 	//private boolean traded
 	//private BigDecimal currentPrice;
 	//flagged bool?
@@ -93,9 +94,9 @@ public class TradeThread {
 		}
 		BigDecimal forceTotal = new BigDecimal("0");
 		forceTotal = sellPrice.multiply(forceLtc);
-		
+		setUsd(forceTotal);
 		if (getUsd().compareTo(getLastUsd()) == 1) {
-			setUsd(forceTotal);
+			
 		if (getBuyProcessState().equals("DESIRED_SELL")) {
 		if (getRequestedTotal().compareTo(forceTotal) == 1) {
 		setLoss(getLoss().add(getRequestedTotal().subtract(forceTotal)));
@@ -587,6 +588,14 @@ public class TradeThread {
 
 	public void setForceSellFee(BigDecimal forceSellFee) {
 		this.forceSellFee = forceSellFee;
+	}
+
+	public int getSplitDepth() {
+		return splitDepth;
+	}
+
+	public void setSplitDepth(int splitDepth) {
+		this.splitDepth = splitDepth;
 	}
 	
 }
