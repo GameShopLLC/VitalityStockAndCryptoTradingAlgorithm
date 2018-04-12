@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TradeGroup {
 
@@ -49,6 +51,12 @@ public class TradeGroup {
 	private String lossMode; //NONE, IMMEDIATE, SPLIT, INSTANT
 	private String splitMode;//NONE, ZENO_CLASSIC, ZENO_RALLY
 	private int splitNum;
+	private long forceLossTimeout;
+	private BigDecimal accountSnapshot;
+	private BigDecimal fee;
+	private Timer timer;
+	private long tick;
+
 	//forceLossagent
 	//private String sellingMode; //NONE, IMMEDIATESELL
 	//private int steppedThreads make local
@@ -59,10 +67,13 @@ public class TradeGroup {
 	//*Need to apply timeouts*
 	//Obviously, handling logging, statistical data
 	
-	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
+	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto, long flto) {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
-		setSplitMode(new String("ZENO_CLASSIC"));  //if contains zeno
+		setFee(new BigDecimal("0.003"));
+		setAccountSnapshot(initialUSD);
+		setForceLossTimeout(flto);
+		setSplitMode(new String("NONE"));  //if contains zeno
 		setLossMode(new String("IMMEDIATE")); //IMMEDIATE
 		setDumpingMode(new String("DUMP_ALL"));
 		setSimMode(sm);
@@ -95,6 +106,14 @@ public class TradeGroup {
 		
 	}
 	
+	public boolean acceptLoss() {
+		BigDecimal forcedAmount = new BigDecimal("0");
+		forcedAmount = ((getCurrentCarrot().getCurrent().subtract(getCurrentCarrot().getCurrent().multiply(getFee()))).multiply(getLtc()));
+		if (forcedAmount.compareTo(getAccountSnapshot()) == 1) {
+			return true;
+		}
+		return false;
+	}
 	public void shedFromOutgoingToStep() {
 		
 		for(TradeThread t: trades) {
@@ -300,6 +319,12 @@ public class TradeGroup {
 		
 		//split num must be new number num + 2/3
 	}
+	
+	public void forceLoss() {
+		for (TradeThread t: trades) {
+			t.forceLoss();
+		}
+	}
 	//:D
 	public void broadcastCarrot (Carrot carrot) {
 		//Make "currentCarrot" variable and resize
@@ -338,6 +363,30 @@ public class TradeGroup {
 			checkSplit();
 		}
 		
+		//PUT FORCELOSS LOGIC HERE.  NEEDS TIMEOUT
+		if (getSimMode() == SimulationMode.REALTIME) {
+			setTimer(new Timer());
+			getTimer().schedule(new TimerTask() {
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					if (acceptLoss()) {
+						forceLoss();
+					}
+				}
+				
+			}, getForceLossTimeout(), getForceLossTimeout());
+		} else if (getSimMode() == SimulationMode.SIMULATION) {
+			if (getTick() > getForceLossTimeout()/1000) {
+				if (acceptLoss()) {
+					forceLoss();
+				}
+				setTick(0L);
+			}
+		}
+		
+		//...
 		if(getName().contains("One")) {
 			//if (getCurrentCarrot() == null) {
 			setCurrentCarrot(carrot);
@@ -532,10 +581,13 @@ public class TradeGroup {
 //				
 //			}
 			updateBalance();
+			//if (getSimMode() == SimulationMode)
+			
 			if (getSimMode() == SimulationMode.SIMULATION) {
+				setTick(getTick() + 60L);
 			for (TradeThread t: trades) {
-				t.incrementSecondTick();
-				t.evaluateSimulationTimeout();
+				t.incrementSecondTick(60L);
+				//t.evaluateSimulationTimeout();
 			}
 			}
 			
@@ -1021,6 +1073,44 @@ public class TradeGroup {
 	public void setSplitNum(int splitNum) {
 		this.splitNum = splitNum;
 	}
+
+	public long getForceLossTimeout() {
+		return forceLossTimeout;
+	}
+
+	public void setForceLossTimeout(long forceLossTimeout) {
+		this.forceLossTimeout = forceLossTimeout;
+	}
+
+	public BigDecimal getAccountSnapshot() {
+		return accountSnapshot;
+	}
+
+	public void setAccountSnapshot(BigDecimal accountSnapshot) {
+		this.accountSnapshot = accountSnapshot;
+	}
+
+	public BigDecimal getFee() {
+		return fee;
+	}
+
+	public void setFee(BigDecimal fee) {
+		this.fee = fee;
+	}
 	
-	
+	public Timer getTimer() {
+		return timer;
+	}
+
+	public void setTimer(Timer timer) {
+		this.timer = timer;
+	}
+
+	public long getTick() {
+		return tick;
+	}
+
+	public void setTick(long tick) {
+		this.tick = tick;
+	}
 }
