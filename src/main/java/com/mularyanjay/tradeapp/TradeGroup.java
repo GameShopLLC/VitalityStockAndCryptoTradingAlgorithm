@@ -59,7 +59,7 @@ public class TradeGroup {
 	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto) {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
-		setLossMode(new String("INSTANT"));
+		setLossMode(new String("IMMEDIATE"));
 		setDumpingMode(new String("NONE"));
 		setSimMode(sm);
 		setLoss(new BigDecimal("0"));

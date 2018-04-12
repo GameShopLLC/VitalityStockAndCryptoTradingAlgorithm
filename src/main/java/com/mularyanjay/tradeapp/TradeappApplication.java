@@ -38,7 +38,8 @@ import javax.servlet.ServletException;
 //Needs to do remainder shedding for large
 //numbers
 //Need to implement splitting (hard part)
-//
+//Implement splitting tommorow
+//IMPLEMENT SPLITTING TODAY
 @SpringBootApplication
 @ComponentScan("com.mularyanjay.tradeapp")
 public class TradeappApplication extends SpringBootServletInitializer  {
