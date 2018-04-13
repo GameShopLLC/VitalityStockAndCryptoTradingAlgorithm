@@ -223,6 +223,15 @@ public class TradeThread {
 		}
 	}
 	
+	public void cancelBuy() {
+		if(getLifeTimeState().equals("BUY_STUCK")) {
+			setUsd(getLastUsd());
+			setBuyProcessState("STANDBY");
+			setLifeTimeState("IDLE");
+			System.out.println("Buy order canceled");
+		}
+	}
+	
 	public void calculateNet() {
 		setNet(getProfit().subtract(getLoss()));
 	}
@@ -231,6 +240,7 @@ public class TradeThread {
 		if (getBuyProcessState().equals("DESIRED_BUY")) {
 			if (getSecondTick() - getLastSecondTick() > getDesiredBuyTimeout()/1000) {
 				setLifeTimeState("BUY_STUCK");
+				cancelBuy();
 			}
 		} else if (getBuyProcessState().equals("BOUGHT") || getBuyProcessState().equals("DESIRED_SELL")) {
 			if (getSecondTick() - getLastSecondTick() > getDesiredSellToStuckTimeout()/1000) {
@@ -323,6 +333,7 @@ public class TradeThread {
 				// TODO Auto-generated method stub
 				if (getBuyProcessState().equals("DESIRED_BUY")) {
 					setLifeTimeState("BUY_STUCK");
+					cancelBuy();
 				}
 				timer.cancel();
 			}
