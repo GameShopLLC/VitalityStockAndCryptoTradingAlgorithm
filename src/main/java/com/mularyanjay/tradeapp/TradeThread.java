@@ -94,48 +94,62 @@ public class TradeThread {
 		}
 		BigDecimal forceTotal = new BigDecimal("0");
 		forceTotal = sellPrice.multiply(forceLtc);
-		setUsd(forceTotal);
-		if (getBuyProcessState().equals("DESIRED_SELL")) {
-			if (getRequestedTotal().compareTo(forceTotal) == 1) {
-			setLoss(getLoss().add(getRequestedTotal().subtract(forceTotal)));
+		
+		if (forceTotal.compareTo(getLastUsd()) == 1) {
+			setUsd(forceTotal);
+			setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
+			setBuyProcessState("SOLD");
+			setLifeTimeState("RESERVE");
+			setLtc(new BigDecimal("0"));
+			setLastUsd(forceTotal);
+		} else {
+			setUsd(forceTotal);
+			setLoss(getLoss().add((getLastUsd()).subtract(getUsd())));
 			setBuyProcessState("SOLD");//idle
 			setLifeTimeState("IDLE");
-			} else {
-				if (getUsd().compareTo(getLastUsd()) == 1) {
-				setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
-				setBuyProcessState("SOLD");
-				setLifeTimeState("RESERVE");
-				} else {
-					setLoss(getLoss().add((getLastUsd()).subtract(getUsd())));
-					setBuyProcessState("SOLD");//idle
-					setLifeTimeState("IDLE");
-				}
-			}
-			} else if (getBuyProcessState().equals("BOUGHT")) {
-				if (getRequestBuyPrice().compareTo(getCurrentPrice()) == 1) {
-					setLoss(getLoss().add((getRequestBuyPrice().multiply(forceLtc))).subtract(forceTotal));
-					setBuyProcessState("SOLD");//idle
-					setLifeTimeState("IDLE");
-					} else {
-						if (getUsd().compareTo(getLastUsd()) == 1) {
-						setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
-						setBuyProcessState("SOLD");
-						setLifeTimeState("RESERVE");
-						} else {
-							setLoss(getLoss().add((getLastUsd()).subtract(getUsd())));
-							setBuyProcessState("SOLD");//idle
-							setLifeTimeState("IDLE");	
-						}
-					}
-				}
+			setLtc(new BigDecimal("0"));
+			setLastUsd(forceTotal);
+		}
+//		if (getBuyProcessState().equals("DESIRED_SELL")) {
+//			if (getRequestedTotal().compareTo(forceTotal) == 1) {
+//			setLoss(getLoss().add(getRequestedTotal().subtract(forceTotal)));
+//			setBuyProcessState("SOLD");//idle
+//			setLifeTimeState("IDLE");
+//			} else {
+//				if (getUsd().compareTo(getLastUsd()) == 1) {
+//				setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
+//				setBuyProcessState("SOLD");
+//				setLifeTimeState("RESERVE");
+//				} else {
+//					setLoss(getLoss().add((getLastUsd()).subtract(getUsd())));
+//					setBuyProcessState("SOLD");//idle
+//					setLifeTimeState("IDLE");
+//				}
+//			}
+//			} else if (getBuyProcessState().equals("BOUGHT")) {
+//				if (getRequestBuyPrice().compareTo(getCurrentPrice()) == 1) {
+//					setLoss(getLoss().add((getRequestBuyPrice().multiply(forceLtc))).subtract(forceTotal));
+//					setBuyProcessState("SOLD");//idle
+//					setLifeTimeState("IDLE");
+//					} else {
+//						if (getUsd().compareTo(getLastUsd()) == 1) {
+//						setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
+//						setBuyProcessState("SOLD");
+//						setLifeTimeState("RESERVE");
+//						} else {
+//							setLoss(getLoss().add((getLastUsd()).subtract(getUsd())));
+//							setBuyProcessState("SOLD");//idle
+//							setLifeTimeState("IDLE");	
+//						}
+//					}
+//				}
 			
 			if (getSimMode() == SimulationMode.REALTIME) {
 				timer.cancel();
 				} else if (getSimMode() == SimulationMode.SIMULATION) {
 					resetTick();
 				}
-			setLtc(new BigDecimal("0"));
-			setLastUsd(forceTotal);
+			
 	}
 	
 	public void forceSell() {
@@ -149,51 +163,60 @@ public class TradeThread {
 		}
 		BigDecimal forceTotal = new BigDecimal("0");
 		forceTotal = sellPrice.multiply(forceLtc);
-		setUsd(forceTotal);
-		if (getUsd().compareTo(getLastUsd()) == 1) {
-			
-		if (getBuyProcessState().equals("DESIRED_SELL")) {
-		if (getRequestedTotal().compareTo(forceTotal) == 1) {
-		setLoss(getLoss().add(getRequestedTotal().subtract(forceTotal)));
-		setBuyProcessState("SOLD");//idle
-		setLifeTimeState("IDLE");
-		} else {
-			if (getUsd().compareTo(getLastUsd()) == 1) {
+		if (forceTotal.compareTo(getLastUsd()) == 1) {
+			setUsd(forceTotal);
 			setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
 			setBuyProcessState("SOLD");
 			setLifeTimeState("RESERVE");
-			} else {
-				setLoss(getLoss().add((getLastUsd()).subtract(getUsd())));
-				setBuyProcessState("SOLD");//idle
-				setLifeTimeState("IDLE");
-			}
-		}
-		} else if (getBuyProcessState().equals("BOUGHT")) {
-			if (getRequestBuyPrice().compareTo(getCurrentPrice()) == 1) {
-				setLoss(getLoss().add((getRequestBuyPrice().multiply(forceLtc))).subtract(forceTotal));
-				setBuyProcessState("SOLD");//idle
-				setLifeTimeState("IDLE");
-				} else {
-					if (getUsd().compareTo(getLastUsd()) == 1) {
-					setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
-					setBuyProcessState("SOLD");
-					setLifeTimeState("RESERVE");
-					} else {
-						setLoss(getLoss().add((getLastUsd()).subtract(getUsd())));
-						setBuyProcessState("SOLD");//idle
-						setLifeTimeState("IDLE");	
-					}
+			setLtc(new BigDecimal("0"));
+			setLastUsd(forceTotal);
+			if (getSimMode() == SimulationMode.REALTIME) {
+				timer.cancel();
+				} else if (getSimMode() == SimulationMode.SIMULATION) {
+					resetTick();
 				}
-			}
-		
-		if (getSimMode() == SimulationMode.REALTIME) {
-			timer.cancel();
-			} else if (getSimMode() == SimulationMode.SIMULATION) {
-				resetTick();
-			}
-		setLtc(new BigDecimal("0"));
-		setLastUsd(forceTotal);
 		}
+//		setUsd(forceTotal);
+//		if (getUsd().compareTo(getLastUsd()) == 1) {
+//			
+//		if (getBuyProcessState().equals("DESIRED_SELL")) {
+//		if (getRequestedTotal().compareTo(forceTotal) == 1) {
+//		setLoss(getLoss().add(getRequestedTotal().subtract(forceTotal)));
+//		setBuyProcessState("SOLD");//idle
+//		setLifeTimeState("IDLE");
+//		} else {
+//			if (getUsd().compareTo(getLastUsd()) == 1) {
+//			setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
+//			setBuyProcessState("SOLD");
+//			setLifeTimeState("RESERVE");
+//			} else {
+//				setLoss(getLoss().add((getLastUsd()).subtract(getUsd())));
+//				setBuyProcessState("SOLD");//idle
+//				setLifeTimeState("IDLE");
+//			}
+//		}
+//		} else if (getBuyProcessState().equals("BOUGHT")) {
+//			if (getRequestBuyPrice().compareTo(getCurrentPrice()) == 1) {
+//				setLoss(getLoss().add((getRequestBuyPrice().multiply(forceLtc))).subtract(forceTotal));
+//				setBuyProcessState("SOLD");//idle
+//				setLifeTimeState("IDLE");
+//				} else {
+//					if (getUsd().compareTo(getLastUsd()) == 1) {
+//					setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
+//					setBuyProcessState("SOLD");
+//					setLifeTimeState("RESERVE");
+//					} else {
+//						setLoss(getLoss().add((getLastUsd()).subtract(getUsd())));
+//						setBuyProcessState("SOLD");//idle
+//						setLifeTimeState("IDLE");	
+//					}
+//				}
+//			}
+//		
+		
+//		setLtc(new BigDecimal("0"));
+//		setLastUsd(forceTotal);
+//		}
 		
 	}
 	

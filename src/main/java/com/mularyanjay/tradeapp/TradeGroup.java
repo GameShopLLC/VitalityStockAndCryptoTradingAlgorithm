@@ -586,9 +586,9 @@ public class TradeGroup {
 			//if (getSimMode() == SimulationMode)
 			
 			if (getSimMode() == SimulationMode.SIMULATION) {
-				setTick(getTick() + 1L);
+				setTick(getTick() + 60L);
 			for (TradeThread t: trades) {
-				t.incrementSecondTick();
+				t.incrementSecondTick(60L);
 				//t.evaluateSimulationTimeout();
 			}
 			}
