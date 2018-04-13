@@ -110,7 +110,7 @@ public class TradeGroup {
 	public boolean acceptLoss() {
 		BigDecimal forcedAmount = new BigDecimal("0");
 		forcedAmount = ((getCurrentCarrot().getCurrent().subtract(getCurrentCarrot().getCurrent().multiply(getFee()))).multiply(getLtc()));
-		updateBalance();
+		//updateBalance();
 		if ((forcedAmount.add(getUsd())).compareTo(getAccountSnapshot()) == 1) {
 			System.out.println("Accepted Loss");
 			getAcceptedLossLog().add("Accepted Loss at: " + getCurrentCarrot().getCurrentTime().toString() + " " + forcedAmount);
