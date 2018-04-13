@@ -74,7 +74,7 @@ public class TradeGroup {
 		setFee(new BigDecimal("0.003"));
 		setAccountSnapshot(initialUSD);
 		setForceLossTimeout(flto);
-		setSplitMode(new String("NONE"));  //if contains zeno
+		setSplitMode(new String("ZENO_CLASSIC"));  //if contains zeno
 		setLossMode(new String("NONE")); //IMMEDIATE
 		setDumpingMode(new String("DUMP_ALL"));
 		setSimMode(sm);
@@ -102,7 +102,7 @@ public class TradeGroup {
 		docks.add(new Dock("STEPSHED"));
 		docks.add(new Dock("TOPROFIT"));
 		
-		setSplitNum(getAmountThreads() * 1 / 2);
+		setSplitNum(getAmountThreads() * 2 / 3);
 		partitionThreads();
 		
 	}
@@ -282,10 +282,12 @@ public class TradeGroup {
 		//ArrayList<TradeThread> halvedTrades = new ArrayList<TradeThread>();
 		int idleTrades = getIdleThreadCount();
 		BigDecimal idleUsd = new BigDecimal("0");
+		ArrayList<BigDecimal> idleNums = new ArrayList<BigDecimal>();
 		for (TradeThread t: trades) {
 			if (t.getLifeTimeState().equals("IDLE")) {
 				idleUsd = t.getUsd().divide(new BigDecimal("2"), 8, RoundingMode.FLOOR);
-				break;
+				//break;
+				idleNums.add(new BigDecimal(idleUsd.toString()));
 			}
 			//TradeThread temp = t.
 			//MUST MAKE COPY CONSTRUCTOR 
@@ -305,8 +307,10 @@ public class TradeGroup {
 			}
 		}
 		
-		for (int j = 0; j < idleTrades * 2; j++) {
-			trades.add(new TradeThread(getSimMode(), idleUsd, getBuyTimeout(), getStuckTimeout()));
+		for (int j = 0; j < idleTrades; j++) {
+			trades.add(new TradeThread(getSimMode(), idleNums.get(j), getBuyTimeout(), getStuckTimeout()));
+			trades.add(new TradeThread(getSimMode(), idleNums.get(j), getBuyTimeout(), getStuckTimeout()));
+			
 		}
 //		for (TradeThread t: trades) {
 //			if (t.getLifeTimeState().equals("IDLE")) {
@@ -317,7 +321,7 @@ public class TradeGroup {
 	public void checkSplit() {
 		if (getActiveThreadCount() >= getSplitNum()) {
 			 performSplit();
-			 setSplitNum(getSplitNum() + (getSplitNum() * 1 / 2));
+			 setSplitNum((getActiveThreadCount() + getIdleThreadCount()) * 2 / 3);
 		}
 		System.out.println("Split num: " + getSplitNum());
 		System.out.println("Active threads:" + getActiveThreadCount());
