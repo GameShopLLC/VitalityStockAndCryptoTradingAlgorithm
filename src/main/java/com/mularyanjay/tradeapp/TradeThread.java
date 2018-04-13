@@ -102,7 +102,7 @@ public class TradeThread {
 			setLifeTimeState("RESERVE");
 			setLtc(new BigDecimal("0"));
 			setLastUsd(forceTotal);
-		} else {
+		} else if (forceTotal.compareTo(getLastUsd()) <= 0) {
 			setUsd(forceTotal);
 			setLoss(getLoss().add((getLastUsd()).subtract(getUsd())));
 			setBuyProcessState("SOLD");//idle

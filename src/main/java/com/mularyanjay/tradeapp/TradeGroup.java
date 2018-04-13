@@ -56,7 +56,7 @@ public class TradeGroup {
 	private BigDecimal fee;
 	private Timer timer;
 	private long tick;
-
+	private ArrayList<String> acceptedLossLog;
 	//forceLossagent
 	//private String sellingMode; //NONE, IMMEDIATESELL
 	//private int steppedThreads make local
@@ -70,6 +70,7 @@ public class TradeGroup {
 	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto, long flto) {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
+		acceptedLossLog = new ArrayList<String>();
 		setFee(new BigDecimal("0.003"));
 		setAccountSnapshot(initialUSD);
 		setForceLossTimeout(flto);
@@ -110,8 +111,12 @@ public class TradeGroup {
 		BigDecimal forcedAmount = new BigDecimal("0");
 		forcedAmount = ((getCurrentCarrot().getCurrent().subtract(getCurrentCarrot().getCurrent().multiply(getFee()))).multiply(getLtc()));
 		if (forcedAmount.compareTo(getAccountSnapshot()) == 1) {
+			System.out.println("Accepted Loss");
+			getAcceptedLossLog().add("Accepted Loss at: " + getCurrentCarrot().getCurrentTime().toString() + " " + forcedAmount);
 			return true;
 		}
+		System.out.println("Loss Unacceptable");
+		getAcceptedLossLog().add("Loss unacceptable at: " + getCurrentCarrot().getCurrentTime().toString() + " " + forcedAmount);
 		return false;
 	}
 	public void shedFromOutgoingToStep() {
@@ -380,7 +385,7 @@ public class TradeGroup {
 				
 			}, getForceLossTimeout(), getForceLossTimeout());
 		} else if (getSimMode() == SimulationMode.SIMULATION) {
-			if (getTick() > getForceLossTimeout()/1000) {
+			if (getTick() >= getForceLossTimeout()/1000) {
 				if (acceptLoss()) {
 					forceLoss();
 				}
@@ -749,6 +754,10 @@ public class TradeGroup {
 	public String statusReport() {
 		
 		TradeThread highest = null;
+		StringBuilder acceptedLossStatus = new StringBuilder();
+		for (String s: acceptedLossLog) {
+			acceptedLossStatus.append(s + "\n");
+		}
 		for (TradeThread t: trades) {
 			
 			if (highest == null) {
@@ -783,7 +792,8 @@ public class TradeGroup {
 			   "Strongest thread LTC: " + highest.getLtc() + "\n" +
 			   "Strongest thread profit: " + highest.getProfit() + "\n" +
 			   "Strongest thread loss: " + highest.getLoss() + "\n" +
-			   "Strongest thread net: " + highest.getNet() + "\n";
+			   "Strongest thread net: " + highest.getNet() + "\n" + 
+			   acceptedLossStatus.toString();
 	}
 	public String getName() {
 		return name;
@@ -1114,5 +1124,13 @@ public class TradeGroup {
 
 	public void setTick(long tick) {
 		this.tick = tick;
+	}
+
+	public ArrayList<String> getAcceptedLossLog() {
+		return acceptedLossLog;
+	}
+
+	public void setAcceptedLossLog(ArrayList<String> acceptedLossLog) {
+		this.acceptedLossLog = acceptedLossLog;
 	}
 }
