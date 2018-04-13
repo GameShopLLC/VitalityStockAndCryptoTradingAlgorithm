@@ -84,6 +84,7 @@ public class TradeThread {
 	}
 	
 	public void forceLoss() {
+		if (getBuyProcessState().equals("DESIRED_SELL") || getBuyProcessState().equals("BOUGHT")) {
 		BigDecimal sellPrice = new BigDecimal("0");
 		sellPrice = getCurrentPrice().subtract(getCurrentPrice().multiply(getForceSellFee()));
 		BigDecimal forceLtc = new BigDecimal("0");
@@ -95,14 +96,14 @@ public class TradeThread {
 		BigDecimal forceTotal = new BigDecimal("0");
 		forceTotal = sellPrice.multiply(forceLtc);
 		
-		if (forceTotal.compareTo(getLastUsd()) == 1) {
+		if (forceTotal.compareTo(getLastUsd()) >= 0) {
 			setUsd(forceTotal);
 			setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
 			setBuyProcessState("SOLD");
 			setLifeTimeState("RESERVE");
 			setLtc(new BigDecimal("0"));
 			setLastUsd(forceTotal);
-		} else if (forceTotal.compareTo(getLastUsd()) <= 0) {
+		} else if (forceTotal.compareTo(getLastUsd()) == -1) {
 			setUsd(forceTotal);
 			setLoss(getLoss().add((getLastUsd()).subtract(getUsd())));
 			setBuyProcessState("SOLD");//idle
@@ -149,10 +150,12 @@ public class TradeThread {
 				} else if (getSimMode() == SimulationMode.SIMULATION) {
 					resetTick();
 				}
-			
+		}
 	}
 	
 	public void forceSell() {
+		if (getBuyProcessState().equals("DESIRED_SELL") || getBuyProcessState().equals("BOUGHT")) {
+			
 		BigDecimal sellPrice = new BigDecimal("0");
 		sellPrice = getCurrentPrice().subtract(getCurrentPrice().multiply(getForceSellFee()));
 		BigDecimal forceLtc = new BigDecimal("0");
@@ -217,7 +220,7 @@ public class TradeThread {
 //		setLtc(new BigDecimal("0"));
 //		setLastUsd(forceTotal);
 //		}
-		
+		}
 	}
 	
 	public void calculateNet() {
