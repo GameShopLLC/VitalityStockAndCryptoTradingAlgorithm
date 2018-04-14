@@ -49,7 +49,7 @@ public class TradeGroup {
 	private int sellStuckCount;
 	private String dumpingMode; //NONE, DUMP_ALL
 	private String lossMode; //NONE, IMMEDIATE, SPLIT, INSTANT
-	private String splitMode;//NONE, ZENO_CLASSIC, ZENO_RALLY
+	private String splitMode;//NONE, ZENO_CLASSIC, ZENO_LOCK_AND_RALLY
 	private int splitNum;
 	private long forceLossTimeout;
 	private BigDecimal accountSnapshot;
@@ -57,6 +57,7 @@ public class TradeGroup {
 	private Timer timer;
 	private long tick;
 	private ArrayList<String> acceptedLossLog;
+	private String forceLossMode;//NONE, ACCEPTED_LOSS, NEGATIVE_LOSS
 	//forceLossagent
 	//private String sellingMode; //NONE, IMMEDIATESELL
 	//private int steppedThreads make local
@@ -70,6 +71,7 @@ public class TradeGroup {
 	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto, long flto) {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
+		setForceLossMode("NEGATIVE_LOSS");
 		acceptedLossLog = new ArrayList<String>();
 		setFee(new BigDecimal("0.003"));
 		setAccountSnapshot(initialUSD);
@@ -376,6 +378,7 @@ public class TradeGroup {
 		}
 		
 		//PUT FORCELOSS LOGIC HERE.  NEEDS TIMEOUT
+		if (!getForceLossMode().equals("NONE")){
 		if (getSimMode() == SimulationMode.REALTIME) {
 			setTimer(new Timer());
 			getTimer().schedule(new TimerTask() {
@@ -383,7 +386,11 @@ public class TradeGroup {
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
+					if (getForceLossMode().equals("ACCEPTED_LOSS")) {
 					if (acceptLoss()) {
+						forceLoss();
+					}
+					} else if (getForceLossMode().equals("NEGATIVE_LOSS")) {
 						forceLoss();
 					}
 				}
@@ -391,13 +398,17 @@ public class TradeGroup {
 			}, getForceLossTimeout(), getForceLossTimeout());
 		} else if (getSimMode() == SimulationMode.SIMULATION) {
 			if (getTick() >= getForceLossTimeout()/1000) {
+				if (getForceLossMode().equals("ACCEPTED_LOSS")) {
 				if (acceptLoss()) {
+					forceLoss();
+				}
+				}  else if (getForceLossMode().equals("NEGATIVE_LOSS")) {
 					forceLoss();
 				}
 				setTick(0L);
 			}
 		}
-		
+	}
 		//...
 		if(getName().contains("One")) {
 			//if (getCurrentCarrot() == null) {
@@ -1137,5 +1148,13 @@ public class TradeGroup {
 
 	public void setAcceptedLossLog(ArrayList<String> acceptedLossLog) {
 		this.acceptedLossLog = acceptedLossLog;
+	}
+
+	public String getForceLossMode() {
+		return forceLossMode;
+	}
+
+	public void setForceLossMode(String forceLossMode) {
+		this.forceLossMode = forceLossMode;
 	}
 }
