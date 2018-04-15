@@ -478,4 +478,14 @@ public class MainController {
 		}
 		return t.toString();
 	}
+	
+	@RequestMapping(value="/gdaxData")
+	public @ResponseBody String gdaxData() {
+		StringBuilder t = new StringBuilder();
+		
+		for (String s: simulationManager.getRequestMessages) {
+			t.append(s + "\n");
+		}
+		return t.toString();
+	}
 }

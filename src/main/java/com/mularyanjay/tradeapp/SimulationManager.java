@@ -34,9 +34,11 @@ public class SimulationManager {
 	VitalityInstance vitalityInstance;
 	
 	List<String> checkpointMessages;
+	List<String> getRequestMessages;
 	
 	public SimulationManager() {
 		checkpointMessages = new ArrayList<String>();
+		getRequestMessages = new ArrayList<String>();
 	}
 	
 	public void runSimulation() {
@@ -140,6 +142,7 @@ public class SimulationManager {
 //		}
 		//"2018-03-25T11:07:04Z"
 		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + map.get("from") + "&end=" + map.get("to") + "&granularity=60";
+		getRequestMessages.add(url);
 		ResponseEntity<List<List<String>>> response = null;
 
 		System.out.println("mid");
@@ -154,6 +157,7 @@ public class SimulationManager {
 
 		try {
 			System.out.println(objectMapper.writeValueAsString(Arrays.asList(response.getBody())));
+			getRequestMessages.add(objectMapper.writeValueAsString(Arrays.asList(response.getBody())));
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

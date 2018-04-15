@@ -32,7 +32,9 @@ $(document).ready(function(){
 
 function updateStatus(){
 	$.ajax({
-		url:'https://ancient-crag-48261.herokuapp.com/simulationStatusReport',
+		//url:'https://ancient-crag-48261.herokuapp.com/simulationStatusReport',
+		url:'https://ancient-crag-48261.herokuapp.com/gdaxData',
+		
 		type: 'GET',
 		success: function(response){
 			console.log(response);
