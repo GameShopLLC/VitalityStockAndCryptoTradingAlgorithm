@@ -71,13 +71,13 @@ public class TradeGroup {
 	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto, long flto) {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
-		setForceLossMode("NEGATIVE_LOSS");
+		setForceLossMode("NONE");
 		acceptedLossLog = new ArrayList<String>();
 		setFee(new BigDecimal("0.003"));
 		setAccountSnapshot(initialUSD);
 		setForceLossTimeout(flto);
 		setSplitMode(new String("NONE"));  //if contains zeno
-		setLossMode(new String("NONE")); //IMMEDIATE
+		setLossMode(new String("IMMEDIATE")); //IMMEDIATE
 		setDumpingMode(new String("DUMP_ALL"));
 		setSimMode(sm);
 		setLoss(new BigDecimal("0"));
@@ -617,7 +617,7 @@ public class TradeGroup {
 			if (getLossMode().equals("IMMEDIATE")) {
 			for (TradeThread t: trades) {
 				if (t.getLifeTimeState().equals("SELL_STUCK")) {
-					t.forceSell();
+					t.forceLoss(); //forceSell?
 				}
 			}
 			} else if (getLossMode().equals("INSTANT")) {
