@@ -87,7 +87,7 @@ public class SimulationManager {
 		List<SerializableCandle> data = new ArrayList<SerializableCandle>();
 		HashMap<String, String> map = new HashMap<String, String>();
 		ComparableDateTime cdt = new ComparableDateTime("2018-01-1T00:00:00Z");
-		for (int i = 0; i < 650; i++) { //1882 for a year //273 for feb and march //153 march 144 feb //450 jan to april
+		for (int i = 0; i < 1050; i++) { //1882 for a year //273 for feb and march //153 march 144 feb //450 jan to april
 			map.clear();
 			String from = cdt.toString();
 			cdt.incrementMinute(300);
@@ -141,7 +141,7 @@ public class SimulationManager {
 //			e1.printStackTrace();
 //		}
 		//"2018-03-25T11:07:04Z"
-		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + map.get("from") + "&end=" + map.get("to") + "&granularity=60";
+		String url = "https://api.pro.coinbase.com/products/LTC-USD/candles?" + "start=" + map.get("from") + "&end=" + map.get("to") + "&granularity=60";
 		//getRequestMessages.add(url);
 		ResponseEntity<List<List<String>>> response = null;
 
