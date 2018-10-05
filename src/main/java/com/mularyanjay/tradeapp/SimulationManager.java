@@ -141,7 +141,7 @@ public class SimulationManager {
 //			e1.printStackTrace();
 //		}
 		//"2018-03-25T11:07:04Z"
-		String url = "https://api.pro.coinbase.com/products/LTC-USD/candles?" + "start=" + map.get("from") + "&end=" + map.get("to") + "&granularity=60";
+		String url = "https://api.gdax.com/products/LTC-USD/candles?" + "start=" + map.get("from") + "&end=" + map.get("to") + "&granularity=60";
 		//getRequestMessages.add(url);
 		ResponseEntity<List<List<String>>> response = null;
 
