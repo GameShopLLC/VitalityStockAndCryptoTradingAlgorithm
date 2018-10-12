@@ -44,13 +44,13 @@ $(document).ready(function(){
 			success: function(response) {
 				$('#counter').text('Algorithm running');
 				console.log(response);
-				console.log("INSIDE AJAX BUTTON")
+				console.log("INSIDE AJAX BUTTON");
 			}
 			
 		})
 	})
 	
-	setInterval(updateDetails, 1000)
+	setInterval(updateDetails, 1000);
 	setInterval(updateAlgStatus, 1000);
 	//Decouple business logic from view logic.
 	//setInterval(ajaxCall, 1000);
