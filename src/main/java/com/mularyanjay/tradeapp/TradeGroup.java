@@ -58,6 +58,7 @@ public class TradeGroup {
 	private long tick;
 	private ArrayList<String> acceptedLossLog;
 	private String forceLossMode;//NONE, ACCEPTED_LOSS, NEGATIVE_LOSS
+	private BigDecimal slightAmount;
 	//forceLossagent
 	//private String sellingMode; //NONE, IMMEDIATESELL
 	//private int steppedThreads make local
@@ -68,9 +69,10 @@ public class TradeGroup {
 	//*Need to apply timeouts*
 	//Obviously, handling logging, statistical data
 	
-	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto, long flto) {
+	public TradeGroup(SimulationMode sm, String whatName, String stepMode, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, long bto, long sto, long flto, BigDecimal slightAmount) {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
+		setSlightAmount(slightAmount);
 		setForceLossMode("NEGATIVE_LOSS");
 		acceptedLossLog = new ArrayList<String>();
 		setFee(new BigDecimal("0.003"));
@@ -149,7 +151,7 @@ public class TradeGroup {
 		System.out.println("TradeGroup $" + getUsd() + " thread amount $" + threadUSD);
 		for(int i = 0; i < getAmountThreads(); i++) {
 			//BigDecimal initialUSD, float whatDBT, float whatDSTST) {
-			trades.add(new TradeThread(getSimMode(), threadUSD, getBuyTimeout(), getStuckTimeout()));
+			trades.add(new TradeThread(getSimMode(), threadUSD, getBuyTimeout(), getStuckTimeout(), getSlightAmount()));
 		}
 		
 		setStepTotal(threadUSD.multiply(new BigDecimal("10")));
@@ -310,8 +312,8 @@ public class TradeGroup {
 		}
 		
 		for (int j = 0; j < idleTrades; j++) {
-			trades.add(new TradeThread(getSimMode(), idleNums.get(j), getBuyTimeout(), getStuckTimeout()));
-			trades.add(new TradeThread(getSimMode(), idleNums.get(j), getBuyTimeout(), getStuckTimeout()));
+			trades.add(new TradeThread(getSimMode(), idleNums.get(j), getBuyTimeout(), getStuckTimeout(), getSlightAmount()));
+			trades.add(new TradeThread(getSimMode(), idleNums.get(j), getBuyTimeout(), getStuckTimeout(), getSlightAmount()));
 			
 		}
 //		for (TradeThread t: trades) {
@@ -1156,5 +1158,13 @@ public class TradeGroup {
 
 	public void setForceLossMode(String forceLossMode) {
 		this.forceLossMode = forceLossMode;
+	}
+
+	public BigDecimal getSlightAmount() {
+		return slightAmount;
+	}
+
+	public void setSlightAmount(BigDecimal slightAmount) {
+		this.slightAmount = slightAmount;
 	}
 }

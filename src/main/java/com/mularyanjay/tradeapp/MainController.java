@@ -149,7 +149,7 @@ public class MainController {
 		//if (isLoggedIn){
 			ObjectMapper mapper = new ObjectMapper();
 			RestTemplate restTemplate = new RestTemplate();
-			String url = "https://api.gdax.com/products/LTC-USD/TICKER";//"https://api.gdax.com/accounts";//"https://api.gdax.com/products/BTC-USD/TICKER";//"https://localhost:8080/testParamType";//"https://api.gdax.com/account";//;
+			String url = "https://api.gdax.com/products/ZRX-USD/TICKER";//"https://api.gdax.com/accounts";//"https://api.gdax.com/products/BTC-USD/TICKER";//"https://localhost:8080/testParamType";//"https://api.gdax.com/account";//;
 			
 			//***NO USE ****
 			//ResponseEntity<Account[]> response = restTemplate.exchange(url, HttpMethod.GET, httpEntityBean.getEntityFromUrl(url), new ParameterizedTypeReference<Account[]>(){});//restTemplate.exchange(requestEntity, responseType)//restTemplate.getForEntity(url, String.class)

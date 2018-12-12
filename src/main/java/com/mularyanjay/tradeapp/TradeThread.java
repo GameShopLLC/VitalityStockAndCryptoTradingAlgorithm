@@ -45,6 +45,7 @@ public class TradeThread {
 	private Carrot simCarrot;
 	private BigDecimal forceSellFee;
 	private int splitDepth;
+	private BigDecimal slightAmount;
 	//private boolean traded
 	//private BigDecimal currentPrice;
 	//flagged bool?
@@ -54,9 +55,10 @@ public class TradeThread {
 		
 	}
 	
-	public TradeThread(SimulationMode sm, BigDecimal initialUSD, long whatDBT, long whatDSTST) {
+	public TradeThread(SimulationMode sm, BigDecimal initialUSD, long whatDBT, long whatDSTST, BigDecimal slightAmount) {
 	
 		//setSimMode(sm);
+		setSlightAmount(slightAmount);
 		setSimMode(sm);
 		setForceSellFee(new BigDecimal("0.003"));
 		setStepTotal(new BigDecimal("0"));
@@ -303,11 +305,11 @@ public class TradeThread {
 	//Remember to set timer/timeouts
 	public void deploy(Carrot carrot) {
 		if (getSimMode() != null && getCurrentPrice() != null &&carrot != null && carrot.getLow() != null) {
-		if ((getSimMode() == SimulationMode.SIMULATION) || (getCurrentPrice().compareTo(carrot.getLow().subtract(new BigDecimal(".01"))) == 1)) {
+		if ((getSimMode() == SimulationMode.SIMULATION) || (getCurrentPrice().compareTo(carrot.getLow().subtract(getSlightAmount())) == 1)) {
 		//Have to make sure things are set up correctly
 			
 		//At this point I would place buy order with api	
-		setRequestBuyPrice(carrot.getLow().subtract(new BigDecimal(".01")));
+		setRequestBuyPrice(carrot.getLow().subtract(getSlightAmount()));
 		//placeBuyOrder();
 		//Need to calculate totals and then do transaction
 		//A buy order will deduct dollars and want ltc,
@@ -367,8 +369,8 @@ public class TradeThread {
 	public void attemptSell(Carrot carrot) {
 		if (getSimMode() != null && getCurrentPrice() != null &&carrot != null && carrot.getHigh() != null) {
 			
-		if ((getSimMode() == SimulationMode.SIMULATION) || (getCurrentPrice().compareTo(carrot.getHigh().add(new BigDecimal("0.01"))) == -1)) {
-			setRequestSellPrice(carrot.getHigh().add(new BigDecimal("0.01")));
+		if ((getSimMode() == SimulationMode.SIMULATION) || (getCurrentPrice().compareTo(carrot.getHigh().add(getSlightAmount())) == -1)) {
+			setRequestSellPrice(carrot.getHigh().add(getSlightAmount()));
 			if (getRequestSellPrice().compareTo(getRequestBuyPrice()) == 1) {
 			
 				setRequestedTotal(getRequestSellPrice().multiply(getLtc()));
@@ -466,7 +468,7 @@ public class TradeThread {
 	public void sell() {
 		
 		setUsd(getRequestedTotal());
-		if ((getUsd().subtract(getLastUsd())).compareTo(new BigDecimal(".01")) == 1){
+		if ((getUsd().subtract(getLastUsd())).compareTo(getSlightAmount()) == 1){
 		setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
 		}
 		setLastUsd(getUsd());
@@ -690,4 +692,11 @@ public class TradeThread {
 		this.splitDepth = splitDepth;
 	}
 	
+	public BigDecimal getSlightAmount() {
+		return slightAmount;
+	}
+
+	public void setSlightAmount(BigDecimal slightAmount) {
+		this.slightAmount = slightAmount;
+	}
 }
