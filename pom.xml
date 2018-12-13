@@ -139,6 +139,10 @@
     <version>5.0.1.RELEASE</version>
 </dependency>
 
+<dependency>
+  <groupId>org.postgresql</groupId>
+  <artifactId>postgresql</artifactId>
+</dependency>
 		
 <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
 <!-- 
