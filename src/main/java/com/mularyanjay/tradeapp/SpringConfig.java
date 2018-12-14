@@ -15,15 +15,15 @@ import com.mongodb.client.MongoDatabase;
 @Configuration
 public class SpringConfig {
     @Bean
-    public MongoDatabase getDb() throws UnknownHostException, MongoException {
-//        MongoURI mongoURI = new MongoURI(System.getenv("MONGOHQ_URL"));
-//        MongoDatabase db = mongoURI.connectDB();
-//        db.authenticate(mongoURI.getUsername(), mongoURI.getPassword());
-//
-//        return db;
-    	MongoClient mc = new MongoClient(new MongoClientURI(System.getenv("MONGOHQ_URL")));
-    	MongoDatabase db = mc.getDatabase("mula");
-    	System.out.println("DATABASE EEN SHEET CREATED");
-    	return db;
+    public DB getDb() throws UnknownHostException, MongoException {
+        MongoURI mongoURI = new MongoURI(System.getenv("MONGOHQ_URL"));
+        DB db = mongoURI.connectDB();
+        db.authenticate(mongoURI.getUsername(), mongoURI.getPassword());
+        System.out.println("DATABASE EEN SHEET CREATED");
+        return db;
+//    	MongoClient mc = new MongoClient(new MongoClientURI(System.getenv("MONGOHQ_URL")));
+//    	MongoDatabase db = mc.getDatabase("mula");
+//    	System.out.println("DATABASE EEN SHEET CREATED");
+//    	return db;
     }
 }
