@@ -13,6 +13,7 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.MongoCredential;
 import com.mongodb.MongoException;
 import com.mongodb.MongoURI;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
 
 @Configuration
@@ -30,11 +31,12 @@ public class SpringConfig {
 //    	 char[] password; // the password as a character array
     	 // ...
 
-//    	 MongoCredential credential = MongoCredential.createCredential(mcURI.getUsername(), mcURI.getDatabase(), mcURI.getPassword());
+    	 MongoCredential credential = MongoCredential.createCredential(mcURI.getUsername(), mcURI.getDatabase(), mcURI.getPassword());
 
     	 MongoClientOptions options = MongoClientOptions.builder().sslEnabled(true).build();
 //        return db;
-    	MongoClient mc = new MongoClient(mcURI);
+    	MongoClient mc = new MongoClient(new ServerAddress("localhost", 27017),
+                Arrays.asList(credential), options);
     	
     	MongoDatabase db = mc.getDatabase("heroku_f2jqwmg9");
     	System.out.println("DATABASE EEN SHEET CREATED");
