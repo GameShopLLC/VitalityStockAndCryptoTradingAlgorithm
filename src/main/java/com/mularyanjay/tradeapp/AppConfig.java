@@ -9,10 +9,12 @@ package com.mularyanjay.tradeapp;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableAutoConfiguration
+@EnableMongoRepositories
 //@EnableWebMvc
 public class AppConfig {
 
