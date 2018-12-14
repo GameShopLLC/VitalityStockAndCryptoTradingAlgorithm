@@ -8,6 +8,8 @@
 package com.mularyanjay.tradeapp;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -42,11 +44,19 @@ import javax.servlet.ServletException;
 //IMPLEMENT SPLITTING TODAY
 @SpringBootApplication
 @ComponentScan("com.mularyanjay.tradeapp")
-public class TradeappApplication extends SpringBootServletInitializer  {
+public class TradeappApplication extends SpringBootServletInitializer implements CommandLineRunner  {
 
+	@Autowired
+    VitalityInstanceRepository vir;
+	
+	@Autowired
+	VitalityInstance vi;
+	
 	public static void main(String[] args) {
 		try {
 		ApplicationContext ctx = SpringApplication.run(TradeappApplication.class, args);
+//		VitalityInstance vi = ctx.getBean(VitalityInstance.class);
+		
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -75,6 +85,27 @@ public class TradeappApplication extends SpringBootServletInitializer  {
 //			
 //		}
 	}
+	
+	@Override
+	public void run(String... args) throws Exception {
+
+		try {
+			if (vir.findAll().size() > 0) {
+//				for (VitalityInstance v: vir.findAll()) {
+					vi = vir.findAll().get(0);
+					System.out.println("Vitality Instance existing and set");
+//					break;
+//				}
+			} else {
+				System.out.println("No vi set, setting one");
+				vir.save(vi);
+				System.out.println("Size of database is " + vir.findAll().size());
+			}
+		} catch (Throwable ex) {
+			ex.printStackTrace();
+		}
+	}
+	
 	@Bean(name="current")
 	User currentUser(){
 		return new User("Mula", "Mula");
@@ -114,8 +145,8 @@ public class TradeappApplication extends SpringBootServletInitializer  {
 	//public TradeGroup(String whatName, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, float bto, float sto) {
 	@Bean
 	VitalityInstance vitalityInstance() {
-		return new VitalityInstance(SimulationMode.SIMULATION, new BigDecimal("64"), //Original 25000000
-				new TradeGroup(SimulationMode.SIMULATION, "One-1", "NONE", 32, new BigDecimal("64"), 1, 3, 8L * 60L * 1000L, 1L * 24L * 60L * 60L * 1000L, 1L * 24L * 60L * 60L * 1000L, new BigDecimal(".0001")));//forceLossTimeout),
+		return new VitalityInstance(SimulationMode.REALTIME, new BigDecimal("64"), //Original 25000000
+				new TradeGroup(SimulationMode.REALTIME, "One-1", "NONE", 32, new BigDecimal("64"), 1, 3, 8L * 60L * 1000L, 1L * 24L * 60L * 60L * 1000L, 1L * 24L * 60L * 60L * 1000L, new BigDecimal(".0001")));//forceLossTimeout),
 				//new TradeGroup("Five-1", 20, new BigDecimal("10000"), 5, 3, 40L * 60L * 1000L, 24L * 60L * 60L * 1000L),
 				//new TradeGroup("Ten-1", 20, new BigDecimal("10000"), 10, 3, 80L * 60L * 1000L, 24L * 60L * 60L * 1000L),
 				//new TradeGroup("Fifteen-1", 20, new BigDecimal("10000"), 15, 3, 120L * 60L * 1000L, 24L * 60L * 60L * 1000L),
