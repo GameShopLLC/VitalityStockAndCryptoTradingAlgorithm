@@ -20,13 +20,14 @@ import org.springframework.data.annotation.Transient;
 
 public class TradeThread {
 
-	@Autowired
-	@Transient
-	VitalityInstance vi;
-	@Autowired
-	@Transient
-	VitalityInstanceRepository vir;
+//	@Autowired
+//	@Transient
+//	VitalityInstance vi;
+//	@Autowired
+//	@Transient
+//	VitalityInstanceRepository vir;
 	//simMode
+	private boolean dirty;
 	private BigDecimal usd;
 	private BigDecimal ltc;
 	//buyprocessstate
@@ -69,6 +70,7 @@ public class TradeThread {
 	public TradeThread(SimulationMode sm, BigDecimal initialUSD, long whatDBT, long whatDSTST, BigDecimal slightAmount) {
 	
 		//setSimMode(sm);
+		setDirty(false);
 		setSlightAmount(slightAmount);
 		setSimMode(sm);
 		setForceSellFee(new BigDecimal("0.003"));
@@ -233,7 +235,8 @@ public class TradeThread {
 //		setLtc(new BigDecimal("0"));
 //		setLastUsd(forceTotal);
 //		}
-		vir.save(vi);
+//		vir.save(vi);
+		setDirty(true);
 		}
 	}
 	
@@ -333,7 +336,8 @@ public class TradeThread {
 		setLifeTimeState("TRADING");
 		//Sysout?
 		System.out.println("Buy order placed at $" + getRequestBuyPrice());
-		vir.save(vi);
+//		vir.save(vi);
+		setDirty(true);
 		//Make timer change to stuck if not at different
 		//buy process state, otherwise change to trading
 		//Make getCurrentTime for Carrot?
@@ -348,7 +352,8 @@ public class TradeThread {
 				if (getBuyProcessState().equals("DESIRED_BUY")) {
 					setLifeTimeState("BUY_STUCK");
 					cancelBuy();
-					vir.save(vi);
+//					vir.save(vi);
+					setDirty(true);
 				}
 				timer.cancel();
 			}
@@ -392,7 +397,8 @@ public class TradeThread {
 				setBuyProcessState("DESIRED_SELL");
 				setLifeTimeState("TRADING");
 				System.out.println("Sell order placed at $" + getRequestSellPrice());
-				vir.save(vi);
+//				vir.save(vi);
+				setDirty(true);
 	
 				}
 			}
@@ -428,7 +434,8 @@ public class TradeThread {
 			if (getSimMode() == SimulationMode.REALTIME) {
 			if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
 				buy();
-				vir.save(vi);
+//				vir.save(vi);
+				setDirty(true);
 			}
 			} else if(getSimMode() == SimulationMode.SIMULATION) {
 				if (getRequestBuyPrice().compareTo(getSimCarrot().getHigh()) == -1) {
@@ -439,7 +446,8 @@ public class TradeThread {
 			if (getSimMode() == SimulationMode.REALTIME) {
 			if(getCurrentPrice().compareTo(getRequestSellPrice()) == 1) {
 				sell();
-				vir.save(vi);
+//				vir.save(vi);
+				setDirty(true);
 			}
 			} else if(getSimMode() == SimulationMode.SIMULATION) {
 				if (getRequestSellPrice().compareTo(getSimCarrot().getLow()) == 1) {
@@ -469,8 +477,8 @@ public class TradeThread {
 					// TODO Auto-generated method stub
 					if (getBuyProcessState().equals("BOUGHT") || getBuyProcessState().equals("DESIRED_SELL")) { //"DESIRED_SELL"
 						setLifeTimeState("SELL_STUCK");
-						vir.save(vi);
-					}
+//						vir.save(vi);
+						setDirty(true);					}
 					timer.cancel();
 				}
 				
@@ -714,5 +722,13 @@ public class TradeThread {
 
 	public void setSlightAmount(BigDecimal slightAmount) {
 		this.slightAmount = slightAmount;
+	}
+	
+	public boolean isDirty() {
+		return dirty;
+	}
+
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
 	}
 }

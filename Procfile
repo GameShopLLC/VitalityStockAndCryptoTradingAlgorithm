@@ -1,1 +1,1 @@
-web: java --add-opens java.base/java.lang=ALL-UNNAMED -Dserver.port=$PORT $JAVA_OPTS -Xmx1g  -jar target/*.jar
+web: java -Dserver.port=$PORT $JAVA_OPTS -Xmx1g  -jar target/*.jar

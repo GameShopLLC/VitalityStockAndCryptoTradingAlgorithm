@@ -10,7 +10,9 @@ package com.mularyanjay.tradeapp;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Component;
 import javax.persistence.Entity;
@@ -22,6 +24,9 @@ public class VitalityInstance {
 
 	@Id
 	public String id;
+	@Autowired
+	@Transient
+	VitalityInstanceRepository vir;
 	//simMode //SIMULATION, REALTIME
 	private ArrayList<TradeGroup> groups;
 	//Define entry point?
@@ -178,9 +183,30 @@ public class VitalityInstance {
 				}
 			}
 		}
-		
+		checkDirty();
 		updateBalance();
 		//after cycle, checkTrade
+	}
+	
+	public void checkDirty() {
+		boolean dirty = false;
+		for (TradeGroup g: groups) {
+			for (TradeThread t: g.getTrades()) {
+				if (t.isDirty()) {
+					dirty = true;
+					break;
+				}
+			}
+		}
+		if (dirty) {
+			for (TradeGroup g: groups) {
+				for (TradeThread t: g.getTrades()) {
+					t.setDirty(false);
+				}
+			}
+			System.out.println("saving...");
+			vir.save(this);
+		}
 	}
 	
 	//Will cycle to change balance..  Should be bigDecimal or have one
