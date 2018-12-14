@@ -15,13 +15,16 @@ import java.util.TimerTask;
 import javax.persistence.Entity;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.Transient;
 
 
 public class TradeThread {
 
 	@Autowired
+	@Transient
 	VitalityInstance vi;
 	@Autowired
+	@Transient
 	VitalityInstanceRepository vir;
 	//simMode
 	private BigDecimal usd;
