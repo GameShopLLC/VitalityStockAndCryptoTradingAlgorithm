@@ -15,6 +15,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javax.persistence.Entity;
 
+import org.springframework.data.annotation.Transient;
+
 public class TradeGroup {
 
 	private BigDecimal usd;
@@ -24,6 +26,7 @@ public class TradeGroup {
 	private String state; //STANDBY, ACTIVE, RALLYING
 	private String runningState; //GOING, STOPPED
 	private int amountThreads;
+	@Transient
 	private ArrayList<Carrot> carrotCache;
 	private int carrotCacheNum;
 	private int minuteTimeSpan;
@@ -42,11 +45,18 @@ public class TradeGroup {
 	private BigDecimal stepTotal; //temporary maximum of thread size
 	private String stepMode; //NONE, STEPSHED
 	private SimulationMode simMode;//SIMULATION, REALTIME
+	
+	@Transient
 	private int idleThreadCount;
+	@Transient
 	private int activeThreadCount;
+	@Transient
 	private int buyingThreadCount;
+	@Transient
 	private int sellingThreadCount;
+	@Transient
 	private int buyStuckCount;
+	@Transient
 	private int sellStuckCount;
 	private String dumpingMode; //NONE, DUMP_ALL
 	private String lossMode; //NONE, IMMEDIATE, SPLIT, INSTANT
@@ -57,6 +67,7 @@ public class TradeGroup {
 	private BigDecimal fee;
 	private Timer timer;
 	private long tick;
+	@Transient
 	private ArrayList<String> acceptedLossLog;
 	private String forceLossMode;//NONE, ACCEPTED_LOSS, NEGATIVE_LOSS
 	private BigDecimal slightAmount;
@@ -1016,7 +1027,7 @@ public class TradeGroup {
 	}
 
 	public int getActiveThreadCount() {
-		activeThreadCount = 0;
+	    activeThreadCount = 0;
 		for (TradeThread t: trades) {
 			if (!t.getLifeTimeState().equals("IDLE")) {
 				activeThreadCount++;
