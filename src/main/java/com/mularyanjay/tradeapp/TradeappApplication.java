@@ -44,19 +44,30 @@ import javax.servlet.ServletException;
 //IMPLEMENT SPLITTING TODAY
 @SpringBootApplication
 @ComponentScan("com.mularyanjay.tradeapp")
-public class TradeappApplication extends SpringBootServletInitializer implements CommandLineRunner  {
+public class TradeappApplication extends SpringBootServletInitializer {
 
-	@Autowired
-    VitalityInstanceRepository vir;
-	
-	@Autowired
-	VitalityInstance vi;
+//	@Autowired
+//    VitalityInstanceRepository vir;
+//	
+//	@Autowired
+//	VitalityInstance vi;
 	
 	public static void main(String[] args) {
 		try {
 		ApplicationContext ctx = SpringApplication.run(TradeappApplication.class, args);
-//		VitalityInstance vi = ctx.getBean(VitalityInstance.class);
-		
+		VitalityInstance vi = ctx.getBean(VitalityInstance.class);
+		VitalityInstanceRepository vir = ctx.getBean(VitalityInstanceRepository.class);
+		if (vir.findAll().size() > 0) {
+//			for (VitalityInstance v: vir.findAll()) {
+				vi = vir.findAll().get(0);
+				System.out.println("Vitality Instance existing and set");
+//				break;
+//			}
+		} else {
+			System.out.println("No vi set, setting one");
+			vir.save(vi);
+			System.out.println("Size of database is " + vir.findAll().size());
+		}
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -86,25 +97,15 @@ public class TradeappApplication extends SpringBootServletInitializer implements
 //		}
 	}
 	
-	@Override
-	public void run(String... args) throws Exception {
-
-		try {
-			if (vir.findAll().size() > 0) {
-//				for (VitalityInstance v: vir.findAll()) {
-					vi = vir.findAll().get(0);
-					System.out.println("Vitality Instance existing and set");
-//					break;
-//				}
-			} else {
-				System.out.println("No vi set, setting one");
-				vir.save(vi);
-				System.out.println("Size of database is " + vir.findAll().size());
-			}
-		} catch (Throwable ex) {
-			ex.printStackTrace();
-		}
-	}
+//	@Override
+//	public void run(String... args) throws Exception {
+//
+////		try {
+////			
+////		} catch (Throwable ex) {
+////			ex.printStackTrace();
+////		}
+//	}
 	
 	@Bean(name="current")
 	User currentUser(){
