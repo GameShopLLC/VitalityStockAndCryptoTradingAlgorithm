@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -Xmx1g  -jar target/*.jar --add-opens java.base/jdk.internal.loader=ALL-UNNAMED
+web: java -Dserver.port=$PORT $JAVA_OPTS -Xmx1g --add-opens java.base/jdk.internal.loader=ALL-UNNAMED -jar target/*.jar 
