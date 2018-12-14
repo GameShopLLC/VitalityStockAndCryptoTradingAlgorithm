@@ -10,11 +10,16 @@ package com.mularyanjay.tradeapp;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.stereotype.Component;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Component
 public class VitalityInstance {
 
+	@Id
+	public String id;
 	//simMode //SIMULATION, REALTIME
 	private ArrayList<TradeGroup> groups;
 	//Define entry point?

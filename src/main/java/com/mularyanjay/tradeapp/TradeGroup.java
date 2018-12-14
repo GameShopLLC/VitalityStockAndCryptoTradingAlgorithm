@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.persistence.Entity;
 
 public class TradeGroup {
 

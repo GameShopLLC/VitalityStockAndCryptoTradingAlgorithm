@@ -12,9 +12,17 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.persistence.Entity;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 public class TradeThread {
 
+	@Autowired
+	VitalityInstance vi;
+	@Autowired
+	VitalityInstanceRepository vir;
 	//simMode
 	private BigDecimal usd;
 	private BigDecimal ltc;
@@ -222,6 +230,7 @@ public class TradeThread {
 //		setLtc(new BigDecimal("0"));
 //		setLastUsd(forceTotal);
 //		}
+		vir.save(vi);
 		}
 	}
 	
@@ -321,7 +330,7 @@ public class TradeThread {
 		setLifeTimeState("TRADING");
 		//Sysout?
 		System.out.println("Buy order placed at $" + getRequestBuyPrice());
-		
+		vir.save(vi);
 		//Make timer change to stuck if not at different
 		//buy process state, otherwise change to trading
 		//Make getCurrentTime for Carrot?
@@ -336,6 +345,7 @@ public class TradeThread {
 				if (getBuyProcessState().equals("DESIRED_BUY")) {
 					setLifeTimeState("BUY_STUCK");
 					cancelBuy();
+					vir.save(vi);
 				}
 				timer.cancel();
 			}
@@ -379,7 +389,7 @@ public class TradeThread {
 				setBuyProcessState("DESIRED_SELL");
 				setLifeTimeState("TRADING");
 				System.out.println("Sell order placed at $" + getRequestSellPrice());
-				
+				vir.save(vi);
 	
 				}
 			}
@@ -415,6 +425,7 @@ public class TradeThread {
 			if (getSimMode() == SimulationMode.REALTIME) {
 			if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
 				buy();
+				vir.save(vi);
 			}
 			} else if(getSimMode() == SimulationMode.SIMULATION) {
 				if (getRequestBuyPrice().compareTo(getSimCarrot().getHigh()) == -1) {
@@ -425,6 +436,7 @@ public class TradeThread {
 			if (getSimMode() == SimulationMode.REALTIME) {
 			if(getCurrentPrice().compareTo(getRequestSellPrice()) == 1) {
 				sell();
+				vir.save(vi);
 			}
 			} else if(getSimMode() == SimulationMode.SIMULATION) {
 				if (getRequestSellPrice().compareTo(getSimCarrot().getLow()) == 1) {
@@ -454,6 +466,7 @@ public class TradeThread {
 					// TODO Auto-generated method stub
 					if (getBuyProcessState().equals("BOUGHT") || getBuyProcessState().equals("DESIRED_SELL")) { //"DESIRED_SELL"
 						setLifeTimeState("SELL_STUCK");
+						vir.save(vi);
 					}
 					timer.cancel();
 				}
