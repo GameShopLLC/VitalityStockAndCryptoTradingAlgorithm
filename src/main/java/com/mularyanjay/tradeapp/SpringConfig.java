@@ -32,9 +32,10 @@ public class SpringConfig {
 
 //    	 MongoCredential credential = MongoCredential.createCredential(mcURI.getUsername(), mcURI.getDatabase(), mcURI.getPassword());
 
-//    	 MongoClientOptions options = MongoClientOptions.builder().sslEnabled(true).build();
+    	 MongoClientOptions options = MongoClientOptions.builder().sslEnabled(true).build();
 //        return db;
     	MongoClient mc = new MongoClient(mcURI);
+    	
     	MongoDatabase db = mc.getDatabase("heroku_f2jqwmg9");
     	System.out.println("DATABASE EEN SHEET CREATED");
     	return db;
