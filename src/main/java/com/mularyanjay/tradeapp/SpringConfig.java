@@ -23,7 +23,7 @@ public class SpringConfig {
 //        DB db = mongoURI.connectDB();
 //        db.authenticate(mongoURI.getUsername(), mongoURI.getPassword());
 //        System.out.println("DATABASE EEN SHEET CREATED");
-    	MongoClientURI mcURI = new MongoClientURI(System.getenv("MONGOHQ_URL"));
+    	MongoClientURI mcURI = new MongoClientURI("mongodb://heroku_f2jqwmg9:rhbo24kbsoms80tu922onqgn9m@ds053459.mlab.com:53459/heroku_f2jqwmg9");//System.getenv("MONGOHQ_URL"));
     	
 //    	String user; // the user name
 //    	 String database; // the name of the database in which the user is defined
