@@ -35,7 +35,7 @@ public class SpringConfig {
 
     	 MongoClientOptions options = MongoClientOptions.builder().sslEnabled(true).build();
 //        return db;
-    	MongoClient mc = new MongoClient(new ServerAddress("localhost", 27017),
+    	MongoClient mc = new MongoClient(new ServerAddress("ancient-crag-48261.herokuapp.com", 27017),
                 Arrays.asList(credential), options);
     	
     	MongoDatabase db = mc.getDatabase("heroku_f2jqwmg9");
