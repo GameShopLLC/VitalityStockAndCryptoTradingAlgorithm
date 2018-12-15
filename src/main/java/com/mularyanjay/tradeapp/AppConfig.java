@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableAutoConfiguration
-@EnableMongoRepositories
+//@EnableMongoRepositories
 //@EnableWebMvc
 public class AppConfig {
 
