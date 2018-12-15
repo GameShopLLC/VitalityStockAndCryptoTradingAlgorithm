@@ -60,7 +60,7 @@ public class TradeappApplication extends SpringBootServletInitializer {
 		if (vir.findAll().size() > 0) {
 //			for (VitalityInstance v: vir.findAll()) {
 				try {
-				vi = vir.findAll().get(vir.findAll().size() - 1);
+				vi.setAll(vir.findAll().get(vir.findAll().size() - 1));
 				} catch (Throwable t) {
 					t.printStackTrace();
 				}

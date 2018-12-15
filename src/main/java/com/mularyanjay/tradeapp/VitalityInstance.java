@@ -15,6 +15,7 @@ import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.AccessType.Type;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,8 @@ public class VitalityInstance {
 	@Autowired
 	@Transient
 	VitalityInstanceRepository vir;
+//	@Transient
+//	MongoTemplate mt;
 	//simMode //SIMULATION, REALTIME
 //	@Access(AccessType.PROPERTY)
 	private ArrayList<TradeGroup> groups;
@@ -75,7 +78,7 @@ public class VitalityInstance {
 	//Set simMode in constructor
 	public VitalityInstance(SimulationMode simMode, BigDecimal initialUSD, TradeGroup... whatGroups) {
 		setSimMode(simMode);
-		
+//		mt = new MongoTemplate();
 		//Set initial shit through docks
 		setUsd(initialUSD);
 		setLtc(new BigDecimal("0"));
@@ -211,7 +214,12 @@ public class VitalityInstance {
 				}
 			}
 			System.out.println("saving...");
-			vir.save(this);
+			VitalityInstance vi = vir.findAll().get(0);
+//			user = mongoTemplate.findOne(
+//					  Query.query(Criteria.where("name").is("Jack")), User.class);
+//					user.setName("Jim");
+			vi.setAll(this);
+			vir.save(vi);
 		}
 	}
 	
@@ -423,5 +431,14 @@ public class VitalityInstance {
 		this.simMode = simMode;
 	}
 	
+	public void setAll(VitalityInstance v) {
+		setGroups(v.getGroups());
+		setHasReachedEntryPoint(v.isHasReachedEntryPoint());
+		setSimMode(v.getSimMode());
+		setProfit(v.getProfit());
+		setLoss(v.getLoss());
+		setNet(v.getNet());
+		setDocks(v.getDocks());
+	}
 	
 }
