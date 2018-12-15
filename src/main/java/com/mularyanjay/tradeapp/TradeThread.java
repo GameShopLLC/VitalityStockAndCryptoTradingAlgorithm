@@ -19,6 +19,7 @@ import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.AccessType.Type;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 //@Document
 @AccessType(Type.PROPERTY)
@@ -513,6 +514,7 @@ public class TradeThread {
 	}
 	//request... blah?
 
+	@Field("ThreadNet")
 	public BigDecimal getUsd() {
 		return usd;
 	}
@@ -521,6 +523,7 @@ public class TradeThread {
 		this.usd = usd;
 	}
 
+	@Field("ThreadLtc")
 	public BigDecimal getLtc() {
 		return ltc;
 	}
@@ -529,6 +532,7 @@ public class TradeThread {
 		this.ltc = ltc;
 	}
 
+	@Field("ThreadBPS")
 	public String getBuyProcessState() {
 		return buyProcessState;
 	}
@@ -537,6 +541,7 @@ public class TradeThread {
 		this.buyProcessState = buyProcessState;
 	}
 
+	@Field("ThreadLTS")
 	public String getLifeTimeState() {
 		return lifeTimeState;
 	}
@@ -545,6 +550,7 @@ public class TradeThread {
 		this.lifeTimeState = lifeTimeState;
 	}
 
+	@Field("ThreadDBT")
 	public long getDesiredBuyTimeout() {
 		return desiredBuyTimeout;
 	}
@@ -553,6 +559,7 @@ public class TradeThread {
 		this.desiredBuyTimeout = desiredBuyTimeout;
 	}
 
+	@Field("ThreadDSTST")
 	public long getDesiredSellToStuckTimeout() {
 		return desiredSellToStuckTimeout;
 	}
@@ -561,6 +568,7 @@ public class TradeThread {
 		this.desiredSellToStuckTimeout = desiredSellToStuckTimeout;
 	}
 
+	@Field("ThreadRBP")
 	public BigDecimal getRequestBuyPrice() {
 		return requestBuyPrice;
 	}
@@ -569,6 +577,7 @@ public class TradeThread {
 		this.requestBuyPrice = requestBuyPrice;
 	}
 
+	@Field("ThreadRSP")
 	public BigDecimal getRequestSellPrice() {
 		return requestSellPrice;
 	}
@@ -576,7 +585,8 @@ public class TradeThread {
 	public void setRequestSellPrice(BigDecimal requestSellPrice) {
 		this.requestSellPrice = requestSellPrice;
 	}
-
+	
+	@Field("ThreadRLTC")
 	public BigDecimal getRequestedLtc() {
 		return requestedLtc;
 	}
@@ -585,6 +595,7 @@ public class TradeThread {
 		this.requestedLtc = requestedLtc;
 	}
 
+	@Field("ThreadRTotal")
 	public BigDecimal getRequestedTotal() {
 		return requestedTotal;
 	}
@@ -593,6 +604,7 @@ public class TradeThread {
 		this.requestedTotal = requestedTotal;
 	}
 
+	@Field("ThreadCurrentPrice")
 	public BigDecimal getCurrentPrice() {
 		return currentPrice;
 	}
@@ -601,6 +613,7 @@ public class TradeThread {
 		this.currentPrice = currentPrice;
 	}
 
+	@Field("ThreadProfit")
 	public BigDecimal getProfit() {
 		return profit;
 	}
@@ -609,6 +622,7 @@ public class TradeThread {
 		this.profit = profit;
 	}
 
+	@Field("ThreadProfitPercentage")
 	public BigDecimal getProfitPercentage() {
 		return profitPercentage;
 	}
@@ -617,6 +631,7 @@ public class TradeThread {
 		this.profitPercentage = profitPercentage;
 	}
 
+	@Field("ThreadLastUSD")
 	public BigDecimal getLastUsd() {
 		return lastUsd;
 	}
@@ -634,6 +649,7 @@ public class TradeThread {
 		this.timer = timer;
 	}
 
+	@Field("ThreadStepTotal")
 	public BigDecimal getStepTotal() {
 		return stepTotal;
 	}
@@ -642,6 +658,7 @@ public class TradeThread {
 		this.stepTotal = stepTotal;
 	}
 
+	@Field("ThreadStepMode")
 	public String getStepMode() {
 		return stepMode;
 	}
@@ -650,6 +667,7 @@ public class TradeThread {
 		this.stepMode = stepMode;
 	}
 
+	@Field("ThreadLoss")
 	public BigDecimal getLoss() {
 		return loss;
 	}
@@ -658,6 +676,7 @@ public class TradeThread {
 		this.loss = loss;
 	}
 
+	@Field("ThreadNet")
 	public BigDecimal getNet() {
 		return net;
 	}
@@ -666,6 +685,7 @@ public class TradeThread {
 		this.net = net;
 	}
 
+	@Field("ThreadStepStatus")
 	public String getStepStatus() {
 		return stepStatus;
 	}
@@ -674,6 +694,7 @@ public class TradeThread {
 		this.stepStatus = stepStatus;
 	}
 
+	@Field("ThreadSecondTick")
 	public long getSecondTick() {
 		return secondTick;
 	}
@@ -682,6 +703,7 @@ public class TradeThread {
 		this.secondTick = secondTick;
 	}
 
+	@Field("ThreadLastSecondTick")
 	public long getLastSecondTick() {
 		return lastSecondTick;
 	}
@@ -690,6 +712,7 @@ public class TradeThread {
 		this.lastSecondTick = lastSecondTick;
 	}
 
+	@Field("ThreadSimCarrot")
 	public Carrot getSimCarrot() {
 		return simCarrot;
 	}
@@ -698,6 +721,7 @@ public class TradeThread {
 		this.simCarrot = simCarrot;
 	}
 
+	@Field("ThreadSimMode")
 	public SimulationMode getSimMode() {
 		return simMode;
 	}
@@ -706,6 +730,7 @@ public class TradeThread {
 		this.simMode = simMode;
 	}
 
+	@Field("ThreadForceSellFee")
 	public BigDecimal getForceSellFee() {
 		return forceSellFee;
 	}
@@ -714,6 +739,7 @@ public class TradeThread {
 		this.forceSellFee = forceSellFee;
 	}
 
+	@Field("ThreadSplitDepth")
 	public int getSplitDepth() {
 		return splitDepth;
 	}
@@ -722,6 +748,7 @@ public class TradeThread {
 		this.splitDepth = splitDepth;
 	}
 	
+	@Field("ThreadSlightAmount")
 	public BigDecimal getSlightAmount() {
 		return slightAmount;
 	}
@@ -730,6 +757,7 @@ public class TradeThread {
 		this.slightAmount = slightAmount;
 	}
 	
+	@Field("ThreadDirty")
 	public boolean isDirty() {
 		return dirty;
 	}

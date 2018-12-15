@@ -18,12 +18,14 @@ import javax.persistence.Entity;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.annotation.AccessType.Type;
 
 //@Document
 @AccessType(Type.PROPERTY)
 public class TradeGroup {
 
+	
 	private BigDecimal usd;
 	private BigDecimal ltc;
 	private ArrayList<TradeThread> trades;
@@ -42,6 +44,7 @@ public class TradeGroup {
 	private boolean hasReachedEntryPoint; //Delete?
 	private Carrot currentCarrot;
 	private BigDecimal profit;
+	
 	private ArrayList<Dock> docks;
 	private BigDecimal loss;
 	private BigDecimal net;
@@ -830,6 +833,8 @@ public class TradeGroup {
 			   "Strongest thread net: " + highest.getNet() + "\n" + 
 			   acceptedLossStatus.toString();
 	}
+	
+	@Field("GroupName")
 	public String getName() {
 		return name;
 	}
@@ -863,6 +868,7 @@ public class TradeGroup {
 	}
 
 
+	@Field("GroupUSD")
 	public BigDecimal getUsd() {
 		return usd;
 	}
@@ -873,6 +879,7 @@ public class TradeGroup {
 	}
 
 
+	@Field("GroupLTC")
 	public BigDecimal getLtc() {
 		return ltc;
 	}
@@ -943,6 +950,7 @@ public class TradeGroup {
 		this.currentCarrot = currentCarrot;
 	}
 
+	@Field("GroupProfit")
 	public BigDecimal getProfit() {
 		return profit;
 	}
@@ -959,6 +967,7 @@ public class TradeGroup {
 		this.runningState = runningState;
 	}
 
+	@Field("GroupLoss")
 	public BigDecimal getLoss() {
 		return loss;
 	}
@@ -967,6 +976,7 @@ public class TradeGroup {
 		this.loss = loss;
 	}
 
+	@Field("GroupNet")
 	public BigDecimal getNet() {
 		return net;
 	}
@@ -975,6 +985,7 @@ public class TradeGroup {
 		this.net = net;
 	}
 
+	@Field("GroupStep")
 	public int getStep() {
 		return step;
 	}
@@ -983,6 +994,7 @@ public class TradeGroup {
 		this.step = step;
 	}
 
+	@Field("GroupStepTotal")
 	public BigDecimal getStepTotal() {
 		return stepTotal;
 	}
@@ -991,6 +1003,7 @@ public class TradeGroup {
 		this.stepTotal = stepTotal;
 	}
 
+	@Field("GroupStepMode")
 	public String getStepMode() {
 		return stepMode;
 	}
@@ -999,6 +1012,7 @@ public class TradeGroup {
 		this.stepMode = stepMode;
 	}
 
+	@Field("GroupMaxStep")
 	public int getMaxStep() {
 		return maxStep;
 	}
@@ -1088,6 +1102,7 @@ public class TradeGroup {
 		return sellStuckCount;
 	}
 
+	@Field("GroupSimMode")
 	public SimulationMode getSimMode() {
 		return simMode;
 	}
@@ -1096,6 +1111,7 @@ public class TradeGroup {
 		this.simMode = simMode;
 	}
 
+	@Field("GroupDumpingMode")
 	public String getDumpingMode() {
 		return dumpingMode;
 	}
@@ -1104,6 +1120,7 @@ public class TradeGroup {
 		this.dumpingMode = dumpingMode;
 	}
 
+	@Field("GroupLossMode")
 	public String getLossMode() {
 		return lossMode;
 	}
@@ -1112,6 +1129,7 @@ public class TradeGroup {
 		this.lossMode = lossMode;
 	}
 
+	@Field("GroupSplitMode")
 	public String getSplitMode() {
 		return splitMode;
 	}
@@ -1120,6 +1138,7 @@ public class TradeGroup {
 		this.splitMode = splitMode;
 	}
 
+	@Field("GroupSplitNum")
 	public int getSplitNum() {
 		return splitNum;
 	}
@@ -1128,6 +1147,7 @@ public class TradeGroup {
 		this.splitNum = splitNum;
 	}
 
+	@Field("GroupFLT")
 	public long getForceLossTimeout() {
 		return forceLossTimeout;
 	}
@@ -1136,6 +1156,7 @@ public class TradeGroup {
 		this.forceLossTimeout = forceLossTimeout;
 	}
 
+	@Field("GroupAccountSnapshot")
 	public BigDecimal getAccountSnapshot() {
 		return accountSnapshot;
 	}
@@ -1144,6 +1165,7 @@ public class TradeGroup {
 		this.accountSnapshot = accountSnapshot;
 	}
 
+	@Field("GroupFee")
 	public BigDecimal getFee() {
 		return fee;
 	}
@@ -1152,6 +1174,8 @@ public class TradeGroup {
 		this.fee = fee;
 	}
 	
+//	@Field("GroupTimer")
+	@Transient
 	public Timer getTimer() {
 		return timer;
 	}
@@ -1160,6 +1184,7 @@ public class TradeGroup {
 		this.timer = timer;
 	}
 
+	@Field("GroupTick")
 	public long getTick() {
 		return tick;
 	}
@@ -1176,6 +1201,7 @@ public class TradeGroup {
 		this.acceptedLossLog = acceptedLossLog;
 	}
 
+	@Field("GroupFLM")
 	public String getForceLossMode() {
 		return forceLossMode;
 	}
@@ -1184,6 +1210,7 @@ public class TradeGroup {
 		this.forceLossMode = forceLossMode;
 	}
 
+	@Field("GroupSlightAmount")
 	public BigDecimal getSlightAmount() {
 		return slightAmount;
 	}
