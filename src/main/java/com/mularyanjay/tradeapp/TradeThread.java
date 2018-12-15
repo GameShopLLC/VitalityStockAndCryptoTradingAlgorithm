@@ -15,9 +15,13 @@ import java.util.TimerTask;
 import javax.persistence.Entity;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.AccessType.Type;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-
+//@Document
+@AccessType(Type.PROPERTY)
 public class TradeThread {
 
 //	@Autowired

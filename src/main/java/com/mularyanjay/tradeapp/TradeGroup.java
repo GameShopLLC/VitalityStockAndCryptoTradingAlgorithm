@@ -15,8 +15,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 import javax.persistence.Entity;
 
+import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.annotation.AccessType.Type;
 
+//@Document
+@AccessType(Type.PROPERTY)
 public class TradeGroup {
 
 	private BigDecimal usd;
@@ -877,6 +882,7 @@ public class TradeGroup {
 		this.ltc = ltc;
 	}
 
+	@Transient
 	public ArrayList<Carrot> getCarrotCache() {
 		//if(carrotCache != null)
 		if (carrotCache.size() > getCarrotCacheNum()) {
@@ -1016,6 +1022,7 @@ public class TradeGroup {
 //	} else if(t.getLifeTimeState().equals("SELL_STUCK")) {
 //		sellStuckCount++;
 //	}
+	@Transient
 	public int getIdleThreadCount() {
 		idleThreadCount = 0;
 		for (TradeThread t: trades) {
@@ -1026,6 +1033,7 @@ public class TradeGroup {
 		return idleThreadCount;
 	}
 
+	@Transient
 	public int getActiveThreadCount() {
 	    activeThreadCount = 0;
 		for (TradeThread t: trades) {
@@ -1036,6 +1044,7 @@ public class TradeGroup {
 		return activeThreadCount;
 	}
 
+	@Transient
 	public int getBuyingThreadCount() {
 		buyingThreadCount = 0;
 		for (TradeThread t: trades) {
@@ -1046,6 +1055,7 @@ public class TradeGroup {
 		return buyingThreadCount;
 	}
 
+	@Transient
 	public int getSellingThreadCount() {
 		sellingThreadCount = 0;
 		for (TradeThread t: trades) {
@@ -1056,6 +1066,7 @@ public class TradeGroup {
 		return sellingThreadCount;
 	}
 
+	@Transient
 	public int getBuyStuckCount() {
 		buyStuckCount = 0;
 		for (TradeThread t: trades) {
@@ -1066,6 +1077,7 @@ public class TradeGroup {
 		return buyStuckCount;
 	}
 
+	@Transient
 	public int getSellStuckCount() {
 		sellStuckCount = 0;
 		for (TradeThread t: trades) {

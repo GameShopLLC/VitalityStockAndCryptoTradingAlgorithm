@@ -11,15 +11,20 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.AccessType.Type;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Component;
+
+//import javax.persistence.Access;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Component
 @Document
+@AccessType(Type.PROPERTY)
 public class VitalityInstance {
 
 	@Id
@@ -28,6 +33,7 @@ public class VitalityInstance {
 	@Transient
 	VitalityInstanceRepository vir;
 	//simMode //SIMULATION, REALTIME
+//	@Access(AccessType.PROPERTY)
 	private ArrayList<TradeGroup> groups;
 	//Define entry point?
 	private boolean hasReachedEntryPoint;
