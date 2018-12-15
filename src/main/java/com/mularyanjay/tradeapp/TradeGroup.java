@@ -792,10 +792,10 @@ public class TradeGroup {
 	public String statusReport() {
 		
 		TradeThread highest = null;
-		StringBuilder acceptedLossStatus = new StringBuilder();
-		for (String s: acceptedLossLog) {
-			acceptedLossStatus.append(s + "\n");
-		}
+//		StringBuilder acceptedLossStatus = new StringBuilder();
+//		for (String s: acceptedLossLog) {
+//			acceptedLossStatus.append(s + "\n");
+//		}
 		for (TradeThread t: trades) {
 			
 			if (highest == null) {
@@ -830,8 +830,8 @@ public class TradeGroup {
 			   "Strongest thread LTC: " + highest.getLtc() + "\n" +
 			   "Strongest thread profit: " + highest.getProfit() + "\n" +
 			   "Strongest thread loss: " + highest.getLoss() + "\n" +
-			   "Strongest thread net: " + highest.getNet() + "\n" + 
-			   acceptedLossStatus.toString();
+			   "Strongest thread net: " + highest.getNet() + "\n"; 
+//			   acceptedLossStatus.toString();
 	}
 	
 	@Field("GroupName")
