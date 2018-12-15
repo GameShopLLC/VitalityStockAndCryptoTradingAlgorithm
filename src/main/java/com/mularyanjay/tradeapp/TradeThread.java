@@ -514,7 +514,7 @@ public class TradeThread {
 	}
 	//request... blah?
 
-	@Field("ThreadNet")
+	@Field("ThreadUSD")
 	public BigDecimal getUsd() {
 		return usd;
 	}
