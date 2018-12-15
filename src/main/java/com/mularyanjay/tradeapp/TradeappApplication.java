@@ -59,8 +59,9 @@ public class TradeappApplication extends SpringBootServletInitializer {
 		VitalityInstanceRepository vir = ctx.getBean(VitalityInstanceRepository.class);
 		if (vir.findAll().size() > 0) {
 //			for (VitalityInstance v: vir.findAll()) {
-				vi = vir.findAll().get(0);
+				vi = vir.findAll().get(vir.findAll().size() - 1);
 				System.out.println("Vitality Instance existing and set");
+				System.out.println("Size of database is " + vir.findAll().size());
 //				break;
 //			}
 		} else {
