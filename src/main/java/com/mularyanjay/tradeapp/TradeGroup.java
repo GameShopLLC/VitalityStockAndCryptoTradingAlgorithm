@@ -31,7 +31,7 @@ public class TradeGroup {
 	private String state; //STANDBY, ACTIVE, RALLYING
 	private String runningState; //GOING, STOPPED
 	private int amountThreads;
-	@Transient
+	@AccessType(Type.FIELD)
 	private ArrayList<Carrot> carrotCache;
 	private int carrotCacheNum;
 	private int minuteTimeSpan;
