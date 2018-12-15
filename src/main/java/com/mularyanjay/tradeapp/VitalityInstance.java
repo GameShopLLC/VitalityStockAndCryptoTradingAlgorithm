@@ -218,7 +218,7 @@ public class VitalityInstance {
 //			user = mongoTemplate.findOne(
 //					  Query.query(Criteria.where("name").is("Jack")), User.class);
 //					user.setName("Jim");
-			vi.setAll(this);
+			vi.vAll(this);
 			vir.save(vi);
 		}
 	}
@@ -431,7 +431,7 @@ public class VitalityInstance {
 		this.simMode = simMode;
 	}
 	
-	public void setAll(VitalityInstance v) {
+	public void vAll(VitalityInstance v) {
 		setGroups(v.getGroups());
 		setHasReachedEntryPoint(v.isHasReachedEntryPoint());
 		setSimMode(v.getSimMode());
