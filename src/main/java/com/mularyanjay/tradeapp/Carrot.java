@@ -9,6 +9,10 @@ package com.mularyanjay.tradeapp;
 
 import java.math.BigDecimal;
 
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.AccessType.Type;
+
+@AccessType(Type.FIELD)
 public class Carrot {
 	
 	private BigDecimal open;

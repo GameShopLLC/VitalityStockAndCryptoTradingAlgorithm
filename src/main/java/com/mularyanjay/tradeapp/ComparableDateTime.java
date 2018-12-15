@@ -5,6 +5,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.data.annotation.AccessType;
+import org.springframework.data.annotation.AccessType.Type;
+
+@AccessType(Type.FIELD)
 public class ComparableDateTime {
 
 	private int year;
