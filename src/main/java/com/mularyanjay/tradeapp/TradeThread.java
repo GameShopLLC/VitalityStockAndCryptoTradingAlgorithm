@@ -48,6 +48,7 @@ public class TradeThread {
 	private BigDecimal profit;
 	private BigDecimal profitPercentage;
 	private BigDecimal lastUsd;
+	@Transient
 	private Timer timer;
 	private SimulationMode simMode; //SIMULATION, REALTIME
 	private ArrayList<Dock> docks;
@@ -624,6 +625,7 @@ public class TradeThread {
 		this.lastUsd = lastUsd;
 	}
 
+	@Transient
 	public Timer getTimer() {
 		return timer;
 	}
