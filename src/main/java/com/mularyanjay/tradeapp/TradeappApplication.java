@@ -66,6 +66,7 @@ public class TradeappApplication extends SpringBootServletInitializer {
 		} else {
 			System.out.println("No vi set, setting one");
 			vir.save(vi);
+			Thread.sleep(100);
 			System.out.println("Size of database is " + vir.findAll().size());
 		}
 		} catch (Throwable t) {
