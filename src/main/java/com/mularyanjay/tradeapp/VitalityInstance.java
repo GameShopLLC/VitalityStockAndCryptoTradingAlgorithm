@@ -191,7 +191,7 @@ public class VitalityInstance {
 					break;
 				}
 			}
-		}
+		} 
 		checkDirty();
 		updateBalance();
 		//after cycle, checkTrade
@@ -439,6 +439,7 @@ public class VitalityInstance {
 		setLoss(v.getLoss());
 		setNet(v.getNet());
 		setDocks(v.getDocks());
+		setEntryPointStatus(v.getEntryPointStatus());
 	}
 	
 }
