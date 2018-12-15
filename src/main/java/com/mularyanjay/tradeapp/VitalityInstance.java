@@ -23,7 +23,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Component
-@Document
+//@Document
 @AccessType(Type.PROPERTY)
 public class VitalityInstance {
 
