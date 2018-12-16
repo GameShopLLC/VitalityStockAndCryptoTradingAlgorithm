@@ -50,6 +50,21 @@ $(document).ready(function(){
 		})
 	})
 	
+	$('#rallyAlgorithm').click(function(){
+		//e.preventDefault();
+		$.ajax({
+			url: 'https://ancient-crag-48261.herokuapp.com/rallyAlgorithm',
+			type: 'POST',
+			success: function(response) {
+				$('#counter').text('Algorithm running');
+				console.log(response);
+				console.log("INSIDE AJAX BUTTON");
+			}
+			
+		})
+	})
+	
+	
 	setInterval(updateDetails, 1000);
 	setInterval(updateAlgStatus, 1000);
 	//Decouple business logic from view logic.

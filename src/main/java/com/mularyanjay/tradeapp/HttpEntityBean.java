@@ -44,6 +44,19 @@ public class HttpEntityBean {
 		return new HttpEntity<>("", headers);
 	}
 	
+	public HttpEntity <String> postEntityFromUrl(String url, String jsonBody){
+		headers.clear();
+		headers.add("accept", "application/json");
+        headers.add("content-type", "application/json");
+        headers.add("CB-ACCESS-KEY", hashingAlgorithm.getKey());
+        headers.add("CB-ACCESS-SIGN", hashingAlgorithm.getHash(url));
+        headers.add("CB-ACCESS-TIMESTAMP", hashingAlgorithm.getTimestamp());
+        headers.add("CB-ACCESS-PASSPHRASE", hashingAlgorithm.getPassphrase());
+        //headers.set
+		//return new HttpEntity<String>("", headers);
+		return new HttpEntity<>(jsonBody, headers);
+	}
+	
 	public HttpEntity<String> getLocalEntityFromUrl(String url, String contentType) {
 		headers.clear();
 		if (contentType != null && contentType != "") {

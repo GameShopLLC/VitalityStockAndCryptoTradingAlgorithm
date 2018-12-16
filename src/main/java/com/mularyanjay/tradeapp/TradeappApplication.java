@@ -57,10 +57,13 @@ public class TradeappApplication extends SpringBootServletInitializer {
 		ApplicationContext ctx = SpringApplication.run(TradeappApplication.class, args);
 		VitalityInstance vi = ctx.getBean(VitalityInstance.class);
 		VitalityInstanceRepository vir = ctx.getBean(VitalityInstanceRepository.class);
+		AlgorithmManager am = ctx.getBean(AlgorithmManager.class);
 		if (vir.findAll().size() > 0) {
 //			for (VitalityInstance v: vir.findAll()) {
 				try {
 				vi.vAll(vir.findAll().get(vir.findAll().size() - 1));
+				am.setRunning(true);
+				
 				} catch (Throwable t) {
 					t.printStackTrace();
 				}

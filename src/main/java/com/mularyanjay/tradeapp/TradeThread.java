@@ -15,11 +15,20 @@ import java.util.TimerTask;
 import javax.persistence.Entity;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.AccessType.Type;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 //@Document
 @AccessType(Type.PROPERTY)
@@ -32,6 +41,10 @@ public class TradeThread {
 //	@Transient
 //	VitalityInstanceRepository vir;
 	//simMode
+	@Transient
+	@Autowired
+	@Qualifier("main")
+	HttpEntityBean httpEntityBean;
 	private boolean dirty;
 	private BigDecimal usd;
 	private BigDecimal ltc;
@@ -102,6 +115,19 @@ public class TradeThread {
 		docks = new ArrayList<Dock>();
 		docks.add(new Dock("INCOMING"));
 		docks.add(new Dock("TOSTEPSHED"));
+		if (getSimMode() == SimulationMode.REALTIME) {
+			setTimer(new Timer());
+			getTimer().schedule(new TimerTask() {
+	
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					incrementSecondTick(1L);
+				}
+				
+			}, 1L, 1L);
+			
+			}
 	}
 	
 	public void forceLoss() {
@@ -113,6 +139,48 @@ public class TradeThread {
 		forceLtc = getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_UP);
 		} else if (getBuyProcessState().equals("BOUGHT")) {
 			forceLtc = getLtc();
+		}
+		if (getSimMode() == SimulationMode.REALTIME) {
+			ObjectMapper objectMapper = new ObjectMapper();
+//			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+			Order order = new Order();
+			order.setType("market");
+			order.setSide("sell");
+			order.setProduct_id("ZRX-USD");
+			order.setStp("cb");
+//			order.setPrice(getRequestBuyPrice().toPlainString());
+			order.setSize(forceLtc.toPlainString());
+//			long minutes = 0;
+//			long hours = 0;
+//			long days = 0;
+//			if (getDesiredBuyTimeout() >= 1000L * 60L) {
+//				minutes = getDesiredBuyTimeout() / (1000L * 60L);
+//			}
+//			if (getDesiredBuyTimeout() >= 1000L * 60L * 60L) {
+//				hours = getDesiredBuyTimeout() / (1000L * 60L * 60L);
+//			}
+//			if (getDesiredBuyTimeout() >= (1000L * 60L * 60L * 24L)) {
+//				days = getDesiredBuyTimeout() / (1000L * 60L * 60L * 24L);
+//			}
+//			order.setCancel_after("" + minutes + "," + hours + "," + days);
+			
+			String json = null;
+			try {
+				json = new String(objectMapper.writeValueAsString(order));
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			RestTemplate restTemplate = new RestTemplate();
+			String url = "https://api.gdax.com/orders";
+			ResponseEntity<Order> response;
+			response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+			try {
+				System.out.println(objectMapper.writeValueAsString(response.getBody()));
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		BigDecimal forceTotal = new BigDecimal("0");
 		forceTotal = sellPrice.multiply(forceLtc);
@@ -166,11 +234,11 @@ public class TradeThread {
 //					}
 //				}
 			
-			if (getSimMode() == SimulationMode.REALTIME) {
-				timer.cancel();
-				} else if (getSimMode() == SimulationMode.SIMULATION) {
+//			if (getSimMode() == SimulationMode.REALTIME) {
+////				timer.cancel();
+//				} else if (getSimMode() == SimulationMode.SIMULATION) {
 					resetTick();
-				}
+//				}
 		}
 	}
 	
@@ -264,10 +332,12 @@ public class TradeThread {
 			if (getSecondTick() - getLastSecondTick() > getDesiredBuyTimeout()/1000) {
 				setLifeTimeState("BUY_STUCK");
 				cancelBuy();
+				setDirty(true);
 			}
 		} else if (getBuyProcessState().equals("BOUGHT") || getBuyProcessState().equals("DESIRED_SELL")) {
 			if (getSecondTick() - getLastSecondTick() > getDesiredSellToStuckTimeout()/1000) {
 				setLifeTimeState("SELL_STUCK");
+				setDirty(true);
 			}
 		}
 		}
@@ -336,6 +406,48 @@ public class TradeThread {
 		//A buy order will deduct dollars and want ltc,
 		//but will possess no ltc until it is met.
 		setRequestedLtc(getUsd().divide(getRequestBuyPrice(), 8, RoundingMode.HALF_UP));
+		if (getSimMode() == SimulationMode.REALTIME) {
+			ObjectMapper objectMapper = new ObjectMapper();
+//			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+			Order order = new Order();
+			order.setType("limit");
+			order.setSide("buy");
+			order.setProduct_id("ZRX-USD");
+			order.setStp("cb");
+			order.setPrice(getRequestBuyPrice().toPlainString());
+			order.setSize(getRequestedLtc().toPlainString());
+			long minutes = 0;
+			long hours = 0;
+			long days = 0;
+			if (getDesiredBuyTimeout() >= 1000L * 60L) {
+				minutes = getDesiredBuyTimeout() / (1000L * 60L);
+			}
+			if (getDesiredBuyTimeout() >= 1000L * 60L * 60L) {
+				hours = getDesiredBuyTimeout() / (1000L * 60L * 60L);
+			}
+			if (getDesiredBuyTimeout() >= (1000L * 60L * 60L * 24L)) {
+				days = getDesiredBuyTimeout() / (1000L * 60L * 60L * 24L);
+			}
+			order.setCancel_after("" + minutes + "," + hours + "," + days);
+			
+			String json = null;
+			try {
+				json = new String(objectMapper.writeValueAsString(order));
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			RestTemplate restTemplate = new RestTemplate();
+			String url = "https://api.gdax.com/orders";
+			ResponseEntity<Order> response;
+			response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+			try {
+				System.out.println(objectMapper.writeValueAsString(response.getBody()));
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		setLastUsd(getUsd());
 		setUsd(getUsd().subtract(getRequestBuyPrice().multiply(getRequestedLtc())));
 		setBuyProcessState("DESIRED_BUY");
@@ -348,29 +460,30 @@ public class TradeThread {
 		//buy process state, otherwise change to trading
 		//Make getCurrentTime for Carrot?
 		//Change type of timeouts to long
-		if (getSimMode() == SimulationMode.REALTIME) {
-		setTimer(new Timer());
-		getTimer().schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				if (getBuyProcessState().equals("DESIRED_BUY")) {
-					setLifeTimeState("BUY_STUCK");
-					cancelBuy();
-//					vir.save(vi);
-					setDirty(true);
-				}
-				timer.cancel();
-			}
-			
-		}, getDesiredBuyTimeout());
 		
-		} else if (getSimMode() == SimulationMode.SIMULATION) {
-			//setLastSecondTick(getSecondTick());
-			//,,,
+//		if (getSimMode() == SimulationMode.REALTIME) {
+//		setTimer(new Timer());
+//		getTimer().schedule(new TimerTask() {
+//
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				if (getBuyProcessState().equals("DESIRED_BUY")) {
+//					setLifeTimeState("BUY_STUCK");
+//					cancelBuy();
+////					vir.save(vi);
+//					setDirty(true);
+//				}
+//				timer.cancel();
+//			}
+//			
+//		}, getDesiredBuyTimeout());
+//		
+//		} else if (getSimMode() == SimulationMode.SIMULATION) {
+//			//setLastSecondTick(getSecondTick());
+//			//,,,
 			resetTick();
-		}
+//		}
 		}
 		
 		} else {
@@ -398,6 +511,48 @@ public class TradeThread {
 			if (getRequestSellPrice().compareTo(getRequestBuyPrice()) == 1) {
 			
 				setRequestedTotal(getRequestSellPrice().multiply(getLtc()));
+				if (getSimMode() == SimulationMode.REALTIME) {
+					ObjectMapper objectMapper = new ObjectMapper();
+//					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+					Order order = new Order();
+					order.setType("limit");
+					order.setSide("sell");
+					order.setProduct_id("ZRX-USD");
+					order.setStp("cb");
+					order.setPrice(getRequestSellPrice().toPlainString());
+					order.setSize(getLtc().toPlainString());
+					long minutes = 0;
+					long hours = 0;
+					long days = 0;
+					if (getDesiredSellToStuckTimeout() >= 1000L * 60L) {
+						minutes = getDesiredSellToStuckTimeout() / (1000L * 60L);
+					}
+					if (getDesiredSellToStuckTimeout() >= 1000L * 60L * 60L) {
+						hours = getDesiredSellToStuckTimeout() / (1000L * 60L * 60L);
+					}
+					if (getDesiredSellToStuckTimeout() >= (1000L * 60L * 60L * 24L)) {
+						days = getDesiredSellToStuckTimeout() / (1000L * 60L * 60L * 24L);
+					}
+					order.setCancel_after("" + minutes + "," + hours + "," + days);
+//					
+					String json = null;
+					try {
+						json = new String(objectMapper.writeValueAsString(order));
+					} catch (JsonProcessingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					RestTemplate restTemplate = new RestTemplate();
+					String url = "https://api.gdax.com/orders";
+					ResponseEntity<Order> response;
+					response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+					try {
+						System.out.println(objectMapper.writeValueAsString(response.getBody()));
+					} catch (JsonProcessingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 				setLtc(new BigDecimal("0"));
 				//set Litecoin
 				setBuyProcessState("DESIRED_SELL");
@@ -469,30 +624,30 @@ public class TradeThread {
 		setBuyProcessState("BOUGHT");
 		setLifeTimeState("TRADING");
 		System.out.println("Bought at $" + getRequestBuyPrice());
-		if (getSimMode() == SimulationMode.REALTIME) {
-		timer.cancel();
-		} else if (getSimMode() == SimulationMode.SIMULATION) {
+//		if (getSimMode() == SimulationMode.REALTIME) {
+//		timer.cancel();
+//		} else if (getSimMode() == SimulationMode.SIMULATION) {
 			resetTick();
-		}
-		if(getSimMode() == SimulationMode.REALTIME) {
-			setTimer(new Timer());
-			getTimer().schedule(new TimerTask() {
-
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					if (getBuyProcessState().equals("BOUGHT") || getBuyProcessState().equals("DESIRED_SELL")) { //"DESIRED_SELL"
-						setLifeTimeState("SELL_STUCK");
-//						vir.save(vi);
-						setDirty(true);					}
-					timer.cancel();
-				}
-				
-			}, getDesiredSellToStuckTimeout());
-			} else if (getSimMode() == SimulationMode.SIMULATION) {
-				//setLastSecondTick(getSecondTick());
-				resetTick();
-			}
+//		}
+//		if(getSimMode() == SimulationMode.REALTIME) {
+//			setTimer(new Timer());
+//			getTimer().schedule(new TimerTask() {
+//
+//				@Override
+//				public void run() {
+//					// TODO Auto-generated method stub
+//					if (getBuyProcessState().equals("BOUGHT") || getBuyProcessState().equals("DESIRED_SELL")) { //"DESIRED_SELL"
+//						setLifeTimeState("SELL_STUCK");
+////						vir.save(vi);
+//						setDirty(true);					}
+//					timer.cancel();
+//				}
+//				
+//			}, getDesiredSellToStuckTimeout());
+//			} else if (getSimMode() == SimulationMode.SIMULATION) {
+//				//setLastSecondTick(getSecondTick());
+//				resetTick();
+//			}
 	}
 	
 	public void sell() {
@@ -506,11 +661,11 @@ public class TradeThread {
 		setBuyProcessState("SOLD");
 		setLifeTimeState("RESERVE");
 		System.out.println("Sold at $" + getRequestSellPrice());
-		if (getSimMode() == SimulationMode.REALTIME) {
-			timer.cancel();
-			} else if (getSimMode() == SimulationMode.SIMULATION) {
+//		if (getSimMode() == SimulationMode.REALTIME) {
+//			timer.cancel();
+//			} else if (getSimMode() == SimulationMode.SIMULATION) {
 				resetTick();
-			}
+//			}
 	}
 	//request... blah?
 

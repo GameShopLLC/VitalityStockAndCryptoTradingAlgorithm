@@ -742,7 +742,7 @@ public class TradeGroup {
 				t.incrementSecondTick(60L);
 			}
 		}
-		//checkDoneRallying();
+		checkDoneRallying();
 	}
 	
 	}
@@ -813,7 +813,9 @@ public class TradeGroup {
 //		int sellingThreadCount = 0;
 //		int buyStuckCount = 0;
 //		int sellStuckCount = 0;
-		return 	"Current Time: " + getCurrentCarrot().getCurrentTime() + "\n" +
+		return 	"State: " + getState() + "\n" +
+				"Running State: " + getRunningState() + "\n" +
+				"Current Time: " + getCurrentCarrot().getCurrentTime() + "\n" +
 				"Current Price: " + getCurrentCarrot().getCurrent() + "\n" +
 				"Current USD Balance: " + getUsd() + "\n" +
 			   "Current Ltc Balance: " + getLtc() + "\n" +

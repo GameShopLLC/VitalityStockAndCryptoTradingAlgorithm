@@ -83,6 +83,17 @@ public class AlgorithmManager {
 		
 	}
 	
+//	public void buy() {
+//		
+//	}
+//	
+//	public void sell() {
+//		
+//	}
+	public void stopAlgorithm() {
+		timer.cancel();
+	}
+	
 	public boolean isRunning() {
 		return running;
 	}
@@ -91,7 +102,9 @@ public class AlgorithmManager {
 		this.running = running;
 		if (running) {
 			runAlgorithm();
-		} 
+		} else {
+			stopAlgorithm();
+		}
 	}
 
 	public Timer getTimer() {
