@@ -439,7 +439,7 @@ public class TradeThread {
 			}
 			RestTemplate restTemplate = new RestTemplate();
 			String url = "https://api.gdax.com/orders";
-			ResponseEntity<Order> response;
+			ResponseEntity<Order> response = null;
 			try {
 			response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
 			} catch (Throwable t) {
