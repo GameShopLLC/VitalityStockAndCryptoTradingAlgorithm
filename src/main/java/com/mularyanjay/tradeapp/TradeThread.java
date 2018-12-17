@@ -173,8 +173,8 @@ public class TradeThread {
 			}
 			RestTemplate restTemplate = new RestTemplate();
 			String url = "https://api.gdax.com/orders";
-			ResponseEntity<Order> response;
-			response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+			ResponseEntity<String> response;
+			response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
 			try {
 				System.out.println(objectMapper.writeValueAsString(response.getBody()));
 			} catch (JsonProcessingException e) {
@@ -439,9 +439,9 @@ public class TradeThread {
 			}
 			RestTemplate restTemplate = new RestTemplate();
 			String url = "https://api.gdax.com/orders";
-			ResponseEntity<Order> response = null;
+			ResponseEntity<String> response = null;
 			try {
-			response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+			response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
 			} catch (Throwable t) {
 				t.printStackTrace();
 			}
@@ -548,8 +548,8 @@ public class TradeThread {
 					}
 					RestTemplate restTemplate = new RestTemplate();
 					String url = "https://api.gdax.com/orders";
-					ResponseEntity<Order> response;
-					response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+					ResponseEntity<String> response;
+					response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
 					try {
 						System.out.println(objectMapper.writeValueAsString(response.getBody()));
 					} catch (JsonProcessingException e) {
