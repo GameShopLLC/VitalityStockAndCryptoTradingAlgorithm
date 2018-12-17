@@ -692,7 +692,7 @@ public class TradeGroup {
 				//else {
 					//if (getCarrotCache().size() > 0) {
 						//if... hit entry point
-						if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC")) {
+						if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend() != null && getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC")) {
 							setState("ACTIVE");	
 							deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
 						}
@@ -715,11 +715,11 @@ public class TradeGroup {
 //				else {
 //					if (getCarrotCache().size() > 0) {
 						//if... hit entry point
-						if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC")) {
+						if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend() != null && getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC")) {
 							//setState("ACTIVE");
 							deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
 						} 
-						else if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("INC")) { //|| getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC") ) {
+						else if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend() != null && getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("INC")) { //|| getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC") ) {
 							//setState("ACTIVE");
 							//deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
 							attemptSellThread(getCarrotCache().get(getCarrotCache().size() - 1));
@@ -730,7 +730,7 @@ public class TradeGroup {
 			}
 		} else if (getState().equals("RALLYING")) {
 			if (getCarrotCache().size() > 0) {
-				if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("INC")) { //|| getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC")) {
+				if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend() != null && getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("INC")) { //|| getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC")) {
 					//setState("ACTIVE");
 					//deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
 					attemptSellThread(getCarrotCache().get(getCarrotCache().size() - 1));
