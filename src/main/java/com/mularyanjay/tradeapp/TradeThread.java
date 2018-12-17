@@ -174,7 +174,7 @@ public class TradeThread {
 			RestTemplate restTemplate = new RestTemplate();
 			String url = "https://api.gdax.com/orders";
 			ResponseEntity<String> response;
-			response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, "'" + json + "'"), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+			response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
 			try {
 				System.out.println(objectMapper.writeValueAsString(response.getBody()));
 			} catch (JsonProcessingException e) {
@@ -428,7 +428,7 @@ public class TradeThread {
 			if (getDesiredBuyTimeout() >= (1000L * 60L * 60L * 24L)) {
 				days = getDesiredBuyTimeout() / (1000L * 60L * 60L * 24L);
 			}
-			order.setCancel_after("" + minutes + "," + hours + "," + days);
+			order.setCancel_after("min");
 			
 			String json = null;
 			try {
@@ -446,7 +446,7 @@ public class TradeThread {
 			String url = "https://api.gdax.com/orders";
 //			 response;
 			try {
-				ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, "'" + json + "'"), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+				ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
 				System.out.println(objectMapper.writeValueAsString(response.getBody()));
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
@@ -538,7 +538,7 @@ public class TradeThread {
 					if (getDesiredSellToStuckTimeout() >= (1000L * 60L * 60L * 24L)) {
 						days = getDesiredSellToStuckTimeout() / (1000L * 60L * 60L * 24L);
 					}
-					order.setCancel_after("" + minutes + "," + hours + "," + days);
+					order.setCancel_after("day");
 //					
 					String json = null;
 					try {
@@ -549,8 +549,8 @@ public class TradeThread {
 					}
 					RestTemplate restTemplate = new RestTemplate();
 					String url = "https://api.gdax.com/orders";
-					ResponseEntity<Order> response;
-					response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, "'" + json + "'"), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+					ResponseEntity<String> response;
+					response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
 					try {
 						System.out.println(objectMapper.writeValueAsString(response.getBody()));
 					} catch (JsonProcessingException e) {
