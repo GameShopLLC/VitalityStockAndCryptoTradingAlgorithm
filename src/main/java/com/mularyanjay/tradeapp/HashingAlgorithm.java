@@ -65,8 +65,24 @@ public class HashingAlgorithm {
 	}
 	
 	public String postHash(String requestPath, String body){
-		String timestamp = Instant.now().getEpochSecond() + "";
-		return "";
+		timestamp = Instant.now().getEpochSecond() + "";
+		Mac sha256 = null;
+		try {
+			String prehash = timestamp + "POST".toUpperCase() + requestPath + body; 
+			//+ "";
+			System.out.println(prehash);
+			byte[] secretDecoded = Base64.getDecoder().decode(secret);
+			SecretKeySpec keyspec = new SecretKeySpec(secretDecoded, "HmacSHA256");
+			sha256 = (Mac) Mac.getInstance("HmacSHA256").clone();
+			sha256.init(keyspec);
+			System.out.println(Base64.getEncoder().encodeToString(sha256.doFinal(prehash.getBytes())));
+			
+			return Base64.getEncoder().encodeToString(sha256.doFinal(prehash.getBytes()));
+		} catch(CloneNotSupportedException | InvalidKeyException | NoSuchAlgorithmException e){
+			e.printStackTrace();
+			throw new RuntimeErrorException(new Error("Cannot set up authentication headers"));
+			
+		}
 	}
 
 	public String getPassphrase() {

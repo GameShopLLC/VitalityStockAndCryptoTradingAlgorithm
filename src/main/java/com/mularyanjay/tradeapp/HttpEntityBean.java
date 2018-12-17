@@ -49,7 +49,7 @@ public class HttpEntityBean {
 		headers.add("accept", "application/json");
         headers.add("content-type", "application/json");
         headers.add("CB-ACCESS-KEY", hashingAlgorithm.getKey());
-        headers.add("CB-ACCESS-SIGN", hashingAlgorithm.getHash(url));
+        headers.add("CB-ACCESS-SIGN", hashingAlgorithm.postHash(url, jsonBody));
         headers.add("CB-ACCESS-TIMESTAMP", hashingAlgorithm.getTimestamp());
         headers.add("CB-ACCESS-PASSPHRASE", hashingAlgorithm.getPassphrase());
         //headers.set
