@@ -428,6 +428,7 @@ public class TradeThread {
 			if (getDesiredBuyTimeout() >= (1000L * 60L * 60L * 24L)) {
 				days = getDesiredBuyTimeout() / (1000L * 60L * 60L * 24L);
 			}
+			order.setTime_in_force("GTT");
 			order.setCancel_after("hour");
 			
 			String json = null;
@@ -538,6 +539,7 @@ public class TradeThread {
 					if (getDesiredSellToStuckTimeout() >= (1000L * 60L * 60L * 24L)) {
 						days = getDesiredSellToStuckTimeout() / (1000L * 60L * 60L * 24L);
 					}
+					order.setTime_in_force("GTT");
 					order.setCancel_after("day");
 //					
 					String json = null;
