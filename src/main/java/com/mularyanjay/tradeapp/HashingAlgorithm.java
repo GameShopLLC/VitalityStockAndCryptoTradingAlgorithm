@@ -39,11 +39,13 @@ public class HashingAlgorithm {
 
 	String timestamp = "";
 	public HashingAlgorithm() {
-		
+		this.setPassphrase(new String("youngmulababy"));
+		this.setKey(new String("7f7acace4bd4b4acb053929b7169bea3"));
+		this.setSecret(new String("W7mzbaKv7zOUAcd/kC19MXO5ACE2DtyLHsBp4qmpBc/clIYRmi3LzzMO9JtA3CirGCYmhYThiQAUBVFHFba5nw=="));
 	}
 	
 	public String getHash(String requestPath){
-		timestamp = Instant.now().getEpochSecond() + "";
+		timestamp = new String(Instant.now().getEpochSecond() + "");
 		Mac sha256 = null;
 		try {
 			String prehash = timestamp + "GET".toUpperCase() + requestPath; 
