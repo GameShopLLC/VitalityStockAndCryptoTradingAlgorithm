@@ -172,8 +172,8 @@ public class TradeThread {
 			}
 			RestTemplate restTemplate = new RestTemplate();
 			String url = "https://api.gdax.com/orders";
-//			ResponseEntity<Order> response;
-			restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+			//ResponseEntity<Order> response = 
+					restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
 //			try {
 //				System.out.println(objectMapper.writeValueAsString(response.getBody()));
 //			} catch (JsonProcessingException e) {
