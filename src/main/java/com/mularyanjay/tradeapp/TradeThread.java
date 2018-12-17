@@ -24,6 +24,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -179,6 +180,8 @@ public class TradeThread {
 				System.out.println(objectMapper.writeValueAsString(response.getBody()));
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (HttpStatusCodeException e) {
 				e.printStackTrace();
 			}
 		}
