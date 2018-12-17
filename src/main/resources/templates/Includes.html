@@ -18,17 +18,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 
-<script th:inline="javascript"> <!-- useless -_- -->
-/*<![CDATA[*/
-var passphrase = /* [[${hashingAlgorithm.passphrase}]] */ 'fail';
-var signature = /*[[${hashingAlgorithm.getHash('https://api.gdax.com/products')}]] */ 'fail';
-var timestamp = /*[[${hashingAlgorithm.timestamp}]] */ 'fail';
-var key = /*[[${hashingAlgorithm.key}]] */ 'fail';
-var sayHey = /*[[${sayHey}]]*/;
-var running = /*[[${algorithmManager.running}]]*/;
-/*]]>*/
-</script>
-
 <script src="/js/ajaxapikeytest.js"></script>
 </div>
 
