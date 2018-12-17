@@ -437,6 +437,11 @@ public class TradeThread {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			if (json != null) {
+			System.out.println(json);
+			} else {
+				System.out.println("JSON is Null!!!");
+			}
 			RestTemplate restTemplate = new RestTemplate();
 			String url = "https://api.gdax.com/orders";
 			ResponseEntity<String> response = null;
