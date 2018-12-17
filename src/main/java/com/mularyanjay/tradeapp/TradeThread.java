@@ -428,7 +428,7 @@ public class TradeThread {
 			if (getDesiredBuyTimeout() >= (1000L * 60L * 60L * 24L)) {
 				days = getDesiredBuyTimeout() / (1000L * 60L * 60L * 24L);
 			}
-			order.setCancel_after("min");
+			order.setCancel_after("hour");
 			
 			String json = null;
 			try {
