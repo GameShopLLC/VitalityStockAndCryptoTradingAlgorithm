@@ -455,6 +455,8 @@ public class TradeThread {
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (HttpStatusCodeException e) {
+				e.printStackTrace();
 			}
 		}
 		setLastUsd(getUsd());
