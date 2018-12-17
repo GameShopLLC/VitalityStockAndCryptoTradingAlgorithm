@@ -71,7 +71,7 @@ public class HashingAlgorithm {
 		timestamp = Instant.now().getEpochSecond() + "";
 		Mac sha256 = null;
 		try {
-			String prehash = timestamp + "POST".toUpperCase() + requestPath + body; 
+			String prehash = timestamp + "POST".toUpperCase() + "/orders" + body; 
 			//+ "";
 			System.out.println(prehash);
 			byte[] secretDecoded = Base64.getDecoder().decode(secret);
