@@ -14,13 +14,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HttpEntityBean {
-	@Autowired
+	
 	HashingAlgorithm hashingAlgorithm;
 	
 	private HttpHeaders headers = new HttpHeaders();
 	private HttpEntity entity;
 	public HttpEntityBean(){
-		
+		hashingAlgorithm = new HashingAlgorithm();
 //		headers.add("accept", "application/json");
 //        headers.add("content-type", "application/json");
 //        headers.add("CB-ACCESS-KEY", hashingAlgorithm.getKey());
