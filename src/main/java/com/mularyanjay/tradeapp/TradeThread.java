@@ -172,7 +172,7 @@ public class TradeThread {
 				e.printStackTrace();
 			}
 			RestTemplate restTemplate = new RestTemplate();
-			String url = "https://api.gdax.com/orders";
+			String url = "https://api.pro.coinbase.com/orders";
 			ResponseEntity<String> response;
 			response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
 			try {
@@ -443,7 +443,7 @@ public class TradeThread {
 				System.out.println("JSON is Null!!!");
 			}
 			RestTemplate restTemplate = new RestTemplate();
-			String url = "https://api.gdax.com/orders";
+			String url = "https://api.pro.coinbase.com/orders";
 			ResponseEntity<String> response = null;
 			try {
 			response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
@@ -552,7 +552,7 @@ public class TradeThread {
 						e.printStackTrace();
 					}
 					RestTemplate restTemplate = new RestTemplate();
-					String url = "https://api.gdax.com/orders";
+					String url = "https://api.pro.coinbase.com/orders";
 					ResponseEntity<String> response;
 					response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
 					try {
