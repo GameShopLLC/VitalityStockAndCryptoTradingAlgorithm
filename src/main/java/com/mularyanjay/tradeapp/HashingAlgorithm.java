@@ -31,9 +31,9 @@ public class HashingAlgorithm {
 	//+bCndXi4YfWdtRGhubkppq8A3mwhEKx44JcHviHDmFv2EfPl73Ei9mHdf579PCtUggxs4A6akotaK+MIRPtpXg==
 	
 	
-	String passphrase = "youngmulababy";//"or2otyvvoj";//"q1foebvdgon";//hmfd9om60ei" //"hmfd9om60ei";//"yg5p598a9hm";//DISCARDED //"0b1v4yb271f8c";//2) "d42s35ynk16w"; //1)  "0b1v4yb271f8c";
-	String key = "7f7acace4bd4b4acb053929b7169bea3";//"1528df56017b4a0e606caddd6e08cf18"; //"716a23260f84427d4fcb6de5f74b5449";//"e5e184da7a9472728d25ebfe1b2b96e7"; //DISCARDED //"bde7c18ff32b42bcff6d27afae438b3b"; //2 )"9f0d81710ceb625214480ad99157c547";//1)  "bde7c18ff32b42bcff6d27afae438b3b";
-	String secret = "W7mzbaKv7zOUAcd/kC19MXO5ACE2DtyLHsBp4qmpBc/clIYRmi3LzzMO9JtA3CirGCYmhYThiQAUBVFHFba5nw==";//"LJLo2T072PIsxnmlg+ToPJXoLbULvSp7M0QIRLrraMpwEDvPuTWYNTBs+9N4u2ZJEnyLu12hozfnKRBm3jMthg=="; //"Z0iKEMnBjPZPwzwHm4xl97Dr/REj6rgIveBu+csZgfbcGmB+AM3wCY8LgOd8JF+J3pNGVTo6GCj0GgpeJ7Z34w==";//"+bCndXi4YfWdtRGhubkppq8A3mwhEKx44JcHviHDmFv2EfPl73Ei9mHdf579PCtUggxs4A6akotaK+MIRPtpXg=="; //DISCARDED //"It48s80Wap0MFwtmUix1UpyfSpAQXNLOsYqscbFkGWYWcbpqzHMiLUtsHyuXzamyZba8+wjoPvtBEr7y91KqDg==";
+	public String passphrase = "youngmulababy";//"or2otyvvoj";//"q1foebvdgon";//hmfd9om60ei" //"hmfd9om60ei";//"yg5p598a9hm";//DISCARDED //"0b1v4yb271f8c";//2) "d42s35ynk16w"; //1)  "0b1v4yb271f8c";
+	public String key = "7f7acace4bd4b4acb053929b7169bea3";//"1528df56017b4a0e606caddd6e08cf18"; //"716a23260f84427d4fcb6de5f74b5449";//"e5e184da7a9472728d25ebfe1b2b96e7"; //DISCARDED //"bde7c18ff32b42bcff6d27afae438b3b"; //2 )"9f0d81710ceb625214480ad99157c547";//1)  "bde7c18ff32b42bcff6d27afae438b3b";
+	public String secret = "W7mzbaKv7zOUAcd/kC19MXO5ACE2DtyLHsBp4qmpBc/clIYRmi3LzzMO9JtA3CirGCYmhYThiQAUBVFHFba5nw==";//"LJLo2T072PIsxnmlg+ToPJXoLbULvSp7M0QIRLrraMpwEDvPuTWYNTBs+9N4u2ZJEnyLu12hozfnKRBm3jMthg=="; //"Z0iKEMnBjPZPwzwHm4xl97Dr/REj6rgIveBu+csZgfbcGmB+AM3wCY8LgOd8JF+J3pNGVTo6GCj0GgpeJ7Z34w==";//"+bCndXi4YfWdtRGhubkppq8A3mwhEKx44JcHviHDmFv2EfPl73Ei9mHdf579PCtUggxs4A6akotaK+MIRPtpXg=="; //DISCARDED //"It48s80Wap0MFwtmUix1UpyfSpAQXNLOsYqscbFkGWYWcbpqzHMiLUtsHyuXzamyZba8+wjoPvtBEr7y91KqDg==";
 	 //2)    de"MgvN8QubN5qKVWmxCfIH9yJMAMDQxq+A/eYC58EGHKi4BX8igJdQOUYffs8gtgVturHAZm78CA/GUZG78ksL8g==";
 			//1) "It48s80Wap0MFwtmUix1UpyfSpAQXNLOsYqscbFkGWYWcbpqzHMiLUtsHyuXzamyZba8+wjoPvtBEr7y91KqDg==";
 
