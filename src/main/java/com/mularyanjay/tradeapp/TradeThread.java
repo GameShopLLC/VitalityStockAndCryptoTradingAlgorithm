@@ -42,10 +42,7 @@ public class TradeThread {
 //	@Transient
 //	VitalityInstanceRepository vir;
 	//simMode
-	@Transient
-	@Autowired
-	@Qualifier("main")
-	HttpEntityBean httpEntityBean;
+	private HttpEntityBean httpEntityBean;
 	private boolean dirty;
 	private BigDecimal usd;
 	private BigDecimal ltc;
@@ -89,6 +86,7 @@ public class TradeThread {
 	
 	public TradeThread(SimulationMode sm, BigDecimal initialUSD, long whatDBT, long whatDSTST, BigDecimal slightAmount) {
 	
+		httpEntityBean = new HttpEntityBean();
 		//setSimMode(sm);
 		setDirty(false);
 		setSlightAmount(slightAmount);
