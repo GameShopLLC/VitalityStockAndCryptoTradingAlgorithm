@@ -174,16 +174,16 @@ public class TradeThread {
 			}
 			RestTemplate restTemplate = new RestTemplate();
 			String url = "https://api.gdax.com/orders";
-			ResponseEntity<Order> response;
-			response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
-			try {
-				System.out.println(objectMapper.writeValueAsString(response.getBody()));
-			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (HttpStatusCodeException e) {
-				e.printStackTrace();
-			}
+//			ResponseEntity<Order> response;
+			restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+//			try {
+//				System.out.println(objectMapper.writeValueAsString(response.getBody()));
+//			} catch (JsonProcessingException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (HttpStatusCodeException e) {
+//				e.printStackTrace();
+//			}
 		}
 		BigDecimal forceTotal = new BigDecimal("0");
 		forceTotal = sellPrice.multiply(forceLtc);
@@ -449,17 +449,16 @@ public class TradeThread {
 			RestTemplate restTemplate = new RestTemplate();
 			String url = "https://api.gdax.com/orders";
 //			 response;
-			try {
-				ResponseEntity
-
-				response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
-				System.out.println(objectMapper.writeValueAsString(response.getBody()));
-			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (HttpStatusCodeException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				ResponseEntity response = 
+				restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+//				System.out.println(objectMapper.writeValueAsString(response.getBody()));
+//			} catch (JsonProcessingException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (HttpStatusCodeException e) {
+//				e.printStackTrace();
+//			}
 		}
 		setLastUsd(getUsd());
 		setUsd(getUsd().subtract(getRequestBuyPrice().multiply(getRequestedLtc())));
@@ -558,14 +557,14 @@ public class TradeThread {
 					}
 					RestTemplate restTemplate = new RestTemplate();
 					String url = "https://api.gdax.com/orders";
-					ResponseEntity<Order> response;
-					response = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
-					try {
-						System.out.println(objectMapper.writeValueAsString(response.getBody()));
-					} catch (JsonProcessingException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+//					ResponseEntity<Order> response;
+					restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+//					try {
+////						System.out.println(objectMapper.writeValueAsString(response.getBody()));
+//					} catch (JsonProcessingException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
 				}
 				setLtc(new BigDecimal("0"));
 				//set Litecoin
