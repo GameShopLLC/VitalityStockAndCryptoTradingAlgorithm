@@ -24,6 +24,10 @@ import org.thymeleaf.templateresolver.AbstractConfigurableTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import java.math.BigDecimal;
+import java.net.Authenticator;
+import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
+import java.net.URL;
 import java.util.Arrays;
 
 import javax.servlet.ServletContext;
@@ -53,6 +57,19 @@ public class TradeappApplication extends SpringBootServletInitializer {
 //	VitalityInstance vi;
 	
 	public static void main(String[] args) {
+		URL proximo = null;
+		try {
+			proximo = new URL(System.getenv("PROXIMO_URL"));
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String userInfo = proximo.getUserInfo();
+		String user = userInfo.substring(0, userInfo.indexOf(':'));
+		String password = userInfo.substring(userInfo.indexOf(':') + 1);
+		System.setProperty("socksProxyHost", proximo.getHost());
+		Authenticator.setDefault(new ProxyAuthenticator(user, password));
+		
 		try {
 		ApplicationContext ctx = SpringApplication.run(TradeappApplication.class, args);
 		VitalityInstance vi = ctx.getBean(VitalityInstance.class);
@@ -164,6 +181,10 @@ public class TradeappApplication extends SpringBootServletInitializer {
 				//new TradeGroup("Hour-1", 20, new BigDecimal("10000"), 60, 3, 480L * 60L * 1000L, 24L * 60L * 60L * 1000L));
 
 	}
+	
+//	private class ProxyAuthenticator extends Authenticator {
+//		  
+//		}
 //	@Bean
 //	ApplicationPropertiesValues applicationPropertiesValues() {
 //		return new ApplicationPropertiesValues();
