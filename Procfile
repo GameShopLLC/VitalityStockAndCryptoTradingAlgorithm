@@ -1,1 +1,1 @@
-web: /vendor/stunnel/bin/stunnel conf/stunnel.conf java -Dserver.port=$PORT $JAVA_OPTS -Xmx1g --add-opens java.base/jdk.internal.loader=ALL-UNNAMED -jar target/*.jar 
+web: stunnel conf/stunnel.conf java -Dserver.port=$PORT $JAVA_OPTS -Xmx1g --add-opens java.base/jdk.internal.loader=ALL-UNNAMED -jar target/*.jar 
