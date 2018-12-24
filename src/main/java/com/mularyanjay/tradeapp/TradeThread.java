@@ -135,7 +135,7 @@ public class TradeThread {
 		sellPrice = getCurrentPrice().subtract(getCurrentPrice().multiply(getForceSellFee()));
 		BigDecimal forceLtc = new BigDecimal("0");
 		if (getBuyProcessState().equals("DESIRED_SELL")) {
-		forceLtc = getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_UP);
+		forceLtc = getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_DOWN);
 		} else if (getBuyProcessState().equals("BOUGHT")) {
 			forceLtc = getLtc();
 		}
@@ -255,7 +255,7 @@ public class TradeThread {
 		sellPrice = getCurrentPrice().subtract(getCurrentPrice().multiply(getForceSellFee()));
 		BigDecimal forceLtc = new BigDecimal("0");
 		if (getBuyProcessState().equals("DESIRED_SELL")) {
-		forceLtc = getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_UP);
+		forceLtc = getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_DOWN);
 		} else if (getBuyProcessState().equals("BOUGHT")) {
 			forceLtc = getLtc();
 		}
@@ -411,7 +411,7 @@ public class TradeThread {
 		//Need to calculate totals and then do transaction
 		//A buy order will deduct dollars and want ltc,
 		//but will possess no ltc until it is met.
-		setRequestedLtc(getUsd().divide(getRequestBuyPrice(), 8, RoundingMode.HALF_UP));
+		setRequestedLtc(getUsd().divide(getRequestBuyPrice(), 8, RoundingMode.HALF_DOWN));
 		if (getSimMode() == SimulationMode.REALTIME) {
 			ObjectMapper objectMapper = new ObjectMapper();
 //			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
