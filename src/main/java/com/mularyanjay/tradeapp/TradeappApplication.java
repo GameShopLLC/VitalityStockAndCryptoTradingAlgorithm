@@ -85,18 +85,18 @@ public class TradeappApplication extends SpringBootServletInitializer {
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
-		URL proximo = null;
-		try {
-			proximo = new URL(System.getenv("PROXIMO_URL"));
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String userInfo = proximo.getUserInfo();
-		String user = userInfo.substring(0, userInfo.indexOf(':'));
-		String password = userInfo.substring(userInfo.indexOf(':') + 1);
-		System.setProperty("socksProxyHost", proximo.getHost());
-		Authenticator.setDefault(new ProxyAuthenticator(user, password));
+//		URL proximo = null;
+//		try {
+//			proximo = new URL(System.getenv("PROXIMO_URL"));
+//		} catch (MalformedURLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		String userInfo = proximo.getUserInfo();
+//		String user = userInfo.substring(0, userInfo.indexOf(':'));
+//		String password = userInfo.substring(userInfo.indexOf(':') + 1);
+//		System.setProperty("socksProxyHost", proximo.getHost());
+//		Authenticator.setDefault(new ProxyAuthenticator(user, password));
 		
 		System.out.println("We're live");
 		//ApplicationPropertiesValues apv = ctx.getBean(ApplicationPropertiesValues.class);
