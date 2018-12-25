@@ -30,6 +30,8 @@ import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.util.Arrays;
 
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 //Needs to make "RALLYING" state.  Rally/cancel rally
@@ -57,7 +59,15 @@ public class TradeappApplication extends SpringBootServletInitializer {
 //	VitalityInstance vi;
 	
 	public static void main(String[] args) {
-		
+		try {
+			  SSLSocketFactory factory =
+		                (SSLSocketFactory)SSLSocketFactory.getDefault();
+		            SSLSocket socket =
+		                (SSLSocket)factory.createSocket("fix.pro.coinbase.com", 4198);
+		            socket.startHandshake();
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 		try {
 		ApplicationContext ctx = SpringApplication.run(TradeappApplication.class, args);
 		VitalityInstance vi = ctx.getBean(VitalityInstance.class);
