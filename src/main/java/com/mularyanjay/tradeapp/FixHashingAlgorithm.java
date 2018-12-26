@@ -2,10 +2,13 @@ package com.mularyanjay.tradeapp;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -29,7 +32,14 @@ public class FixHashingAlgorithm {
 		timestamp = new String(Instant.now().getEpochSecond() + "");
 		Mac sha256 = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
-		timestamp = new String(sdf.format(new Date(timestamp)));
+//		DateFormat df = new DateFormat();
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		try {
+			timestamp = new String(sdf.format(DateFormat.getDateInstance().parse(timestamp)));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 //			String prehash = timestamp + "GET".toUpperCase() + requestPath; 
 			//+ "";
