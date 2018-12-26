@@ -23,6 +23,12 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.AbstractConfigurableTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.net.Authenticator;
 import java.net.MalformedURLException;
@@ -89,9 +95,46 @@ public class TradeappApplication extends SpringBootServletInitializer {
 		            SSLSocket socket =
 		                (SSLSocket)factory.createSocket("fix.pro.coinbase.com", 4198);
 		            socket.startHandshake();
+		            
+		            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
+
+//      out.println("GET / HTTP/1.0");
+//      out.println();
+	
+		            FixHashingAlgorithm fha = new FixHashingAlgorithm();
+		            String fixLogon = new String("8=FIX.4.2|49=" + fha.key + "|56=Coinbase|35=A|98=0|108=30|554=" + fha.password + "|96=" + fha.getHash() + "|52=" + fha.timestamp);
+		            out.println(fixLogon);
+      out.flush();
+
+      /*
+       * Make sure there were no surprises
+       */
+      if (out.checkError()) {
+          System.out.println(
+              "SSLSocketClient:  java.io.PrintWriter error");
+      }
+      /* read response */
+      BufferedReader in = new BufferedReader(
+                              new InputStreamReader(
+                              socket.getInputStream()));
+
+      String inputLine;
+      while ((inputLine = in.readLine()) != null) {
+          System.out.println(inputLine);
+      }
+      
+      String fixLogout = new String("8=FIX.4.2|49=" + fha.key + "|56=Coinbase|35=5");
+      out.println(fixLogout);
+      while ((inputLine = in.readLine()) != null) {
+          System.out.println(inputLine);
+      }
+      
+      socket.close();
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
+		
+		
 		try {
 		ApplicationContext ctx = SpringApplication.run(TradeappApplication.class, args);
 		VitalityInstance vi = ctx.getBean(VitalityInstance.class);
