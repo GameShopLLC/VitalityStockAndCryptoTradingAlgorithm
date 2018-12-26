@@ -29,13 +29,13 @@ public class FixHashingAlgorithm {
 	}
 	
 	public String getHash() {
-		timestamp = new String(Instant.now().getEpochSecond() + "");
+		timestamp = new String(Instant.now().getEpochSecond() * 1000L + "");
 		Mac sha256 = null;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
 //		DateFormat df = new DateFormat();
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 		try {
-			timestamp = new String(sdf.format(DateFormat.getDateInstance().parse((Long.parseLong(timestamp) * 1000L) + "")));
+			timestamp = new String(sdf.format(DateFormat.getDateInstance().parse(timestamp)));
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
