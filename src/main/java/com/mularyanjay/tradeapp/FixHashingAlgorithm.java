@@ -29,18 +29,20 @@ public class FixHashingAlgorithm {
 	}
 	
 	public String getHash() {
-		timestamp = new String(Instant.now().getEpochSecond() * 1000L + "");
+//		timestamp = new String(Instant.now().getEpochSecond() + "");
 		Mac sha256 = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
+		Date date = new Date(Instant.now().getEpochSecond() * 1000L);
+		DateFormat df = new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
 //		DateFormat df = new DateFormat();
-		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-		try {
-			Date parsedDate = Date.from(Instant.now());
-			timestamp = new String(sdf.format(DateFormat.getDateInstance().parse(parsedDate.toString())));
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		df.setTimeZone(zone);
+		df.setTimeZone(TimeZone.getTimeZone("UTC"));
+//		try {
+//			Date parsedDate = Date.from(Instant.now());
+			timestamp = new String(df.format(date));
+//		} catch (ParseException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		try {
 //			String prehash = timestamp + "GET".toUpperCase() + requestPath; 
 			//+ "";
