@@ -35,7 +35,7 @@ public class FixHashingAlgorithm {
 //		DateFormat df = new DateFormat();
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 		try {
-			timestamp = new String(sdf.format(DateFormat.getDateInstance().parse(timestamp)));
+			timestamp = new String(sdf.format(DateFormat.getDateInstance().parse((Long.parseLong(timestamp) * 1000L) + "")));
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
