@@ -30,8 +30,12 @@ import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.util.Arrays;
 
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.cert.X509Certificate;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 //Needs to make "RALLYING" state.  Rally/cancel rally
@@ -59,9 +63,29 @@ public class TradeappApplication extends SpringBootServletInitializer {
 //	VitalityInstance vi;
 	
 	public static void main(String[] args) {
+		
+		
+			    TrustManager tm = new X509TrustManager() {     
+			        public java.security.cert.X509Certificate[] getAcceptedIssuers() { 
+			            return new X509Certificate[0];
+			        } 
+			        public void checkClientTrusted( 
+			            java.security.cert.X509Certificate[] certs, String authType) {
+			            } 
+			        public void checkServerTrusted( 
+			            java.security.cert.X509Certificate[] certs, String authType) {
+			        }
+			    };   
+			 
+			    
+			    TrustManager[] trustAllCerts = new TrustManager[] {tm};
+		
 		try {
-			  SSLSocketFactory factory =
-		                (SSLSocketFactory)SSLSocketFactory.getDefault();
+//			  SSLSocketFactory factory =
+//		                (SSLSocketFactory)SSLSocketFactory.getDefault();
+			SSLContext sc = SSLContext.getInstance("SSL"); 
+		    sc.init(null, trustAllCerts, new java.security.SecureRandom()); 
+		    SSLSocketFactory factory = sc.getSocketFactory();
 		            SSLSocket socket =
 		                (SSLSocket)factory.createSocket("fix.pro.coinbase.com", 4198);
 		            socket.startHandshake();
