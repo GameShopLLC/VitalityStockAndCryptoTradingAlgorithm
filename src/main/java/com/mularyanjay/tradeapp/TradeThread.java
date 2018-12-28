@@ -133,7 +133,7 @@ public class TradeThread {
 		ResponseEntity<String> res = null;
 		try {
 			RestTemplate restTemplate = new RestTemplate();
-			res = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, "'" + json + "'"), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+			res = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
 	} catch (Throwable t) {
 //		e.printStackTrace();
 		//System.out.println(e.getResponseBodyAsString());
