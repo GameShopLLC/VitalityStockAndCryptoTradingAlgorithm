@@ -36,6 +36,7 @@ import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.util.Arrays;
 
+import javax.net.ssl.HandshakeCompletedListener;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -71,68 +72,71 @@ public class TradeappApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		
 		
-			    TrustManager tm = new X509TrustManager() {     
-			        public java.security.cert.X509Certificate[] getAcceptedIssuers() { 
-			            return new X509Certificate[0];
-			        } 
-			        public void checkClientTrusted( 
-			            java.security.cert.X509Certificate[] certs, String authType) {
-			            } 
-			        public void checkServerTrusted( 
-			            java.security.cert.X509Certificate[] certs, String authType) {
-			        }
-			    };   
-			 
-			    
-			    TrustManager[] trustAllCerts = new TrustManager[] {tm};
+//			    TrustManager tm = new X509TrustManager() {     
+//			        public java.security.cert.X509Certificate[] getAcceptedIssuers() { 
+//			            return new X509Certificate[0];
+//			        } 
+//			        public void checkClientTrusted( 
+//			            java.security.cert.X509Certificate[] certs, String authType) {
+//			            } 
+//			        public void checkServerTrusted( 
+//			            java.security.cert.X509Certificate[] certs, String authType) {
+//			        }
+//			    };   
+//			 
+//			    
+//			    TrustManager[] trustAllCerts = new TrustManager[] {tm};
 		
-		try {
-//			  SSLSocketFactory factory =
-//		                (SSLSocketFactory)SSLSocketFactory.getDefault();
-			SSLContext sc = SSLContext.getInstance("SSL"); 
-		    sc.init(null, trustAllCerts, new java.security.SecureRandom()); 
-		    SSLSocketFactory factory = sc.getSocketFactory();
-		            SSLSocket socket =
-		                (SSLSocket)factory.createSocket("fix.pro.coinbase.com", 4198);
-		            socket.startHandshake();
-		            
-		            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
-
-//      out.println("GET / HTTP/1.0");
-//      out.println();
-	
-		            FixHashingAlgorithm fha = new FixHashingAlgorithm();
-		            String fixLogon = new String("8=FIX.4.2|49=" + fha.key + "|56=Coinbase|35=A|98=0|108=30|554=" + fha.password + "|96=" + fha.getHash() + "|52=" + fha.timestamp);
-		            out.println(fixLogon);
-      out.flush();
-
-      /*
-       * Make sure there were no surprises
-       */
-      if (out.checkError()) {
-          System.out.println(
-              "SSLSocketClient:  java.io.PrintWriter error");
-      }
-      /* read response */
-      BufferedReader in = new BufferedReader(
-                              new InputStreamReader(
-                              socket.getInputStream()));
-
-      String inputLine;
-      while ((inputLine = in.readLine()) != null) {
-          System.out.println(inputLine);
-      }
-      
-      String fixLogout = new String("8=FIX.4.2|49=" + fha.key + "|56=Coinbase|35=5");
-      out.println(fixLogout);
-      while ((inputLine = in.readLine()) != null) {
-          System.out.println(inputLine);
-      }
-      
-      socket.close();
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
+//		try {
+////			  SSLSocketFactory factory =
+////		                (SSLSocketFactory)SSLSocketFactory.getDefault();
+//			SSLContext sc = SSLContext.getInstance("SSL"); 
+//		    sc.init(null, trustAllCerts, new java.security.SecureRandom()); 
+//		    SSLSocketFactory factory = sc.getSocketFactory();
+//		            SSLSocket socket =
+//		                (SSLSocket)factory.createSocket("tcp+ssl//fix.pro.coinbase.com", 4198);
+//		            socket.startHandshake();
+//		            
+//		            socket.addHandshakeCompletedListener(new HandshakeCompletedListener() {
+//		            	
+//		            });
+//		            PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
+//
+////      out.println("GET / HTTP/1.0");
+////      out.println();
+//	
+//		            FixHashingAlgorithm fha = new FixHashingAlgorithm();
+//		            String fixLogon = new String("8=FIX.4.2|49=" + fha.key + "|56=Coinbase|35=A|98=0|108=30|554=" + fha.password + "|96=" + fha.getHash() + "|52=" + fha.timestamp);
+//		            out.println(fixLogon);
+//      out.flush();
+//
+//      /*
+//       * Make sure there were no surprises
+//       */
+//      if (out.checkError()) {
+//          System.out.println(
+//              "SSLSocketClient:  java.io.PrintWriter error");
+//      }
+//      /* read response */
+//      BufferedReader in = new BufferedReader(
+//                              new InputStreamReader(
+//                              socket.getInputStream()));
+//
+//      String inputLine;
+//      while ((inputLine = in.readLine()) != null) {
+//          System.out.println(inputLine);
+//      }
+//      
+//      String fixLogout = new String("8=FIX.4.2|49=" + fha.key + "|56=Coinbase|35=5");
+//      out.println(fixLogout);
+//      while ((inputLine = in.readLine()) != null) {
+//          System.out.println(inputLine);
+//      }
+//      
+//      socket.close();
+//		} catch (Throwable t) {
+//			t.printStackTrace();
+//		}
 		
 		
 		try {
@@ -250,8 +254,8 @@ public class TradeappApplication extends SpringBootServletInitializer {
 	//public TradeGroup(String whatName, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, float bto, float sto) {
 	@Bean
 	VitalityInstance vitalityInstance() {
-		return new VitalityInstance(SimulationMode.REALTIME, new BigDecimal("64"), //Original 25000000
-				new TradeGroup(SimulationMode.REALTIME, "One-1", "NONE", 32, new BigDecimal("64"), 1, 3, 8L * 60L * 1000L, 1L * 24L * 60L * 60L * 1000L, 1L * 24L * 60L * 60L * 1000L, new BigDecimal(".0001")));//forceLossTimeout),
+		return new VitalityInstance(SimulationMode.REALTIME, new BigDecimal("128"), //Original 25000000
+				new TradeGroup(SimulationMode.REALTIME, "One-1", "NONE", 32, new BigDecimal("128"), 1, 3, 8L * 60L * 1000L, 1L * 24L * 60L * 60L * 1000L, 1L * 24L * 60L * 60L * 1000L, new BigDecimal(".0001")));//forceLossTimeout),
 				//new TradeGroup("Five-1", 20, new BigDecimal("10000"), 5, 3, 40L * 60L * 1000L, 24L * 60L * 60L * 1000L),
 				//new TradeGroup("Ten-1", 20, new BigDecimal("10000"), 10, 3, 80L * 60L * 1000L, 24L * 60L * 60L * 1000L),
 				//new TradeGroup("Fifteen-1", 20, new BigDecimal("10000"), 15, 3, 120L * 60L * 1000L, 24L * 60L * 60L * 1000L),

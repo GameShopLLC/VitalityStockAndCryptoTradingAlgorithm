@@ -129,6 +129,32 @@ public class TradeThread {
 			}
 	}
 	
+	public void doRestTemplate(String url, String json) {
+		ResponseEntity<String> res = null;
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			res = restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, "'" + json + "'"), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+	} catch (Throwable t) {
+//		e.printStackTrace();
+		//System.out.println(e.getResponseBodyAsString());
+		t.printStackTrace();
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		doRestTemplate(url, json);
+	} finally {
+		if (res != null) {
+			System.out.println(res.getBody());
+		} else {
+			System.out.print("RESPONSE IS NULL");
+			
+		}
+	}
+	}
+	
 	public void forceLoss() {
 		if (getBuyProcessState().equals("DESIRED_SELL") || getBuyProcessState().equals("BOUGHT")) {
 		BigDecimal sellPrice = new BigDecimal("0");
@@ -170,15 +196,11 @@ public class TradeThread {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			RestTemplate restTemplate = new RestTemplate();
-			String url = "https://api.gdax.com/orders";
+			
+			String url = "https://sample-tradeapp.herokuapp.com/placeOrder";
+			doRestTemplate(url, json);
 //			ResponseEntity<Order> response = 
-			try {
-					restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, "'" + json + "'"), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
-			} catch (HttpStatusCodeException e) {
-//				e.printStackTrace();
-				System.out.println(e.getResponseBodyAsString());
-			}
+		
 					//			try {
 //				System.out.println(objectMapper.writeValueAsString(response.getBody()));
 //			} catch (JsonProcessingException e) {
@@ -449,12 +471,14 @@ public class TradeThread {
 			} else {
 				System.out.println("JSON is Null!!!");
 			}
-			RestTemplate restTemplate = new RestTemplate();
-			String url = "https://api.gdax.com/orders";
-//			 response;
-//			try {
-//				ResponseEntity response = 
-				restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, "'" + json + "'"), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+			String url = "https://sample-tradeapp.herokuapp.com/placeOrder";
+			doRestTemplate(url, json);
+//			RestTemplate restTemplate = new RestTemplate();
+//			String url = "https://api.gdax.com/orders";
+////			 response;
+////			try {
+////				ResponseEntity response = 
+//				restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, "'" + json + "'"), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
 //				System.out.println(objectMapper.writeValueAsString(response.getBody()));
 //			} catch (JsonProcessingException e) {
 //				// TODO Auto-generated catch block
@@ -558,10 +582,12 @@ public class TradeThread {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					RestTemplate restTemplate = new RestTemplate();
-					String url = "https://api.gdax.com/orders";
-//					ResponseEntity<Order> response;
-					restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, "'" + json + "'"), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+					String url = "https://sample-tradeapp.herokuapp.com/placeOrder";
+					doRestTemplate(url, json);
+//					RestTemplate restTemplate = new RestTemplate();
+//					String url = "https://api.gdax.com/orders";
+////					ResponseEntity<Order> response;
+//					restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, "'" + json + "'"), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
 //					try {
 ////						System.out.println(objectMapper.writeValueAsString(response.getBody()));
 //					} catch (JsonProcessingException e) {

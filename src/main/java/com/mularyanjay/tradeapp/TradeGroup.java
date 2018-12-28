@@ -93,7 +93,7 @@ public class TradeGroup {
 		//setHasReachedEntryPoint(false);
 		//setSimMode(new String("SIMULATION"));
 		setSlightAmount(slightAmount);
-		setForceLossMode("NEGATIVE_LOSS");
+		setForceLossMode("NONE");
 		acceptedLossLog = new ArrayList<String>();
 		setFee(new BigDecimal("0.003"));
 		setAccountSnapshot(initialUSD);
