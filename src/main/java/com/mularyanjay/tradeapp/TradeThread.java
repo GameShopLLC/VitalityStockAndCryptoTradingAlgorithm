@@ -174,7 +174,7 @@ public class TradeThread {
 			order.setProduct_id("ZRX-USD");
 			order.setStp("cb");
 //			order.setPrice(getRequestBuyPrice().toPlainString());
-			order.setSize(forceLtc.toPlainString());
+			order.setSize((new BigDecimal(forceLtc.toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
 //			long minutes = 0;
 //			long hours = 0;
 //			long days = 0;
@@ -442,8 +442,10 @@ public class TradeThread {
 			order.setSide("buy");
 			order.setProduct_id("ZRX-USD");
 			order.setStp("cb");
-			order.setPrice(getRequestBuyPrice().toPlainString());
-			order.setSize(getRequestedLtc().toPlainString());
+//			BigDecimal temp = new BigDecimal(getRequestBuyPrice().toPlainString());
+
+			order.setPrice((new BigDecimal(getRequestBuyPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
+			order.setSize((new BigDecimal(getRequestedLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
 			long minutes = 0;
 			long hours = 0;
 			long days = 0;
@@ -558,8 +560,8 @@ public class TradeThread {
 					order.setSide("sell");
 					order.setProduct_id("ZRX-USD");
 					order.setStp("cb");
-					order.setPrice(getRequestSellPrice().toPlainString());
-					order.setSize(getLtc().toPlainString());
+					order.setPrice((new BigDecimal(getRequestSellPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
+					order.setSize((new BigDecimal(getLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
 					long minutes = 0;
 					long hours = 0;
 					long days = 0;
