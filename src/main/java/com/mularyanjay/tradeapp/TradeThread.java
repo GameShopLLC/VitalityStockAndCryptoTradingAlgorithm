@@ -124,7 +124,7 @@ public class TradeThread {
 					incrementSecondTick(1L);
 				}
 				
-			}, 1L, 1L);
+			}, 1000L, 1000L);
 			
 			}
 	}
