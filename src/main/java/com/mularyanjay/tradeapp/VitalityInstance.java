@@ -192,8 +192,9 @@ public class VitalityInstance {
 				}
 			}
 		} 
-		checkDirty();
 		updateBalance();
+		checkDirty();
+		
 		//after cycle, checkTrade
 	}
 	
