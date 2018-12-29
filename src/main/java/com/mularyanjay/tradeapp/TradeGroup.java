@@ -100,7 +100,7 @@ public class TradeGroup {
 		setForceLossTimeout(flto);
 		setSplitMode(new String("NONE"));  //if contains zeno
 		setLossMode(new String("IMMEDIATE")); //IMMEDIATE
-		setDumpingMode(new String("DUMP_ALL"));
+		setDumpingMode(new String("NONE"));
 		setSimMode(sm);
 		setLoss(new BigDecimal("0"));
 		setNet(new BigDecimal("0"));

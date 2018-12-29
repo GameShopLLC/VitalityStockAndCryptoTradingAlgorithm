@@ -144,6 +144,7 @@ public class TradeappApplication extends SpringBootServletInitializer {
 		VitalityInstance vi = ctx.getBean(VitalityInstance.class);
 		VitalityInstanceRepository vir = ctx.getBean(VitalityInstanceRepository.class);
 		AlgorithmManager am = ctx.getBean(AlgorithmManager.class);
+		if (vi.getSimMode() == SimulationMode.REALTIME) {
 		if (vir.findAll().size() > 0) {
 //			for (VitalityInstance v: vir.findAll()) {
 				try {
@@ -162,6 +163,9 @@ public class TradeappApplication extends SpringBootServletInitializer {
 			vir.save(vi);
 //			Thread.sleep(100);
 			System.out.println("Size of database is " + vir.findAll().size());
+		}
+		} else {
+			System.out.println("You have taken the blue pill");
 		}
 		} catch (Throwable t) {
 			t.printStackTrace();
@@ -254,8 +258,8 @@ public class TradeappApplication extends SpringBootServletInitializer {
 	//public TradeGroup(String whatName, int whatAmountThreads, BigDecimal initialUSD, int timeSpan, int ccn, float bto, float sto) {
 	@Bean
 	VitalityInstance vitalityInstance() {
-		return new VitalityInstance(SimulationMode.REALTIME, new BigDecimal("128"), //Original 25000000
-				new TradeGroup(SimulationMode.REALTIME, "One-1", "NONE", 32, new BigDecimal("128"), 1, 3, 60L * 60L * 1000L, 1L * 24L * 60L * 60L * 1000L, 1L * 24L * 60L * 60L * 1000L, new BigDecimal(".0001")));//forceLossTimeout),
+		return new VitalityInstance(SimulationMode.SIMULATION, new BigDecimal("128"), //Original 25000000
+				new TradeGroup(SimulationMode.SIMULATION, "One-1", "NONE", 128, new BigDecimal("128"), 1, 3, 60L * 60L * 1000L, 1L * 24L * 60L * 60L * 1000L, 1L * 24L * 60L * 60L * 1000L, new BigDecimal(".00001")));//forceLossTimeout),
 				//new TradeGroup("Five-1", 20, new BigDecimal("10000"), 5, 3, 40L * 60L * 1000L, 24L * 60L * 60L * 1000L),
 				//new TradeGroup("Ten-1", 20, new BigDecimal("10000"), 10, 3, 80L * 60L * 1000L, 24L * 60L * 60L * 1000L),
 				//new TradeGroup("Fifteen-1", 20, new BigDecimal("10000"), 15, 3, 120L * 60L * 1000L, 24L * 60L * 60L * 1000L),

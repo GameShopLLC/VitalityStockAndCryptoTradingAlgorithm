@@ -266,6 +266,7 @@ public class TradeThread {
 ////				timer.cancel();
 //				} else if (getSimMode() == SimulationMode.SIMULATION) {
 					resetTick();
+					setDirty(true);
 //				}
 		}
 	}

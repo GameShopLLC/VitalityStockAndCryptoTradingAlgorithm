@@ -193,7 +193,9 @@ public class VitalityInstance {
 			}
 		} 
 		updateBalance();
+		if (getSimMode() == SimulationMode.REALTIME) {
 		checkDirty();
+		}
 		
 		//after cycle, checkTrade
 	}
