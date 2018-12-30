@@ -443,6 +443,7 @@ public class TradeThread {
 			order.setSide("buy");
 			order.setProduct_id("ZRX-USD");
 			order.setStp("cb");
+//			order.setPost_only("true");
 //			BigDecimal temp = new BigDecimal(getRequestBuyPrice().toPlainString());
 
 			order.setPrice((new BigDecimal(getRequestBuyPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
@@ -561,6 +562,7 @@ public class TradeThread {
 					order.setSide("sell");
 					order.setProduct_id("ZRX-USD");
 					order.setStp("cb");
+//					order.setPost_only("true");
 					order.setPrice((new BigDecimal(getRequestSellPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
 					order.setSize((new BigDecimal(getLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
 					long minutes = 0;
