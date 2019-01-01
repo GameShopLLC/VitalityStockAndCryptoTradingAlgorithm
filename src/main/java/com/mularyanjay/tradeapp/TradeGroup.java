@@ -98,7 +98,7 @@ public class TradeGroup {
 		setFee(new BigDecimal("0.003"));
 		setAccountSnapshot(initialUSD);
 		setForceLossTimeout(flto);
-		setSplitMode(new String("NONE"));  //if contains zeno
+		setSplitMode(new String("ZENO_CLASSIC"));  //if contains zeno
 		setLossMode(new String("NONE")); //IMMEDIATE
 		setDumpingMode(new String("DUMP_ALL"));
 		setSimMode(sm);
