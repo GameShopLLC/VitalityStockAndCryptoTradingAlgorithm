@@ -384,6 +384,16 @@ public class TradeGroup {
 		//Move on to threads
 		//if (getSimMode().equals("REALTIME")) {
 		for (TradeThread t: trades) {
+				if (t.getBuyProcessState().equals("SUSPEND")){
+					if (getCurrentCarrot().getCurrent().compareTo(t.getRequestBuyPrice()) <= 0) {
+						t.cancelBuy();
+					} else {
+						t.setBuyProcessState(new String("DESIRED_BUY"));
+					}
+				}
+			}
+			
+		for (TradeThread t: trades) {
 			t.broadcastCarrot(carrot); //or should I evaluate current
 			//carrot and broadcast that? No, keep as is.
 		}
@@ -647,15 +657,15 @@ public class TradeGroup {
 					t.forceLoss(); //forceSell?
 				}
 			}
-			for (TradeThread t: trades) {
-				if (t.getBuyProcessState().equals("SUSPEND")){
-					if (getCurrentCarrot().getCurrent().compareTo(t.getRequestBuyPrice()) <= 0) {
-						t.cancelBuy();
-					} else {
-						t.setBuyProcessState(new String("DESIRED_BUY"));
-					}
-				}
-			}
+			// for (TradeThread t: trades) {
+			// 	if (t.getBuyProcessState().equals("SUSPEND")){
+			// 		if (getCurrentCarrot().getCurrent().compareTo(t.getRequestBuyPrice()) <= 0) {
+			// 			t.cancelBuy();
+			// 		} else {
+			// 			t.setBuyProcessState(new String("DESIRED_BUY"));
+			// 		}
+			// 	}
+			// }
 			} else if (getLossMode().equals("INSTANT")) {
 				boolean sellAll = false;
 				for (TradeThread t: trades) {
