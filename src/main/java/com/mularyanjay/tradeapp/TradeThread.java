@@ -165,7 +165,7 @@ public class TradeThread {
 		forceLtc = getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_DOWN);
 		} else if (getBuyProcessState().equals("BOUGHT")) {
 			forceLtc = getLtc();
-		}
+		} 
 		setRequestSellPrice(sellPrice);
 		if (getSimMode() == SimulationMode.REALTIME) {
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -175,6 +175,8 @@ public class TradeThread {
 			order.setSide("sell");
 			order.setProduct_id("ZRX-USD");
 			order.setStp("cb");
+			order.setTime_in_force("GTT");
+			order.setCancel_after("hour");
 //			order.setPrice(getRequestBuyPrice().toPlainString());
 			order.setSize((new BigDecimal(forceLtc.toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
 			order.setPrice((new BigDecimal(sellPrice.toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
@@ -269,7 +271,13 @@ public class TradeThread {
 //			if (getSimMode() == SimulationMode.REALTIME) {
 ////				timer.cancel();
 //				} else if (getSimMode() == SimulationMode.SIMULATION) {
-					resetTick();
+					
+					setLtc(new BigDecimal("0"));
+				//set Litecoin
+				setBuyProcessState("DESIRED_SELL");
+				setLifeTimeState("TRADING");
+				System.out.println("Sell order placed at $" + getRequestSellPrice());
+				resetTick();
 					setDirty(true);
 //				}
 		}
