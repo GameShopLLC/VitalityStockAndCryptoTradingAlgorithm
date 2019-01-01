@@ -455,7 +455,7 @@ public class TradeThread {
 			order.setSide("buy");
 			order.setProduct_id("ZRX-USD");
 			order.setStp("co");
-//			order.setPost_only("true");
+			// order.setPost_only("true");
 			
 			
 //			BigDecimal temp = new BigDecimal(getRequestBuyPrice().toPlainString());
