@@ -42,6 +42,7 @@ public class TradeThread {
 //	@Transient
 //	VitalityInstanceRepository vir;
 	//simMode
+	@Transient
 	private HttpEntityBean httpEntityBean;
 	private boolean dirty;
 	private BigDecimal usd;
@@ -580,7 +581,7 @@ public class TradeThread {
 						days = getDesiredSellToStuckTimeout() / (1000L * 60L * 60L * 24L);
 					}
 					order.setTime_in_force("GTT");
-					order.setCancel_after("day");
+					order.setCancel_after("hour");
 //					
 					String json = null;
 					try {
