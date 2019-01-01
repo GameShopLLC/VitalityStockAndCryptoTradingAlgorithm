@@ -98,7 +98,7 @@ public class TradeGroup {
 		setFee(new BigDecimal("0.003"));
 		setAccountSnapshot(initialUSD);
 		setForceLossTimeout(flto);
-		setSplitMode(new String("ZENO_CLASSIC"));  //if contains zeno
+		setSplitMode(new String("NONE"));  //if contains zeno
 		setLossMode(new String("NONE")); //IMMEDIATE
 		setDumpingMode(new String("DUMP_ALL"));
 		setSimMode(sm);
@@ -638,8 +638,22 @@ public class TradeGroup {
 			
 			if (getLossMode().equals("IMMEDIATE")) {
 			for (TradeThread t: trades) {
+				if (t.getBuyProcessState().equals("DESIRED_BUY")){
+					t.setBuyProcessState(new String("SUSPEND"));
+				}
+			}
+			for (TradeThread t: trades) {
 				if (t.getLifeTimeState().equals("SELL_STUCK")) {
 					t.forceLoss(); //forceSell?
+				}
+			}
+			for (TradeThread t: trades) {
+				if (t.getBuyProcessState().equals("SUSPEND")){
+					if (getCurrentCarrot().getCurrent().compareTo(t.getRequestBuyPrice()) <= 0) {
+						t.cancelBuy();
+					} else {
+						t.setBuyProcessState(new String("DESIRED_BUY"));
+					}
 				}
 			}
 			} else if (getLossMode().equals("INSTANT")) {
