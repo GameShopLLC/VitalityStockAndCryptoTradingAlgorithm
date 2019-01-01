@@ -356,7 +356,7 @@ public class TradeThread {
 	}
 	
 	public void cancelBuy() {
-		if(getLifeTimeState().equals("BUY_STUCK") || getLifeTimeState().equals("SUSPEND")) {
+		if(getLifeTimeState().equals("BUY_STUCK") || getBuyProcessState().equals("SUSPEND")) {
 			setUsd(getLastUsd());
 			setBuyProcessState("STANDBY");
 			setLifeTimeState("IDLE");
