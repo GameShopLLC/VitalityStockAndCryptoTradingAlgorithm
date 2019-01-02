@@ -385,7 +385,7 @@ public class TradeGroup {
 		//if (getSimMode().equals("REALTIME")) {
 		for (TradeThread t: trades) {
 				if (t.getBuyProcessState().equals("SUSPEND")){
-					if (getCurrentCarrot().getCurrent().compareTo(t.getRequestBuyPrice()) <= 0) {
+					if (carrot.getCurrent().compareTo(t.getRequestBuyPrice()) <= 0) {
 						t.cancelBuy();
 					} else {
 						t.setBuyProcessState(new String("DESIRED_BUY"));
@@ -647,13 +647,16 @@ public class TradeGroup {
 			}
 			
 			if (getLossMode().equals("IMMEDIATE")) {
-			for (TradeThread t: trades) {
-				if (t.getBuyProcessState().equals("DESIRED_BUY")){
-					t.setBuyProcessState(new String("SUSPEND"));
-				}
-			}
+			// for (TradeThread t: trades) {
+				
+			// }
 			for (TradeThread t: trades) {
 				if (t.getLifeTimeState().equals("SELL_STUCK")) {
+					for (TradeThread b: trades){
+					if (b.getBuyProcessState().equals("DESIRED_BUY")){
+					b.setBuyProcessState(new String("SUSPEND"));
+				}
+				}
 					t.forceLoss(); //forceSell?
 				}
 			}
