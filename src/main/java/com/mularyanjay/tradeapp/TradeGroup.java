@@ -33,7 +33,7 @@ public class TradeGroup {
 	private String state; //STANDBY, ACTIVE, RALLYING
 	private String runningState; //GOING, STOPPED
 	private int amountThreads;
-	@AccessType(Type.FIELD)
+	// @AccessType(Type.FIELD)
 	private ArrayList<Carrot> carrotCache;
 	private int carrotCacheNum;
 	private int minuteTimeSpan;
@@ -446,7 +446,7 @@ public class TradeGroup {
 			//if (getCurrentCarrot() == null) {
 			setCurrentCarrot(carrot);
 			if (!getCurrentCarrot().isActive()) {
-				getCarrotCache().add(carrot);
+				useCarrotCache().add(carrot);
 				//doDeploy
 				doDeploy();
 			}
@@ -472,7 +472,7 @@ public class TradeGroup {
 						if (getCurrentCarrot().getStartTime().increaseEquals(carrot.getCurrentTime(), "minute", 4) &&
 								getCurrentCarrot().getStartTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("58"))) {
 							getCurrentCarrot().closeCarrot(carrot.getStartTime());
-							getCarrotCache().add(getCurrentCarrot());
+							useCarrotCache().add(getCurrentCarrot());
 							doDeploy();
 							setCurrentCarrot(null);
 						} else {
@@ -497,7 +497,7 @@ public class TradeGroup {
 					if (getCurrentCarrot().getStartTime().increaseEquals(carrot.getCurrentTime(), "minute", 9) &&
 							getCurrentCarrot().getStartTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("58"))) {
 						getCurrentCarrot().closeCarrot(carrot.getStartTime());
-						getCarrotCache().add(getCurrentCarrot());
+						useCarrotCache().add(getCurrentCarrot());
 						doDeploy();
 						setCurrentCarrot(null);
 					} else {
@@ -520,7 +520,7 @@ public class TradeGroup {
 					if (getCurrentCarrot().getStartTime().increaseEquals(carrot.getCurrentTime(), "minute", 14) &&
 							getCurrentCarrot().getStartTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("58"))) {
 						getCurrentCarrot().closeCarrot(carrot.getStartTime());
-						getCarrotCache().add(getCurrentCarrot());
+						useCarrotCache().add(getCurrentCarrot());
 						doDeploy();
 						setCurrentCarrot(null);
 					} else {
@@ -541,7 +541,7 @@ public class TradeGroup {
 					if (getCurrentCarrot().getStartTime().increaseEquals(carrot.getCurrentTime(), "minute", 29) &&
 							getCurrentCarrot().getStartTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("58"))) {
 						getCurrentCarrot().closeCarrot(carrot.getStartTime());
-						getCarrotCache().add(getCurrentCarrot());
+						useCarrotCache().add(getCurrentCarrot());
 						doDeploy();
 						setCurrentCarrot(null);
 					} else {
@@ -561,7 +561,7 @@ public class TradeGroup {
 					if (getCurrentCarrot().getStartTime().increaseEquals(carrot.getCurrentTime(), "minute", 59) &&
 							getCurrentCarrot().getStartTime().increaseGreater(carrot.getCurrentTime(), "second", new BigDecimal("58"))) {
 						getCurrentCarrot().closeCarrot(carrot.getStartTime());
-						getCarrotCache().add(getCurrentCarrot());
+						useCarrotCache().add(getCurrentCarrot());
 						doDeploy();
 						setCurrentCarrot(null);
 					} else {
@@ -578,10 +578,10 @@ public class TradeGroup {
 //		//Dont forget about carrotCache (the point of
 //		//currentCarrot
 //		//Also have to count the time in greater than 1 minute
-//		if (getCarrotCache().size() == 0) {
+//		if (useCarrotCache().size() == 0) {
 //		
 //			if (!carrot.isActive()) {
-//				getCarrotCache().add(carrot);
+//				useCarrotCache().add(carrot);
 //			}
 //			
 //		} else {
@@ -591,29 +591,29 @@ public class TradeGroup {
 //			//if getname
 //			if (getName().contains("One")) {
 //				if (!carrot.isActive()) {
-//					getCarrotCache().add(carrot);
+//					useCarrotCache().add(carrot);
 //				}
 //				// else assess carrot? -_-
 //				
 //			} else if (getName().contains("Five")) {
-//				if (!carrot.isActive() && carrot.getStartTime().increaseEquals(getCarrotCache().get(getCarrotCache().size() - 1).getStartTime(), "minute", 5)) {
-//					getCarrotCache().add(carrot);
+//				if (!carrot.isActive() && carrot.getStartTime().increaseEquals(useCarrotCache().get(useCarrotCache().size() - 1).getStartTime(), "minute", 5)) {
+//					useCarrotCache().add(carrot);
 //				}
 //			} else if (getName().contains("Ten")) {
-//				if (!carrot.isActive() && carrot.getStartTime().increaseEquals(getCarrotCache().get(getCarrotCache().size() - 1).getStartTime(), "minute", 10)) {
-//					getCarrotCache().add(carrot);
+//				if (!carrot.isActive() && carrot.getStartTime().increaseEquals(useCarrotCache().get(useCarrotCache().size() - 1).getStartTime(), "minute", 10)) {
+//					useCarrotCache().add(carrot);
 //				}
 //			} else if (getName().contains("Fifteen")) {
-//				if (!carrot.isActive() && carrot.getStartTime().increaseEquals(getCarrotCache().get(getCarrotCache().size() - 1).getStartTime(), "minute", 15)) {
-//					getCarrotCache().add(carrot);
+//				if (!carrot.isActive() && carrot.getStartTime().increaseEquals(useCarrotCache().get(useCarrotCache().size() - 1).getStartTime(), "minute", 15)) {
+//					useCarrotCache().add(carrot);
 //				}
 //			} else if (getName().contains("Thirty")) {
-//				if (!carrot.isActive() && carrot.getStartTime().increaseEquals(getCarrotCache().get(getCarrotCache().size() - 1).getStartTime(), "minute", 30)) {
-//					getCarrotCache().add(carrot);
+//				if (!carrot.isActive() && carrot.getStartTime().increaseEquals(useCarrotCache().get(useCarrotCache().size() - 1).getStartTime(), "minute", 30)) {
+//					useCarrotCache().add(carrot);
 //				}
 //			} else if (getName().contains("Hour")) {
-//				if (!carrot.isActive() && carrot.getStartTime().increaseEquals(getCarrotCache().get(getCarrotCache().size() - 1).getStartTime(), "minute", 60)) {
-//					getCarrotCache().add(carrot);
+//				if (!carrot.isActive() && carrot.getStartTime().increaseEquals(useCarrotCache().get(useCarrotCache().size() - 1).getStartTime(), "minute", 60)) {
+//					useCarrotCache().add(carrot);
 //				}
 //			}
 				
@@ -703,22 +703,22 @@ public class TradeGroup {
 		//Ok, first change to single dip
 		if (getRunningState().equals("GOING")) {
 		if (getState().equals("STANDBY")) {
-			if (getCarrotCache().size() > 0) {
+			if (useCarrotCache().size() > 0) {
 //				if (getName().contains("One")) {
-//					if (getCarrotCache().size() > 1) {
+//					if (useCarrotCache().size() > 1) {
 //						//if... hit entry point
-//						if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC") && getCarrotCache().get(getCarrotCache().size() - 2).getTrend().equals("DEC")) {
+//						if (useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("DEC") && useCarrotCache().get(useCarrotCache().size() - 2).getTrend().equals("DEC")) {
 //							setState("ACTIVE");		
-//							deployThread(getCarrotCache().get(getCarrotCache().size() - 1)); //well?
+//							deployThread(useCarrotCache().get(useCarrotCache().size() - 1)); //well?
 //						}
 //					}
 //				}
 				//else {
-					//if (getCarrotCache().size() > 0) {
+					//if (useCarrotCache().size() > 0) {
 						//if... hit entry point
-						if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend() != null && getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC")) {
+						if (useCarrotCache().get(useCarrotCache().size() - 1).getTrend() != null && useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("DEC")) {
 							setState("ACTIVE");	
-							deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
+							deployThread(useCarrotCache().get(useCarrotCache().size() - 1));
 						}
 						//INC for buy... but not on standby, only on ACTIVE
 					//}
@@ -726,38 +726,38 @@ public class TradeGroup {
 			}
 		}
 		else if (getState().equals("ACTIVE")) {
-			if (getCarrotCache().size() > 0) {
+			if (useCarrotCache().size() > 0) {
 //				if (getName().contains("One")) {
-//					if (getCarrotCache().size() > 1) {
+//					if (useCarrotCache().size() > 1) {
 //						//if... hit entry point
-//						if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC") && getCarrotCache().get(getCarrotCache().size() - 2).getTrend().equals("DEC")) {
+//						if (useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("DEC") && useCarrotCache().get(useCarrotCache().size() - 2).getTrend().equals("DEC")) {
 //							//setState("ACTIVE");		
-//							deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
+//							deployThread(useCarrotCache().get(useCarrotCache().size() - 1));
 //						}
 //					}
 //				}
 //				else {
-//					if (getCarrotCache().size() > 0) {
+//					if (useCarrotCache().size() > 0) {
 						//if... hit entry point
-						if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend() != null && getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC")) {
+						if (useCarrotCache().get(useCarrotCache().size() - 1).getTrend() != null && useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("DEC")) {
 							//setState("ACTIVE");
-							deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
+							deployThread(useCarrotCache().get(useCarrotCache().size() - 1));
 						} 
-						else if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend() != null && getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("INC")) { //|| getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC") ) {
+						else if (useCarrotCache().get(useCarrotCache().size() - 1).getTrend() != null && useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("INC")) { //|| useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("DEC") ) {
 							//setState("ACTIVE");
-							//deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
-							attemptSellThread(getCarrotCache().get(getCarrotCache().size() - 1));
+							//deployThread(useCarrotCache().get(useCarrotCache().size() - 1));
+							attemptSellThread(useCarrotCache().get(useCarrotCache().size() - 1));
 						}
 						//*****INC for buy since ACTIVE here*****
 //					}
 //				}
 			}
 		} else if (getState().equals("RALLYING")) {
-			if (getCarrotCache().size() > 0) {
-				if (getCarrotCache().get(getCarrotCache().size() - 1).getTrend() != null && getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("INC")) { //|| getCarrotCache().get(getCarrotCache().size() - 1).getTrend().equals("DEC")) {
+			if (useCarrotCache().size() > 0) {
+				if (useCarrotCache().get(useCarrotCache().size() - 1).getTrend() != null && useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("INC")) { //|| useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("DEC")) {
 					//setState("ACTIVE");
-					//deployThread(getCarrotCache().get(getCarrotCache().size() - 1));
-					attemptSellThread(getCarrotCache().get(getCarrotCache().size() - 1));
+					//deployThread(useCarrotCache().get(useCarrotCache().size() - 1));
+					attemptSellThread(useCarrotCache().get(useCarrotCache().size() - 1));
 				}
 			}
 		}
@@ -915,8 +915,8 @@ public class TradeGroup {
 		this.ltc = ltc;
 	}
 
-	@Transient
-	public ArrayList<Carrot> getCarrotCache() {
+	
+	public ArrayList<Carrot> useCarrotCache() {
 		//if(carrotCache != null)
 		if (carrotCache.size() > getCarrotCacheNum()) {
 			carrotCache.remove(0);
@@ -924,6 +924,10 @@ public class TradeGroup {
 		return carrotCache;
 	}
 
+	public ArrayList<Carrot> getCarrotCache(){
+
+		return carrotCache;
+	}
 	public void setCarrotCache(ArrayList<Carrot> carrotCache) {
 		this.carrotCache = carrotCache;
 	}
