@@ -47,6 +47,7 @@ public class TradeThread {
 	private boolean dirty;
 	private BigDecimal usd;
 	private BigDecimal ltc;
+	private BigDecimal lastLtc;
 	//buyprocessstate
 	private String buyProcessState; //STANDBY, DESIRED_BUY, BOUGHT, DESIRED_SELL, SOLD, SUSPEND
 	private String lifeTimeState; //IDLE, TRADING, BUY_STUCK, SELL_STUCK, RESERVE;
@@ -102,6 +103,7 @@ public class TradeThread {
 		setUsd(initialUSD);
 		setLastUsd(initialUSD);
 		setLtc(new BigDecimal("0"));
+
 		setProfit(new BigDecimal("0"));
 		setBuyProcessState("STANDBY");
 		setLifeTimeState("IDLE");
@@ -162,7 +164,7 @@ public class TradeThread {
 		sellPrice = getCurrentPrice().add(getSlightAmount());//.subtract(getCurrentPrice().multiply(getForceSellFee()));
 		BigDecimal forceLtc = new BigDecimal("0");
 		if (getBuyProcessState().equals("DESIRED_SELL")) {
-		forceLtc = getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_DOWN);
+		forceLtc = getLastLtc();//getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_DOWN);
 		} else if (getBuyProcessState().equals("BOUGHT")) {
 			forceLtc = getLtc();
 		} 
@@ -174,7 +176,7 @@ public class TradeThread {
 			order.setType("limit");
 			order.setSide("sell");
 			order.setProduct_id("ZRX-USD");
-			order.setStp("co");
+			// order.setStp("co");
 			 order.setTime_in_force("GTT");
 			 order.setCancel_after("hour");
 //			order.setPrice(getRequestBuyPrice().toPlainString());
@@ -626,6 +628,7 @@ public class TradeThread {
 //						e.printStackTrace();
 //					}
 				}
+				setLastLtc(getLtc());
 				setLtc(new BigDecimal("0"));
 				//set Litecoin
 				setBuyProcessState("DESIRED_SELL");
@@ -755,7 +758,7 @@ public class TradeThread {
 		setBuyProcessState("SOLD");
 		setLifeTimeState("IDLE");
 		}
-		
+		setLastLtc(new BigDecimal("0"));
 		System.out.println("Sold at $" + getRequestSellPrice());
 //		if (getSimMode() == SimulationMode.REALTIME) {
 //			timer.cancel();
@@ -1015,5 +1018,13 @@ public class TradeThread {
 
 	public void setDirty(boolean dirty) {
 		this.dirty = dirty;
+	}
+
+	public BigDecimal getLastLtc(){
+		return lastLtc;
+	}
+
+	public void setLastLtc(BigDecimal lastLtc){
+		this.lastLtc = lastLtc;
 	}
 }
