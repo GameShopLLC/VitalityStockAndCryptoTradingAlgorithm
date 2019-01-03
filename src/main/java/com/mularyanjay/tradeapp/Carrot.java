@@ -47,6 +47,7 @@ public class Carrot {
 		setCurrent(start);
 		setHigh(start);
 		setLow(start);
+		setTrend("EQ");
 	}
 	
 	public void addCurrent(BigDecimal newCurrent) {
