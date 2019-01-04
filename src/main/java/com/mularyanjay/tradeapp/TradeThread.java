@@ -441,11 +441,12 @@ public class TradeThread {
 	}
 	
 	public void resetTick() {
-		if(getBuyProcessState().equals("DESIRED_BUY")){// || getBuyProcessState().equals("BOUGHT")) {
-			setLastSecondTick(getSecondTick());
-		} else {
-			setLastSecondTick(-1L);
-		}
+		// if(getBuyProcessState().equals("DESIRED_BUY")){// || getBuyProcessState().equals("BOUGHT")) {
+		// 	setLastSecondTick(getSecondTick());
+		// } else {
+		// 	setLastSecondTick(-1L);
+		// }
+		setLastSecondTick(getSecondTick());
 	}
 	//set desired buy and what not.  Timer/timeouts for if it gets stuck
 	//Remember to set timer/timeouts
