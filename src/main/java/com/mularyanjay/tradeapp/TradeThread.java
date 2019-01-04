@@ -441,7 +441,7 @@ public class TradeThread {
 	}
 	
 	public void resetTick() {
-		if(getBuyProcessState().equals("DESIRED_BUY") || getBuyProcessState().equals("BOUGHT")) {
+		if(getBuyProcessState().equals("DESIRED_BUY")){// || getBuyProcessState().equals("BOUGHT")) {
 			setLastSecondTick(getSecondTick());
 		} else {
 			setLastSecondTick(-1L);
