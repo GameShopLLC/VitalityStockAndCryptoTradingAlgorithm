@@ -444,8 +444,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //			BigDecimal temp = new BigDecimal(getRequestBuyPrice().toPlainString());
 			// setRequestBuyPrice((new BigDecimal(getRequestBuyPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
 			// setRequestedLtc((new BigDecimal(getRequestedLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
-			order.setPrice(getRequestBuyPrice());
-			order.setSize(getRequestedLtc().subtract(getLastPartialFill()));
+			order.setPrice(getRequestBuyPrice().toPlainString());
+			order.setSize(getRequestedLtc().subtract(getLastPartialFill()).toPlainString());
 
 			long minutes = 0;
 			long hours = 0;
@@ -861,7 +861,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 				setDirty(true);
 			
 			} else if (new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getLastPartialFill()) == 1 && new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getRequestedLtc()) == -1) {
-				setLastPartialFill(getActiveOrder().getFilled_size());
+				setLastPartialFill(new BigDecimal(getActiveOrder().getFilled_size()));
 				setPartialState("PARTIAL");
 				setDirty(true);
 
@@ -886,7 +886,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			} 
 
 			else if (new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getLastPartialFill()) == 1 && new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getRequestedLtc()) == -1) {
-				setLastPartialFill(getActiveOrder().getFilled_size());
+				setLastPartialFill(new BigDecimal(getActiveOrder().getFilled_size()));
 				setPartialState("PARTIAL");
 				setDirty(true);
 
