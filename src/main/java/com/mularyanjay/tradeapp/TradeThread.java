@@ -188,7 +188,7 @@ public class TradeThread {
 		if (res != null) {
 			System.out.println(res.getBody());
 			ObjectMapper objectMapper = new ObjectMapper();
-			activeOrder = objectMapper.readValue(res.getBody, Order.class);
+			activeOrder = objectMapper.readValue(res.getBody(), Order.class);
 
 		} else {
 			System.out.print("RESPONSE IS NULL");
@@ -224,10 +224,10 @@ public class TradeThread {
 			 order.setTime_in_force("GTT");
 			 order.setCancel_after("hour");
 //			order.setPrice(getRequestBuyPrice().toPlainString());
-			 forceLtc = (new BigDecimal(forceLtc.toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString();
-			order.setSize(forceLtc);
-			sellPrice = (new BigDecimal(sellPrice.toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString();
-			order.setPrice();
+			 forceLtc = (new BigDecimal(forceLtc.toPlainString()).setScale(5, RoundingMode.HALF_DOWN));
+			order.setSize(forceLtc.toPlainString());
+			sellPrice = (new BigDecimal(sellPrice.toPlainString()).setScale(6, RoundingMode.HALF_DOWN));
+			order.setPrice(sellPrice.toPlainString());
 //			long minutes = 0;
 //			long hours = 0;
 //			long days = 0;
@@ -652,10 +652,10 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			
 			
 //			BigDecimal temp = new BigDecimal(getRequestBuyPrice().toPlainString());
-			setRequestBuyPrice((new BigDecimal(getRequestBuyPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
-			setRequestedLtc((new BigDecimal(getRequestedLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
-			order.setPrice(getRequestBuyPrice());
-			order.setSize(getRequestedLtc());
+			setRequestBuyPrice((new BigDecimal(getRequestBuyPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)));
+			setRequestedLtc((new BigDecimal(getRequestedLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)));
+			order.setPrice(getRequestBuyPrice().toPlainString());
+			order.setSize(getRequestedLtc().toPlainString());
 			long minutes = 0;
 			long hours = 0;
 			long days = 0;
@@ -771,10 +771,10 @@ if (getSimMode() == SimulationMode.REALTIME) {
 					order.setProduct_id("ZRX-USD");
 					order.setStp("co");
 //					order.setPost_only("true");
-					setRequestSellPrice((new BigDecimal(getRequestSellPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
-					setLtc((new BigDecimal(getLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
-					order.setPrice(getRequestSellPrice());
-					order.setSize(getLtc());
+					setRequestSellPrice((new BigDecimal(getRequestSellPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)));
+					setLtc((new BigDecimal(getLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)));
+					order.setPrice(getRequestSellPrice().toPlainString());
+					order.setSize(getLtc().toPlainString());
 					long minutes = 0;
 					long hours = 0;
 					long days = 0;
