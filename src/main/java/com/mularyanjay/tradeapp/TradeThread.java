@@ -42,7 +42,7 @@ public class TradeThread {
 //	@Transient
 //	VitalityInstanceRepository vir;
 	//simMode
-	private String id;
+	private String orderId;
 	private Order activeOrder;
 	private BigDecimal lastPartialFill;
 	private String partialState;// NONE, PARTIAL
@@ -131,7 +131,7 @@ public class TradeThread {
 				public void run() {
 					// TODO Auto-generated method stub
 					incrementSecondTick(1L);
-					if (getId() != null) {
+					if (getOrderId() != null) {
 						fetchOrder();	
 					}
 				}
@@ -160,7 +160,7 @@ public class TradeThread {
 	} finally {
 		if (res != null) {
 			System.out.println("The id is:" + res.getBody());
-			setId(new String(res.getBody()));
+			setOrderId(new String(res.getBody()));
 		} else {
 			System.out.print("RESPONSE IS NULL");
 			
@@ -172,7 +172,7 @@ public class TradeThread {
 			ResponseEntity<Order> res = null;
 		try {
 			RestTemplate restTemplate = new RestTemplate();
-			res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + getId(), HttpMethod.GET, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/getOrder/" + getId()), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+			res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + getOrderId(), HttpMethod.GET, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/getOrder/" + getOrderId()), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
 	} catch (Throwable t) {
 //		e.printStackTrace();
 		//System.out.println(e.getResponseBodyAsString());
@@ -1240,12 +1240,12 @@ if (getSimMode() == SimulationMode.REALTIME) {
 		this.lastLtc = lastLtc;
 	}
 
-	public String getId(){
-		return id;
+	public String getOrderId(){
+		return orderId;
 	}
 
-	public void setId(String id){
-		this.id = id;
+	public void setOrderId(String id){
+		this.orderId = id;
 	}
 
 	public Order getActiveOrder(){
