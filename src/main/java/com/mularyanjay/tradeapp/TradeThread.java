@@ -188,7 +188,12 @@ public class TradeThread {
 		if (res != null) {
 			System.out.println(res.getBody());
 			ObjectMapper objectMapper = new ObjectMapper();
+			try {
 			activeOrder = objectMapper.readValue(res.getBody().toString(), Order.class);
+			} catch (Throwable throwable){
+				throwable.printStackTrace();
+				System.out.println("CANNOT READ ACTIVE ORDER");
+			} 
 
 		} else {
 			System.out.print("RESPONSE IS NULL");
