@@ -188,7 +188,7 @@ public class TradeThread {
 		if (res != null) {
 			System.out.println(res.getBody());
 			ObjectMapper objectMapper = new ObjectMapper();
-			activeOrder = objectMapper.readValue(res.getBody(), Order.class);
+			activeOrder = objectMapper.readValue(res.getBody().toString(), Order.class);
 
 		} else {
 			System.out.print("RESPONSE IS NULL");
