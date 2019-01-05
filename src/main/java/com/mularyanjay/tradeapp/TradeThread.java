@@ -42,6 +42,10 @@ public class TradeThread {
 //	@Transient
 //	VitalityInstanceRepository vir;
 	//simMode
+	private String id;
+	private Order activeOrder;
+	private BigDecimal lastPartialFill;
+	private String partialState;// NONE, PARTIAL
 	@Transient
 	private HttpEntityBean httpEntityBean;
 	private boolean dirty;
@@ -99,11 +103,12 @@ public class TradeThread {
 		setNet(new BigDecimal("0"));
 		setLastSecondTick(-1L);
 		setSecondTick(0L);
+		setPartialState("NONE");
 		setStepStatus("CHARGING");
 		setUsd(initialUSD);
 		setLastUsd(initialUSD);
 		setLtc(new BigDecimal("0"));
-
+		setLastPartialFill(new BigDecimal("0"));
 		setProfit(new BigDecimal("0"));
 		setBuyProcessState("STANDBY");
 		setLifeTimeState("IDLE");
@@ -117,6 +122,7 @@ public class TradeThread {
 		docks = new ArrayList<Dock>();
 		docks.add(new Dock("INCOMING"));
 		docks.add(new Dock("TOSTEPSHED"));
+		// docks.add(new Dock("PARTIALFILL"));
 		if (getSimMode() == SimulationMode.REALTIME) {
 			setTimer(new Timer());
 			getTimer().schedule(new TimerTask() {
@@ -125,6 +131,9 @@ public class TradeThread {
 				public void run() {
 					// TODO Auto-generated method stub
 					incrementSecondTick(1L);
+					if (getId() != null) {
+						fetchOrder();	
+					}
 				}
 				
 			}, 1000L, 1000L);
@@ -150,7 +159,37 @@ public class TradeThread {
 		doRestTemplate(url, json);
 	} finally {
 		if (res != null) {
+			System.out.println("The id is:" + res.getBody());
+			setId(new String(res.getBody()));
+		} else {
+			System.out.print("RESPONSE IS NULL");
+			
+		}
+	}
+	}
+
+	public void fetchOrder() {
+			ResponseEntity<Order> res = null;
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + getId(), HttpMethod.GET, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/getOrder/" + getId()), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+	} catch (Throwable t) {
+//		e.printStackTrace();
+		//System.out.println(e.getResponseBodyAsString());
+		t.printStackTrace();
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		fetchOrder();
+	} finally {
+		if (res != null) {
 			System.out.println(res.getBody());
+			ObjectMapper objectMapper = new ObjectMapper();
+			activeOrder = objectMapper.readValue(res.getBody, Order.class);
+
 		} else {
 			System.out.print("RESPONSE IS NULL");
 			
@@ -168,6 +207,11 @@ public class TradeThread {
 		} else if (getBuyProcessState().equals("BOUGHT")) {
 			forceLtc = getLtc();
 		} 
+
+		if (getPartialState().equals("PARTIAL")){
+			forceLtc = getLastPartialFill();
+
+		}
 		// setRequestSellPrice(sellPrice);
 		if (getSimMode() == SimulationMode.REALTIME) {
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -180,8 +224,10 @@ public class TradeThread {
 			 order.setTime_in_force("GTT");
 			 order.setCancel_after("hour");
 //			order.setPrice(getRequestBuyPrice().toPlainString());
-			order.setSize((new BigDecimal(forceLtc.toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
-			order.setPrice((new BigDecimal(sellPrice.toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
+			 forceLtc = (new BigDecimal(forceLtc.toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString();
+			order.setSize(forceLtc);
+			sellPrice = (new BigDecimal(sellPrice.toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString();
+			order.setPrice();
 //			long minutes = 0;
 //			long hours = 0;
 //			long days = 0;
@@ -371,13 +417,145 @@ public class TradeThread {
 	
 	public void cancelBuy() {
 		if(getLifeTimeState().equals("BUY_STUCK") || getBuyProcessState().equals("SUSPEND")) {
+			//PARTIAL STATE
+			if (getPartialState().equals("NONE")){
 			setUsd(getLastUsd());
 			setBuyProcessState("STANDBY");
 			setLifeTimeState("IDLE");
 			System.out.println("Buy order canceled");
+		} else if (getPartialState().equals("PARTIAL")){
+			deployPartial();
+		}
 		}
 	}
 	
+	public void deployPartial(){
+if (getSimMode() == SimulationMode.REALTIME) {
+			ObjectMapper objectMapper = new ObjectMapper();
+//			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+			Order order = new Order();
+			order.setType("limit");
+			order.setSide("buy");
+			order.setProduct_id("ZRX-USD");
+			order.setStp("co");
+			// order.setPost_only("true");
+			
+			
+//			BigDecimal temp = new BigDecimal(getRequestBuyPrice().toPlainString());
+			// setRequestBuyPrice((new BigDecimal(getRequestBuyPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
+			// setRequestedLtc((new BigDecimal(getRequestedLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
+			order.setPrice(getRequestBuyPrice());
+			order.setSize(getRequestedLtc().subtract(getLastPartialFill()));
+
+			long minutes = 0;
+			long hours = 0;
+			long days = 0;
+			if (getDesiredBuyTimeout() >= 1000L * 60L) {
+				minutes = getDesiredBuyTimeout() / (1000L * 60L);
+			}
+			if (getDesiredBuyTimeout() >= 1000L * 60L * 60L) {
+				hours = getDesiredBuyTimeout() / (1000L * 60L * 60L);
+			}
+			if (getDesiredBuyTimeout() >= (1000L * 60L * 60L * 24L)) {
+				days = getDesiredBuyTimeout() / (1000L * 60L * 60L * 24L);
+			}
+			order.setTime_in_force("GTT");
+			order.setCancel_after("hour");
+			
+			String json = null;
+			try {
+				json = new String(objectMapper.writeValueAsString(order));
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (json != null) {
+			System.out.println(json);
+			} else {
+				System.out.println("JSON is Null!!!");
+			}
+			String url = "https://sample-tradeapp.herokuapp.com/placeOrder";
+			doRestTemplate(url, json);
+//			RestTemplate restTemplate = new RestTemplate();
+//			String url = "https://api.gdax.com/orders";
+////			 response;
+////			try {
+////				ResponseEntity response = 
+//				restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, "'" + json + "'"), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+//				System.out.println(objectMapper.writeValueAsString(response.getBody()));
+//			} catch (JsonProcessingException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			} catch (HttpStatusCodeException e) {
+//				e.printStackTrace();
+//			}
+		}
+				setBuyProcessState("DESIRED_BUY");
+		setLifeTimeState("TRADING");
+		//Sysout?
+		System.out.println("Partial buy order placed at $" + getRequestBuyPrice());
+		resetTick();
+	}
+
+// 	public void sellPartial() {
+// 		if (getSimMode() == SimulationMode.REALTIME) {
+// 					ObjectMapper objectMapper = new ObjectMapper();
+// //					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+// 					Order order = new Order();
+// 					order.setType("limit");
+// 					order.setSide("sell");
+// 					order.setProduct_id("ZRX-USD");
+// 					order.setStp("co");
+// //					order.setPost_only("true");
+// 					setRequestSellPrice((new BigDecimal(getRequestSellPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
+// 					setLtc((new BigDecimal(getLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
+// 					order.setPrice(getRequestSellPrice());
+// 					order.setSize(getLtc());
+// 					long minutes = 0;
+// 					long hours = 0;
+// 					long days = 0;
+// 					if (getDesiredSellToStuckTimeout() >= 1000L * 60L) {
+// 						minutes = getDesiredSellToStuckTimeout() / (1000L * 60L);
+// 					}
+// 					if (getDesiredSellToStuckTimeout() >= 1000L * 60L * 60L) {
+// 						hours = getDesiredSellToStuckTimeout() / (1000L * 60L * 60L);
+// 					}
+// 					if (getDesiredSellToStuckTimeout() >= (1000L * 60L * 60L * 24L)) {
+// 						days = getDesiredSellToStuckTimeout() / (1000L * 60L * 60L * 24L);
+// 					}
+// 					order.setTime_in_force("GTT");
+// 					order.setCancel_after("hour");
+// //					
+// 					String json = null;
+// 					try {
+// 						json = new String(objectMapper.writeValueAsString(order));
+// 					} catch (JsonProcessingException e) {
+// 						// TODO Auto-generated catch block
+// 						e.printStackTrace();
+// 					}
+// 					String url = "https://sample-tradeapp.herokuapp.com/placeOrder";
+// 					doRestTemplate(url, json);
+// //					RestTemplate restTemplate = new RestTemplate();
+// //					String url = "https://api.gdax.com/orders";
+// ////					ResponseEntity<Order> response;
+// //					restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, "'" + json + "'"), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+// //					try {
+// ////						System.out.println(objectMapper.writeValueAsString(response.getBody()));
+// //					} catch (JsonProcessingException e) {
+// //						// TODO Auto-generated catch block
+// //						e.printStackTrace();
+// //					}
+// 				}
+// 				setLastLtc(getLtc());
+// 				setLtc(new BigDecimal("0"));
+// 				//set Litecoin
+// 				setBuyProcessState("DESIRED_SELL");
+// 				setLifeTimeState("TRADING");
+// 				System.out.println("Sell order placed at $" + getRequestSellPrice());
+// //				vir.save(vi);
+// 				setDirty(true);
+// 	}
+
 	public void calculateNet() {
 		setNet(getProfit().subtract(getLoss()));
 	}
@@ -474,9 +652,10 @@ public class TradeThread {
 			
 			
 //			BigDecimal temp = new BigDecimal(getRequestBuyPrice().toPlainString());
-
-			order.setPrice((new BigDecimal(getRequestBuyPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
-			order.setSize((new BigDecimal(getRequestedLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
+			setRequestBuyPrice((new BigDecimal(getRequestBuyPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
+			setRequestedLtc((new BigDecimal(getRequestedLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
+			order.setPrice(getRequestBuyPrice());
+			order.setSize(getRequestedLtc());
 			long minutes = 0;
 			long hours = 0;
 			long days = 0;
@@ -521,7 +700,7 @@ public class TradeThread {
 //			}
 		}
 		setLastUsd(getUsd());
-		setUsd(getUsd().subtract(getRequestBuyPrice().multiply(getRequestedLtc())));
+		setUsd(getUsd().subtract(getRequestBuyPrice().multiply(getRequestedLtc())).setScale(6, RoundingMode.HALF_DOWN));
 		setBuyProcessState("DESIRED_BUY");
 		setLifeTimeState("TRADING");
 		//Sysout?
@@ -592,8 +771,10 @@ public class TradeThread {
 					order.setProduct_id("ZRX-USD");
 					order.setStp("co");
 //					order.setPost_only("true");
-					order.setPrice((new BigDecimal(getRequestSellPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
-					order.setSize((new BigDecimal(getLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
+					setRequestSellPrice((new BigDecimal(getRequestSellPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
+					setLtc((new BigDecimal(getLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
+					order.setPrice(getRequestSellPrice());
+					order.setSize(getLtc());
 					long minutes = 0;
 					long hours = 0;
 					long days = 0;
@@ -663,18 +844,31 @@ public class TradeThread {
 		refresh();
 	}
 	
-	
+	//Implement realtime trading features
 	public void refresh() {
 		if(getBuyProcessState().equals("DESIRED_BUY")) {
 			//if current price lower then desired buy then 
 			//processBuy(which is buy()), store requested ltc
 			//into ltc
 			if (getSimMode() == SimulationMode.REALTIME) {
-			if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
+			if (getActiveOrder() != null)	{
+			
+			if (getActiveOrder().getSettled() == true){//if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
+				setPartialState("NONE");
+				setLastPartialFill(new BigDecimal("0"));
 				buy();
 //				vir.save(vi);
 				setDirty(true);
+			
+			} else if (new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getLastPartialFill()) == 1 && new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getRequestedLtc()) == -1) {
+				setLastPartialFill(getActiveOrder().getFilled_size());
+				setPartialState("PARTIAL");
+				setDirty(true);
+
 			}
+
+			}
+
 			} else if(getSimMode() == SimulationMode.SIMULATION) {
 				if (getRequestBuyPrice().compareTo(getSimCarrot().getHigh()) == -1) {
 					buy();
@@ -682,10 +876,21 @@ public class TradeThread {
 			}
 		} else if (getBuyProcessState().equals("DESIRED_SELL")) {
 			if (getSimMode() == SimulationMode.REALTIME) {
-			if(getCurrentPrice().compareTo(getRequestSellPrice()) == 1) {
+			if (getActiveOrder() != null){//if(getCurrentPrice().compareTo(getRequestSellPrice()) == 1) {
+				if (getActiveOrder().getSettled() == true){
+					setPartialState("NONE");
+				setLastPartialFill(new BigDecimal("0"));
 				sell();
 //				vir.save(vi);
 				setDirty(true);
+			} 
+
+			else if (new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getLastPartialFill()) == 1 && new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getRequestedLtc()) == -1) {
+				setLastPartialFill(getActiveOrder().getFilled_size());
+				setPartialState("PARTIAL");
+				setDirty(true);
+
+			}
 			}
 			} else if(getSimMode() == SimulationMode.SIMULATION) {
 				if (getRequestSellPrice().compareTo(getSimCarrot().getLow()) == 1) {
@@ -753,9 +958,10 @@ public class TradeThread {
 		setLifeTimeState("RESERVE");
 		} 
 		else {
-			setLoss(getLoss().add((getLastUsd()).subtract(getUsd())));
+			setLoss(getLoss().add((getUsd()).subtract(getLastUsd())));
 			setLastUsd(getUsd());
 		//profit percentage?
+			// setLastUsd(getUsd());
 		setBuyProcessState("SOLD");
 		setLifeTimeState("IDLE");
 		}
@@ -1027,5 +1233,37 @@ public class TradeThread {
 
 	public void setLastLtc(BigDecimal lastLtc){
 		this.lastLtc = lastLtc;
+	}
+
+	public String getId(){
+		return id;
+	}
+
+	public void setId(String id){
+		this.id = id;
+	}
+
+	public Order getActiveOrder(){
+		return activeOrder;
+	}
+
+	public void setActiveOrder(Order activeOrder) {
+		this.activeOrder = activeOrder;
+	}
+
+	public BigDecimal getLastPartialFill(){
+		return lastPartialFill;
+	}
+
+	public void setLastPartialFill(BigDecimal lastPartialFill){
+		this.lastPartialFill = lastPartialFill;
+	}
+
+	public String getPartialState(){
+		return partialState;
+	}
+
+	public void setPartialState(String partialState){
+		this.partialState = partialState;
 	}
 }

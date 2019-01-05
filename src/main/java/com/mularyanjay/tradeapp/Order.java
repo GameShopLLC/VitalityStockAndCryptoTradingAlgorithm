@@ -13,7 +13,7 @@ public class Order {
     private String stp;
     private String type;
     private String time_in_force;
-    private String post_only;
+    private Boolean post_only;
     private String created_at;
     private String fill_fees;
     private String filled_size;
@@ -24,7 +24,7 @@ public class Order {
     
     public Order() {}
 
-    public Order(String id, String price, String size, String product_id, String side, String stp, String type, String time_in_force, String post_only, String created_at, String fill_fees, String filled_size, String executed_value, String status, Boolean settled) {
+    public Order(String id, String price, String size, String product_id, String side, String stp, String type, String time_in_force, Boolean post_only, String created_at, String fill_fees, String filled_size, String executed_value, String status, Boolean settled) {
         this.id = id;
         this.price = price;
         this.size = size;
@@ -106,11 +106,11 @@ public class Order {
 		this.time_in_force = time_in_force;
 	}
 
-	public String getPost_only() {
+	public Boolean getPost_only() {
 		return post_only;
 	}
 
-	public void setPost_only(String post_only) {
+	public void setPost_only(Boolean post_only) {
 		this.post_only = post_only;
 	}
 

@@ -6,6 +6,7 @@ public class Dock {
 
 	private String name;
 	private BigDecimal usd;
+	private BigDecimal ltc;
 	
 	public Dock() {
 		
@@ -15,7 +16,7 @@ public class Dock {
 	
 		this.name = name;
 		this.usd = new BigDecimal("0");
-		
+		this.ltc = new BigDecimal("0");
 	}
 
 	public String getName() {
@@ -42,5 +43,20 @@ public class Dock {
 		this.usd = this.usd.subtract(usd);
 	}
 	
+	public BigDecimal getLtc(){
+		return ltc;
+	}
+	
+	public void setLtc(BigDecimal ltc){
+		this.ltc = ltc;
+	}
+
+	public void addLtc(BigDecimal ltc) {
+		this.ltc = this.ltc.add(ltc);
+	}
+	
+	public void subtractLtc(BigDecimal ltc) {
+		this.ltc = this.ltc.subtract(ltc);
+	}
 	
 }
