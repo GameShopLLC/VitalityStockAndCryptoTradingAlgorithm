@@ -31,6 +31,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 //@Document
 @AccessType(Type.PROPERTY)
 public class TradeThread {
@@ -172,6 +174,14 @@ public class TradeThread {
 			ResponseEntity<Order> res = null;
 		try {
 			RestTemplate restTemplate = new RestTemplate();
+			 List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();        
+            //Add the Jackson Message converter
+   MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+   // Note: here we are making this converter to process any kind of response, 
+   // not only application/*json, which is the default behaviour
+   converter.setSupportedMediaTypes(Arrays.asList({MediaType.ALL}));         
+   messageConverters.add(converter);  
+   restTemplate.setMessageConverters(messageConverters);  
 			res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + getOrderId(), HttpMethod.GET, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/getOrder/" + getOrderId()), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
 	} catch (Throwable t) {
 //		e.printStackTrace();
