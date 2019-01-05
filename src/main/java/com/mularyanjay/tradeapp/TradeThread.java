@@ -9,9 +9,9 @@ package com.mularyanjay.tradeapp;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+// import java.util.ArrayList;
+// import java.util.Timer;
+// import java.util.TimerTask;
 import javax.persistence.Entity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +33,8 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.MediaType;
+import java.util.*;
 //@Document
 @AccessType(Type.PROPERTY)
 public class TradeThread {
