@@ -230,7 +230,7 @@ public class TradeThread {
 	public void forceLoss() {
 		if (getBuyProcessState().equals("DESIRED_SELL") || getBuyProcessState().equals("BOUGHT")) {
 		BigDecimal sellPrice = new BigDecimal("0");
-		sellPrice = getCurrentPrice().add(getSlightAmount());//.subtract(getCurrentPrice().multiply(getForceSellFee()));
+		sellPrice = getCurrentPrice().add(new BigDecimal(".001"));//.subtract(getCurrentPrice().multiply(getForceSellFee()));
 		BigDecimal forceLtc = new BigDecimal("0");
 		if (getBuyProcessState().equals("DESIRED_SELL")) {
 		forceLtc = getLastLtc();//getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_DOWN);
@@ -281,6 +281,7 @@ public class TradeThread {
 			}
 			
 			String url = "https://sample-tradeapp.herokuapp.com/placeOrder";
+
 			doRestTemplate(url, json);
 //			ResponseEntity<Order> response = 
 		
