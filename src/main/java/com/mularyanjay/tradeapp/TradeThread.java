@@ -35,6 +35,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.MediaType;
 import java.util.*;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 //@Document
 @AccessType(Type.PROPERTY)
 public class TradeThread {
