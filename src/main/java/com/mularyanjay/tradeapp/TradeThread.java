@@ -446,8 +446,34 @@ public class TradeThread {
 		}
 	}
 	
+// 	public void cancelOrder() {
+// 		ResponseEntity<String> res = null;
+// 		try {
+// 			RestTemplate restTemplate = new RestTemplate();
+// 			res = restTemplate.exchange(url, HttpMethod.DELETE, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+// 	} catch (Throwable t) {
+// //		e.printStackTrace();
+// 		//System.out.println(e.getResponseBodyAsString());
+// 		t.printStackTrace();
+// 		try {
+// 			Thread.sleep(100);
+// 		} catch (InterruptedException e) {
+// 			// TODO Auto-generated catch block
+// 			e.printStackTrace();
+// 		}
+// 		doRestTemplate(url, json);
+// 	} finally {
+// 		if (res != null) {
+// 			System.out.println("The id is:" + res.getBody());
+// 			setOrderId(new String(res.getBody()));
+// 		} else {
+// 			System.out.print("RESPONSE IS NULL");
+			
+// 		}
+// 	}
+// 	}
 	public void cancelBuy() {
-		if(getLifeTimeState().equals("BUY_STUCK") || getBuyProcessState().equals("SUSPEND")) {
+		if(getLifeTimeState().equals("BUY_STUCK")){ //|| getBuyProcessState().equals("SUSPEND")) {
 			//PARTIAL STATE
 			if (getPartialState().equals("NONE")){
 			setUsd(getLastUsd());

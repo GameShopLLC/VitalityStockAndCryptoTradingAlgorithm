@@ -11,7 +11,7 @@ public class Order {
     private String price;
     private String product_id;
     private String side;
-    // private String stp;
+    private String stp;
     private String type;
     private String time_in_force;
     private Boolean post_only;
@@ -25,7 +25,7 @@ public class Order {
     
     public Order() {}
 
-	public Order(String id, String price, String size, String product_id, String side, String type, String time_in_force, Boolean post_only, String created_at, String fill_fees, String filled_size, String executed_value, String status, Boolean settled, String cancel_after) {
+	public Order(String id, String price, String size, String product_id, String side, String stp, String type, String time_in_force, Boolean post_only, String created_at, String fill_fees, String filled_size, String executed_value, String status, Boolean settled, String cancel_after) {
         this.id = id;
         this.price = price;
         this.size = size;
@@ -41,6 +41,7 @@ public class Order {
         this.status = status;
         this.settled = settled;
         this.cancel_after = cancel_after;
+        this.stp = stp;
     }
 
     // public Order(String id, String price, String size, String product_id, String side, String stp, String type, String time_in_force, Boolean post_only, String created_at, String fill_fees, String filled_size, String executed_value, String status, Boolean settled) {
@@ -101,13 +102,13 @@ public class Order {
 		this.side = side;
 	}
 
-	// public String getStp() {
-	// 	return stp;
-	// }
+	public String getStp() {
+		return stp;
+	}
 
-	// public void setStp(String stp) {
-	// 	this.stp = stp;
-	// }
+	public void setStp(String stp) {
+		this.stp = stp;
+	}
 
 	public String getType() {
 		return type;

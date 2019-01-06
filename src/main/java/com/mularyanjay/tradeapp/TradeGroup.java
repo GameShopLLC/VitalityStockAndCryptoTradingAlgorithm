@@ -255,7 +255,7 @@ public class TradeGroup {
 		ArrayList<TradeThread> candidates = new ArrayList<TradeThread>();
 		if (getDumpingMode().equals("NONE")) {
 		for (TradeThread t: trades) {
-			if (t.getBuyProcessState().equals("BOUGHT")) {
+			if (t.getBuyProcessState().equals("BOUGHT") && !t.getLifeTimeState().equals("SELL_STUCK")) {
 				candidates.add(t);
 				//TBC
 			}
@@ -282,7 +282,7 @@ public class TradeGroup {
 		}
 		} else if (getDumpingMode().equals("DUMP_ALL")) {
 			for (TradeThread t: trades) {
-				if (t.getBuyProcessState().equals("BOUGHT")) {
+				if (t.getBuyProcessState().equals("BOUGHT") && !t.getLifeTimeState().equals("SELL_STUCK")) {
 					candidates.add(t);
 					//TBC
 				}
@@ -383,15 +383,15 @@ public class TradeGroup {
 		//Problem solved ^.^
 		//Move on to threads
 		//if (getSimMode().equals("REALTIME")) {
-		for (TradeThread t: trades) {
-				if (t.getBuyProcessState().equals("SUSPEND")){
-					if (carrot.getCurrent().compareTo(t.getRequestBuyPrice()) <= 0) {
-						t.cancelBuy();
-					} else {
-						t.setBuyProcessState(new String("DESIRED_BUY"));
-					}
-				}
-			}
+		// for (TradeThread t: trades) {
+		// 		if (t.getBuyProcessState().equals("SUSPEND")){
+		// 			if (carrot.getCurrent().compareTo(t.getRequestBuyPrice()) <= 0) {
+		// 				t.cancelBuy();
+		// 			} else {
+		// 				t.setBuyProcessState(new String("DESIRED_BUY"));
+		// 			}
+		// 		}
+		// 	}
 			
 		for (TradeThread t: trades) {
 			t.broadcastCarrot(carrot); //or should I evaluate current
@@ -652,11 +652,11 @@ public class TradeGroup {
 			// }
 			for (TradeThread t: trades) {
 				if (t.getLifeTimeState().equals("SELL_STUCK")) {
-					for (TradeThread b: trades){
-					if (b.getBuyProcessState().equals("DESIRED_BUY")){
-					b.setBuyProcessState(new String("SUSPEND"));
-				}
-				}
+				// 	for (TradeThread b: trades){
+				// 	if (b.getBuyProcessState().equals("DESIRED_BUY")){
+				// 	b.setBuyProcessState(new String("SUSPEND"));
+				// }
+				//}
 					t.forceLoss(); //forceSell?
 				}
 			}
