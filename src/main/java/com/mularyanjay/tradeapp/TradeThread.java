@@ -192,7 +192,7 @@ public class TradeThread {
 		//System.out.println(e.getResponseBodyAsString());
 		t.printStackTrace();
 		try {
-			Thread.sleep(100);
+			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -205,12 +205,18 @@ public class TradeThread {
 			objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
 			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			objectMapper.configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, false);
+			if (res.getBody().equals("undefined")) {
+				setOrderId(null);
+			} else {
+
+
 			try {
 			activeOrder = objectMapper.readValue(res.getBody().toString(), IncomingOrder.class);
 			} catch (Throwable throwable){
 				throwable.printStackTrace();
 				System.out.println("CANNOT READ ACTIVE ORDER");
 			} 
+			}
 
 		} else {
 			System.out.print("RESPONSE IS NULL");
@@ -444,6 +450,7 @@ public class TradeThread {
 			setUsd(getLastUsd());
 			setBuyProcessState("STANDBY");
 			setLifeTimeState("IDLE");
+			setOrderId(null);
 			System.out.println("Buy order canceled");
 		} else if (getPartialState().equals("PARTIAL")){
 			deployPartial();
