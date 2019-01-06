@@ -48,7 +48,7 @@ public class TradeThread {
 //	VitalityInstanceRepository vir;
 	//simMode
 	private String orderId;
-	private Order activeOrder;
+	private IncomingOrder activeOrder;
 	private BigDecimal lastPartialFill;
 	private String partialState;// NONE, PARTIAL
 	@Transient
@@ -206,7 +206,7 @@ public class TradeThread {
 			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			objectMapper.configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, false);
 			try {
-			activeOrder = objectMapper.readValue(res.getBody().toString(), Order.class);
+			activeOrder = objectMapper.readValue(res.getBody().toString(), IncomingOrder.class);
 			} catch (Throwable throwable){
 				throwable.printStackTrace();
 				System.out.println("CANNOT READ ACTIVE ORDER");
@@ -1265,11 +1265,11 @@ if (getSimMode() == SimulationMode.REALTIME) {
 		this.orderId = id;
 	}
 
-	public Order getActiveOrder(){
+	public IncomingOrder getActiveOrder(){
 		return activeOrder;
 	}
 
-	public void setActiveOrder(Order activeOrder) {
+	public void setActiveOrder(IncomingOrder activeOrder) {
 		this.activeOrder = activeOrder;
 	}
 
