@@ -173,19 +173,19 @@ public class TradeThread {
 	}
 
 	public void fetchOrder() {
-			ResponseEntity<Order> res = null;
+			ResponseEntity<String> res = null;
 		try {
 			RestTemplate restTemplate = new RestTemplate();
-			 List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();        
-            //Add the Jackson Message converter
-   MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-   // Note: here we are making this converter to process any kind of response, 
-   // not only application/*json, which is the default behaviour
-  // converter.setSupportedMediaTypes(Arrays.asList({MediaType.ALL}));    
-  converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));     
-   messageConverters.add(converter);  
-   restTemplate.setMessageConverters(messageConverters);  
-			res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + getOrderId(), HttpMethod.GET, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/getOrder/" + getOrderId()), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+		// 	 List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();        
+  //           //Add the Jackson Message converter
+  //  MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+  //  // Note: here we are making this converter to process any kind of response, 
+  //  // not only application/*json, which is the default behaviour
+  // // converter.setSupportedMediaTypes(Arrays.asList({MediaType.ALL}));    
+  // converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));     
+  //  messageConverters.add(converter);  
+  //  restTemplate.setMessageConverters(messageConverters);  
+			res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + getOrderId(), HttpMethod.GET, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/getOrder/" + getOrderId()), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
 	} catch (Throwable t) {
 //		e.printStackTrace();
 		//System.out.println(e.getResponseBodyAsString());
