@@ -589,7 +589,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 // 	}
 
 	public void calculateNet() {
-		setNet(getProfit().subtract(getLoss()));
+		setNet(getProfit().add(getLoss()));
 	}
 	public void evaluateSimulationTimeout() {
 		if (getLastSecondTick() > -1L) {
