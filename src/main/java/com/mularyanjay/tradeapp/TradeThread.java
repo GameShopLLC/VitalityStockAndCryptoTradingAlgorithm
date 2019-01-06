@@ -202,7 +202,7 @@ public class TradeThread {
 			System.out.println(res.getBody());
 			ObjectMapper objectMapper = new ObjectMapper();
 			try {
-			activeOrder = objectMapper.readValue(res.getBody(), Order.class);
+			activeOrder = objectMapper.readValue(res.getBody().toString(), Order.class);
 			} catch (Throwable throwable){
 				throwable.printStackTrace();
 				System.out.println("CANNOT READ ACTIVE ORDER");
