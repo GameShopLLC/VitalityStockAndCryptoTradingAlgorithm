@@ -28,14 +28,14 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.*;
+// import com.fasterxml.jackson.databind.ObjectWriter;
 
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.MediaType;
 import java.util.*;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+// import com.fasterxml.jackson.databind.DeserializationFeature;
 //@Document
 @AccessType(Type.PROPERTY)
 public class TradeThread {
@@ -202,7 +202,8 @@ public class TradeThread {
 		if (res != null) {
 			System.out.println(res.getBody());
 			ObjectMapper objectMapper = new ObjectMapper();
-			objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+			objectMapper.configure(DeserializationConfig.Feature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			try {
 			activeOrder = objectMapper.readValue(res.getBody().toString(), Order.class);
 			} catch (Throwable throwable){
