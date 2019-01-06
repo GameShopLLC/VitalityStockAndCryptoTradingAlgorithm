@@ -202,7 +202,7 @@ public class TradeThread {
 		if (res != null) {
 			System.out.println(res.getBody());
 			ObjectMapper objectMapper = new ObjectMapper();
-			objectMapper.configure(DeserializationConfig.Feature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+			objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
 			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			try {
 			activeOrder = objectMapper.readValue(res.getBody().toString(), Order.class);
