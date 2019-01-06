@@ -459,7 +459,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			order.setType("limit");
 			order.setSide("buy");
 			order.setProduct_id("ZRX-USD");
-			order.setStp("co");
+			// order.setStp("co");
 			// order.setPost_only("true");
 			
 			
@@ -669,7 +669,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			order.setType("limit");
 			order.setSide("buy");
 			order.setProduct_id("ZRX-USD");
-			order.setStp("co");
+			// order.setStp("co");
 			// order.setPost_only("true");
 			
 			
@@ -791,7 +791,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 					order.setType("limit");
 					order.setSide("sell");
 					order.setProduct_id("ZRX-USD");
-					order.setStp("co");
+					// order.setStp("co");
 //					order.setPost_only("true");
 					setRequestSellPrice((new BigDecimal(getRequestSellPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)));
 					setLtc((new BigDecimal(getLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)));

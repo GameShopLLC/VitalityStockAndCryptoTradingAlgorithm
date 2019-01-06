@@ -11,7 +11,7 @@ public class Order {
     private String price;
     private String product_id;
     private String side;
-    private String stp;
+    // private String stp;
     private String type;
     private String time_in_force;
     private Boolean post_only;
@@ -25,13 +25,12 @@ public class Order {
     
     public Order() {}
 
-    public Order(String id, String price, String size, String product_id, String side, String stp, String type, String time_in_force, Boolean post_only, String created_at, String fill_fees, String filled_size, String executed_value, String status, Boolean settled) {
+	public Order(String id, String price, String size, String product_id, String side, String type, String time_in_force, Boolean post_only, String created_at, String fill_fees, String filled_size, String executed_value, String status, Boolean settled) {
         this.id = id;
         this.price = price;
         this.size = size;
         this.product_id = product_id;
         this.side = side;
-        this.stp = stp;
         this.type = type;
         this.time_in_force = time_in_force;
         this.post_only = post_only;
@@ -42,6 +41,24 @@ public class Order {
         this.status = status;
         this.settled = settled;
     }
+
+    // public Order(String id, String price, String size, String product_id, String side, String stp, String type, String time_in_force, Boolean post_only, String created_at, String fill_fees, String filled_size, String executed_value, String status, Boolean settled) {
+    //     this.id = id;
+    //     this.price = price;
+    //     this.size = size;
+    //     this.product_id = product_id;
+    //     this.side = side;
+    //     this.stp = stp;
+    //     this.type = type;
+    //     this.time_in_force = time_in_force;
+    //     this.post_only = post_only;
+    //     this.created_at = created_at;
+    //     this.fill_fees = fill_fees;
+    //     this.filled_size = filled_size;
+    //     this.executed_value = executed_value;
+    //     this.status = status;
+    //     this.settled = settled;
+    // }
 
 	public String getId() {
 		return id;
@@ -83,13 +100,13 @@ public class Order {
 		this.side = side;
 	}
 
-	public String getStp() {
-		return stp;
-	}
+	// public String getStp() {
+	// 	return stp;
+	// }
 
-	public void setStp(String stp) {
-		this.stp = stp;
-	}
+	// public void setStp(String stp) {
+	// 	this.stp = stp;
+	// }
 
 	public String getType() {
 		return type;
