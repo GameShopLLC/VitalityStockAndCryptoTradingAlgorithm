@@ -21,11 +21,11 @@ public class Order {
     private String executed_value;
     private String status;
     private Boolean settled;
-    private String cancel_after;
+    private String expire_time;
     
     public Order() {}
 
-	public Order(String id, String price, String size, String product_id, String side, String type, String time_in_force, Boolean post_only, String created_at, String fill_fees, String filled_size, String executed_value, String status, Boolean settled) {
+	public Order(String id, String price, String size, String product_id, String side, String type, String time_in_force, Boolean post_only, String created_at, String fill_fees, String filled_size, String executed_value, String status, Boolean settled, String expire_time) {
         this.id = id;
         this.price = price;
         this.size = size;
@@ -40,6 +40,7 @@ public class Order {
         this.executed_value = executed_value;
         this.status = status;
         this.settled = settled;
+        this.expire_time = expire_time;
     }
 
     // public Order(String id, String price, String size, String product_id, String side, String stp, String type, String time_in_force, Boolean post_only, String created_at, String fill_fees, String filled_size, String executed_value, String status, Boolean settled) {
@@ -180,12 +181,12 @@ public class Order {
 		this.settled = settled;
 	}
 
-	public String getCancel_after() {
-		return cancel_after;
+	public String getExpire_time() {
+		return expire_time;
 	}
 
-	public void setCancel_after(String cancel_after) {
-		this.cancel_after = cancel_after;
+	public void setExpire_time(String expire_time) {
+		this.expire_time = expire_time;
 	}
     
     
