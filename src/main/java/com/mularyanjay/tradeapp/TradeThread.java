@@ -612,7 +612,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 					//order.setStp("co");
 //					order.setPost_only("true");
 					// setRequestSellPrice((new BigDecimal(getRequestSellPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
-					setLastLtc((new BigDecimal(getLastLtc().subtract(getLastPartialFill()).toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
+					setLastLtc(new BigDecimal((new BigDecimal(getLastLtc().subtract(getLastPartialFill()).toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString()));
 					order.setPrice(getRequestSellPrice().toPlainString());
 					order.setSize(getLastLtc().toPlainString());
 					long minutes = 0;
