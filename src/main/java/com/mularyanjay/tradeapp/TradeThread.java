@@ -174,6 +174,44 @@ public class TradeThread {
 	}
 	}
 
+	public String cancelOrder() {
+		ResponseEntity<String> res = null;
+		String retval = new String("");
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/cancelOrder/" + getOrderId(), HttpMethod.GET, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/cancelOrder/" + getOrderId()), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+	} catch (Throwable t) {
+//		e.printStackTrace();
+		//System.out.println(e.getResponseBodyAsString());
+		t.printStackTrace();
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		retval = new String(cancelOrder());
+	} finally {
+		if (res != null) {
+			System.out.println("Removed Order:" + res.getBody());
+			// setOrderId(new String(res.getBody()));
+			setOrderId(null);
+			setActiveOrder(null);
+		} else {
+			System.out.print("REMOVE RESPONSE IS NULL");
+			
+		}
+	}
+	if (!retval.equals("")){
+		return retval;
+	}
+	if (res.getResponseBodyAsString().contains("message")) {
+		return "MESSAGE";
+	} else if (res == null) {
+		return "NULL";
+	}
+	return res.getBody().toString();
+	}
 	public void fetchOrder() {
 			ResponseEntity<String> res = null;
 		try {
@@ -261,8 +299,8 @@ public class TradeThread {
 			order.setSide("sell");
 			order.setProduct_id("ZRX-USD");
 			// order.setStp("co");
-			 order.setTime_in_force("GTT");
-			 order.setCancel_after("hour");
+			 // order.setTime_in_force("GTT");
+			 // order.setCancel_after("hour");
 //			order.setPrice(getRequestBuyPrice().toPlainString());
 			 forceLtc = (new BigDecimal(forceLtc.toPlainString()).setScale(5, RoundingMode.HALF_DOWN));
 			order.setSize(forceLtc.toPlainString());
@@ -372,6 +410,8 @@ public class TradeThread {
 				// System.out.println("Sell order placed at $" + getRequestSellPrice());
 				setRequestedTotal(sellPrice.multiply(forceLtc));
 				setRequestSellPrice(sellPrice);
+				// setLtc(new BigDecimal("0"));
+				setLastLtc(forceLtc());
 				setLtc(new BigDecimal("0"));
 				//set Litecoin
 				setBuyProcessState("DESIRED_SELL");
@@ -456,35 +496,14 @@ public class TradeThread {
 		}
 	}
 	
-// 	public void cancelOrder() {
-// 		ResponseEntity<String> res = null;
-// 		try {
-// 			RestTemplate restTemplate = new RestTemplate();
-// 			res = restTemplate.exchange(url, HttpMethod.DELETE, httpEntityBean.postEntityFromUrl(url, json), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
-// 	} catch (Throwable t) {
-// //		e.printStackTrace();
-// 		//System.out.println(e.getResponseBodyAsString());
-// 		t.printStackTrace();
-// 		try {
-// 			Thread.sleep(100);
-// 		} catch (InterruptedException e) {
-// 			// TODO Auto-generated catch block
-// 			e.printStackTrace();
-// 		}
-// 		doRestTemplate(url, json);
-// 	} finally {
-// 		if (res != null) {
-// 			System.out.println("The id is:" + res.getBody());
-// 			setOrderId(new String(res.getBody()));
-// 		} else {
-// 			System.out.print("RESPONSE IS NULL");
-			
-// 		}
-// 	}
-// 	}
+
+
 	public void cancelBuy() {
 		if(getLifeTimeState().equals("BUY_STUCK")){ //|| getBuyProcessState().equals("SUSPEND")) {
 			//PARTIAL STATE
+			cancelOrder();
+
+			//if (cancel.contains(getOrderId())){
 			if (getPartialState().equals("NONE")){
 			setUsd(getLastUsd());
 			setBuyProcessState("STANDBY");
@@ -495,7 +514,13 @@ public class TradeThread {
 		} else if (getPartialState().equals("PARTIAL")){
 			deployPartial();
 		}
+	// } else {
+	// 	System.out.println("cancel failed");
+	// 	System.out.println(cancel);
+	// 	System.exit(0);
+	// }
 		}
+	}
 	}
 	
 	public void deployPartial(){
@@ -531,8 +556,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			if (getDesiredBuyTimeout() >= (1000L * 60L * 60L * 24L)) {
 				days = getDesiredBuyTimeout() / (1000L * 60L * 60L * 24L);
 			}
-			order.setTime_in_force("GTT");
-			order.setCancel_after("hour");
+			// order.setTime_in_force("GTT");
+			// order.setCancel_after("hour");
 			
 			String json = null;
 			try {
@@ -740,8 +765,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			if (getDesiredBuyTimeout() >= (1000L * 60L * 60L * 24L)) {
 				days = getDesiredBuyTimeout() / (1000L * 60L * 60L * 24L);
 			}
-			order.setTime_in_force("GTT");
-			order.setCancel_after("hour");
+			// order.setTime_in_force("GTT");
+			// order.setCancel_after("hour");
 			
 			String json = null;
 			try {
@@ -859,8 +884,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 					if (getDesiredSellToStuckTimeout() >= (1000L * 60L * 60L * 24L)) {
 						days = getDesiredSellToStuckTimeout() / (1000L * 60L * 60L * 24L);
 					}
-					order.setTime_in_force("GTT");
-					order.setCancel_after("hour");
+					// order.setTime_in_force("GTT");
+					// order.setCancel_after("hour");
 //					
 					String json = null;
 					try {

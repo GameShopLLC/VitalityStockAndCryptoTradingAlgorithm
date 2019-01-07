@@ -657,7 +657,14 @@ public class TradeGroup {
 				// 	b.setBuyProcessState(new String("SUSPEND"));
 				// }
 				//}
-					t.forceLoss(); //forceSell?
+					// if (t.cancelOrder().contains(t.getOrderId())){
+						t.cancelOrder();
+						t.forceLoss();
+					// } else {
+					// 	System.out.println("Failed to cancel")
+					// }
+					 //forceSell?
+					}
 				}
 			}
 			// for (TradeThread t: trades) {
