@@ -176,7 +176,7 @@ public class TradeThread {
 
 	public String cancelOrder() {
 		ResponseEntity<String> res = null;
-		// String retval = new String("");
+		String retval = new String("");
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/cancelOrder/" + getOrderId(), HttpMethod.GET, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/cancelOrder/" + getOrderId()), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
