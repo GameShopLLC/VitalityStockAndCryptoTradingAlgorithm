@@ -659,10 +659,14 @@ public class TradeGroup {
 				//}
 					// if (t.cancelOrder().contains(t.getOrderId())){
 					if (t.getBuyProcessState().equals("DESIRED_SELL")){
-						t.cancelOrder();
+						if (t.getActiveOrder().getSettled() == false){
+							t.cancelOrder();
+							t.forceLoss();
+						}
+						
 					}
 						
-						t.forceLoss();
+						
 					// } else {
 					// 	System.out.println("Failed to cancel")
 					// }
