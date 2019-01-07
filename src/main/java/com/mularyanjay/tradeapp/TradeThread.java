@@ -51,7 +51,7 @@ public class TradeThread {
 	private IncomingOrder activeOrder;
 	private BigDecimal lastPartialFill;
 	private String partialState;// NONE, PARTIAL
-	@Transient
+	// @Transient
 	private HttpEntityBean httpEntityBean;
 	private boolean dirty;
 	private BigDecimal usd;
@@ -128,7 +128,10 @@ public class TradeThread {
 		docks.add(new Dock("INCOMING"));
 		docks.add(new Dock("TOSTEPSHED"));
 		// docks.add(new Dock("PARTIALFILL"));
-		if (getSimMode() == SimulationMode.REALTIME) {
+		startTimer();
+	}
+	public void startTimer() {
+			if (getSimMode() == SimulationMode.REALTIME) {
 			setTimer(new Timer());
 			getTimer().schedule(new TimerTask() {
 	
@@ -145,7 +148,6 @@ public class TradeThread {
 			
 			}
 	}
-	
 	public void doRestTemplate(String url, String json) {
 		ResponseEntity<String> res = null;
 		try {

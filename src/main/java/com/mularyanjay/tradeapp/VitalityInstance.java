@@ -163,6 +163,12 @@ public class VitalityInstance {
 			}
 		}
 	}
+
+	public void startTimers() {
+		for (TradeGroup g: groups){
+			g.startTimers();
+		}
+	}
 	//Necessary? can be done with onReachEntryPoint
 //	public void triggerEntryPoint() {
 //		setHasReachedEntryPoint(true)

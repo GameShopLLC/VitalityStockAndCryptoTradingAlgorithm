@@ -131,6 +131,11 @@ public class TradeGroup {
 		
 	}
 	
+	public void startTimers() {
+		for (TradeThread t: trades) {
+			t.startTimer();
+		}
+	}
 	public boolean acceptLoss() {
 		BigDecimal forcedAmount = new BigDecimal("0");
 		forcedAmount = ((getCurrentCarrot().getCurrent().subtract(getCurrentCarrot().getCurrent().multiply(getFee()))).multiply(getLtc()));

@@ -150,6 +150,7 @@ public class TradeappApplication extends SpringBootServletInitializer {
 				try {
 				vi.vAll(vir.findAll().get(vir.findAll().size() - 1));
 				am.setRunning(true);
+				vi.startTimers();
 				
 				} catch (Throwable t) {
 					t.printStackTrace();
