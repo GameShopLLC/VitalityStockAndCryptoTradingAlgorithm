@@ -1331,7 +1331,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 	
 	@Field("ThreadSlightAmount")
 	public BigDecimal getSlightAmount() {
-		return slightAmount;
+		return new BigDecimal(".001");
 	}
 
 	public void setSlightAmount(BigDecimal slightAmount) {
