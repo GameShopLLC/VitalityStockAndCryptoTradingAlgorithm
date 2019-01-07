@@ -521,7 +521,7 @@ public class TradeThread {
 	// }
 		}
 	}
-	}
+	
 	
 	public void deployPartial(){
 if (getSimMode() == SimulationMode.REALTIME) {
