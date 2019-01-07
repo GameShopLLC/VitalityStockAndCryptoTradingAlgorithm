@@ -968,6 +968,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 				setDirty(true);
 			
 			} else if (new BigDecimal(getActiveOrder().getFilled_size()).compareTo(new BigDecimal("0")) == 1 && new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getRequestedLtc().subtract(getLastPartialFill())) == -1) {
+				cancelOrder();
 				setLastPartialFill(new BigDecimal(getActiveOrder().getFilled_size()).add(getLastPartialFill()));
 				setPartialState("PARTIAL");
 				setDirty(true);
@@ -1000,6 +1001,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			} 
 
 			else if (new BigDecimal(getActiveOrder().getFilled_size()).compareTo(new BigDecimal("0")) == 1 && new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getLastLtc().subtract(getLastPartialFill())) == -1) {
+				cancelOrder();
 				setLastPartialFill(new BigDecimal(getActiveOrder().getFilled_size()).add(getLastPartialFill()));
 				setPartialState("PARTIAL");
 				setDirty(true);
