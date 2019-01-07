@@ -664,7 +664,7 @@ public class TradeGroup {
 					// 	System.out.println("Failed to cancel")
 					// }
 					 //forceSell?
-					}
+					
 				}
 			}
 			// for (TradeThread t: trades) {
