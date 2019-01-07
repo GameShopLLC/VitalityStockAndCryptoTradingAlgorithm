@@ -948,7 +948,15 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			//processBuy(which is buy()), store requested ltc
 			//into ltc
 			if (getSimMode() == SimulationMode.REALTIME) {
-			if (getActiveOrder() != null)	{
+				if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
+				setPartialState("NONE");
+				setLastPartialFill(new BigDecimal("0"));
+				buy();
+//				vir.save(vi);
+				setDirty(true);
+			
+			}
+			else if (getActiveOrder() != null)	{
 			
 			if (getActiveOrder().getSettled() == true){//if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
 				setPartialState("NONE");
@@ -973,7 +981,14 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			}
 		} else if (getBuyProcessState().equals("DESIRED_SELL")) {
 			if (getSimMode() == SimulationMode.REALTIME) {
-			if (getActiveOrder() != null) {
+				if (getCurrentPrice().compareTo(getRequestSellPrice()) == 1){
+				setPartialState("NONE");
+				setLastPartialFill(new BigDecimal("0"));
+				sell();
+//				vir.save(vi);
+				setDirty(true);
+			}
+			 else if (getActiveOrder() != null) {
 				if (getActiveOrder().getSettled() == true){
 					setPartialState("NONE");
 				setLastPartialFill(new BigDecimal("0"));
@@ -988,13 +1003,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 				setDirty(true);
 
 			}
-			} else if (getCurrentPrice().compareTo(getRequestSellPrice()) == 1){
-				setPartialState("NONE");
-				setLastPartialFill(new BigDecimal("0"));
-				sell();
-//				vir.save(vi);
-				setDirty(true);
-			}
+			} 
 			} else if(getSimMode() == SimulationMode.SIMULATION) {
 				if (getRequestSellPrice().compareTo(getSimCarrot().getLow()) == 1) {
 					sell();
