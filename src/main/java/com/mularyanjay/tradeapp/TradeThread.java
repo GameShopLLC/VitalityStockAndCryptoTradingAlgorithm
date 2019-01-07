@@ -176,12 +176,12 @@ public class TradeThread {
 	}
 	}
 
-	public String cancelOrder() {
+	public void cancelOrder() {
 		ResponseEntity<String> res = null;
-		String retval = new String("");
+		// String retval = new String("");
 		try {
 			RestTemplate restTemplate = new RestTemplate();
-			res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/cancelOrder/" + getOrderId(), HttpMethod.GET, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/cancelOrder/" + getOrderId()), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+			res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/cancelOrder/" + getOrderId(), HttpMethod.DELETE, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/cancelOrder/" + getOrderId()), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
 	} catch (Throwable t) {
 //		e.printStackTrace();
 		//System.out.println(e.getResponseBodyAsString());
@@ -192,7 +192,7 @@ public class TradeThread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		retval = new String(cancelOrder());
+		cancelOrder();
 	} finally {
 		if (res != null) {
 			System.out.println("Removed Order:" + res.getBody());
@@ -204,15 +204,15 @@ public class TradeThread {
 			
 		}
 	}
-	if (!retval.equals("")){
-		return retval;
-	}
-	if (res.getBody().toString().contains("message")) {
-		return "MESSAGE";
-	} else if (res == null) {
-		return "NULL";
-	}
-	return res.getBody().toString();
+	// if (!retval.equals("")){
+	// 	return retval;
+	// }
+	// if (res.getBody().toString().contains("message")) {
+	// 	return "MESSAGE";
+	// } else if (res == null) {
+	// 	return "NULL";
+	// }
+	// return res.getBody().toString();
 	}
 	public void fetchOrder() {
 			ResponseEntity<String> res = null;
@@ -503,7 +503,7 @@ public class TradeThread {
 	public void cancelBuy() {
 		if(getLifeTimeState().equals("BUY_STUCK")){ //|| getBuyProcessState().equals("SUSPEND")) {
 			//PARTIAL STATE
-			cancelOrder();
+			// cancelOrder();
 
 			//if (cancel.contains(getOrderId())){
 			if (getPartialState().equals("NONE")){
@@ -589,71 +589,76 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //				e.printStackTrace();
 //			}
 		}
+		if(getBuyProcessState().equals("BUY_STUCK")) {
+			resetTick();
+		}
 				setBuyProcessState("DESIRED_BUY");
 		setLifeTimeState("TRADING");
 		//Sysout?
 		System.out.println("Partial buy order placed at $" + getRequestBuyPrice());
-		resetTick();
+		// resetTick();
 	}
 
-// 	public void sellPartial() {
-// 		if (getSimMode() == SimulationMode.REALTIME) {
-// 					ObjectMapper objectMapper = new ObjectMapper();
-// //					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-// 					Order order = new Order();
-// 					order.setType("limit");
-// 					order.setSide("sell");
-// 					order.setProduct_id("ZRX-USD");
-// 					order.setStp("co");
-// //					order.setPost_only("true");
-// 					setRequestSellPrice((new BigDecimal(getRequestSellPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
-// 					setLtc((new BigDecimal(getLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
-// 					order.setPrice(getRequestSellPrice());
-// 					order.setSize(getLtc());
-// 					long minutes = 0;
-// 					long hours = 0;
-// 					long days = 0;
-// 					if (getDesiredSellToStuckTimeout() >= 1000L * 60L) {
-// 						minutes = getDesiredSellToStuckTimeout() / (1000L * 60L);
-// 					}
-// 					if (getDesiredSellToStuckTimeout() >= 1000L * 60L * 60L) {
-// 						hours = getDesiredSellToStuckTimeout() / (1000L * 60L * 60L);
-// 					}
-// 					if (getDesiredSellToStuckTimeout() >= (1000L * 60L * 60L * 24L)) {
-// 						days = getDesiredSellToStuckTimeout() / (1000L * 60L * 60L * 24L);
-// 					}
-// 					order.setTime_in_force("GTT");
-// 					order.setCancel_after("hour");
-// //					
-// 					String json = null;
-// 					try {
-// 						json = new String(objectMapper.writeValueAsString(order));
-// 					} catch (JsonProcessingException e) {
-// 						// TODO Auto-generated catch block
-// 						e.printStackTrace();
-// 					}
-// 					String url = "https://sample-tradeapp.herokuapp.com/placeOrder";
-// 					doRestTemplate(url, json);
-// //					RestTemplate restTemplate = new RestTemplate();
-// //					String url = "https://api.gdax.com/orders";
-// ////					ResponseEntity<Order> response;
-// //					restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, "'" + json + "'"), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
-// //					try {
-// ////						System.out.println(objectMapper.writeValueAsString(response.getBody()));
-// //					} catch (JsonProcessingException e) {
-// //						// TODO Auto-generated catch block
-// //						e.printStackTrace();
-// //					}
-// 				}
-// 				setLastLtc(getLtc());
-// 				setLtc(new BigDecimal("0"));
-// 				//set Litecoin
-// 				setBuyProcessState("DESIRED_SELL");
-// 				setLifeTimeState("TRADING");
-// 				System.out.println("Sell order placed at $" + getRequestSellPrice());
-// //				vir.save(vi);
-// 				setDirty(true);
-// 	}
+
+
+	public void sellPartial() {
+		if (getSimMode() == SimulationMode.REALTIME) {
+					ObjectMapper objectMapper = new ObjectMapper();
+//					ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+					Order order = new Order();
+					order.setType("limit");
+					order.setSide("sell");
+					order.setProduct_id("ZRX-USD");
+					//order.setStp("co");
+//					order.setPost_only("true");
+					// setRequestSellPrice((new BigDecimal(getRequestSellPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
+					setLastLtc((new BigDecimal(getLastLtc().subtract(getLastPartialFill()).toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
+					order.setPrice(getRequestSellPrice());
+					order.setSize(getLastLtc());
+					long minutes = 0;
+					long hours = 0;
+					long days = 0;
+					if (getDesiredSellToStuckTimeout() >= 1000L * 60L) {
+						minutes = getDesiredSellToStuckTimeout() / (1000L * 60L);
+					}
+					if (getDesiredSellToStuckTimeout() >= 1000L * 60L * 60L) {
+						hours = getDesiredSellToStuckTimeout() / (1000L * 60L * 60L);
+					}
+					if (getDesiredSellToStuckTimeout() >= (1000L * 60L * 60L * 24L)) {
+						days = getDesiredSellToStuckTimeout() / (1000L * 60L * 60L * 24L);
+					}
+					// order.setTime_in_force("GTT");
+					// order.setCancel_after("hour");
+//					
+					String json = null;
+					try {
+						json = new String(objectMapper.writeValueAsString(order));
+					} catch (JsonProcessingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					String url = "https://sample-tradeapp.herokuapp.com/placeOrder";
+					doRestTemplate(url, json);
+//					RestTemplate restTemplate = new RestTemplate();
+//					String url = "https://api.gdax.com/orders";
+////					ResponseEntity<Order> response;
+//					restTemplate.exchange(url, HttpMethod.POST, httpEntityBean.postEntityFromUrl(url, "'" + json + "'"), new ParameterizedTypeReference<Order>(){});//restTemplate.exchange(requestEntity, responseType)//
+//					try {
+////						System.out.println(objectMapper.writeValueAsString(response.getBody()));
+//					} catch (JsonProcessingException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+				}
+				// setLastLtc(getLtc());
+				setLtc(new BigDecimal("0"));
+				//set Litecoin
+				setBuyProcessState("DESIRED_SELL");
+				setLifeTimeState("TRADING");
+				System.out.println("Sell order placed at $" + getRequestSellPrice());
+//				vir.save(vi);
+				setDirty(true);
+	}
 
 	public void calculateNet() {
 		setNet(getProfit().add(getLoss()));
@@ -917,7 +922,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 				System.out.println("Sell order placed at $" + getRequestSellPrice());
 //				vir.save(vi);
 				setDirty(true);
-	
+				resetTick();
 				}
 			}
 		} else {
@@ -972,7 +977,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 				setLastPartialFill(new BigDecimal(getActiveOrder().getFilled_size()).add(getLastPartialFill()));
 				setPartialState("PARTIAL");
 				setDirty(true);
-
+				deployPartial();
 			}
 
 			}
@@ -1002,10 +1007,11 @@ if (getSimMode() == SimulationMode.REALTIME) {
 
 			else if (new BigDecimal(getActiveOrder().getFilled_size()).compareTo(new BigDecimal("0")) == 1 && new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getLastLtc().subtract(getLastPartialFill())) == -1) {
 				cancelOrder();
+
 				setLastPartialFill(new BigDecimal(getActiveOrder().getFilled_size()).add(getLastPartialFill()));
 				setPartialState("PARTIAL");
 				setDirty(true);
-
+				sellPartial();
 			}
 			} 
 			} else if(getSimMode() == SimulationMode.SIMULATION) {
@@ -1331,7 +1337,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 	
 	@Field("ThreadSlightAmount")
 	public BigDecimal getSlightAmount() {
-		return new BigDecimal(".001");
+		return slightAmount;
 	}
 
 	public void setSlightAmount(BigDecimal slightAmount) {
