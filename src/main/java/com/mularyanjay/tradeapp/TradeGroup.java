@@ -666,10 +666,11 @@ public class TradeGroup {
 					if (t.getBuyProcessState().equals("DESIRED_SELL")){
 						if (t.getActiveOrder().getSettled() == false){
 							t.cancelOrder();
-							t.forceLoss();
+							
 						}
 						
 					}
+					t.forceLoss();
 						
 						
 					// } else {
