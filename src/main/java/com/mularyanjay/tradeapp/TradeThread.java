@@ -490,6 +490,7 @@ public class TradeThread {
 			setBuyProcessState("STANDBY");
 			setLifeTimeState("IDLE");
 			setOrderId(null);
+			setActiveOrder(null);
 			System.out.println("Buy order canceled");
 		} else if (getPartialState().equals("PARTIAL")){
 			deployPartial();
@@ -499,6 +500,9 @@ public class TradeThread {
 	
 	public void deployPartial(){
 if (getSimMode() == SimulationMode.REALTIME) {
+
+	setOrderId(null);
+	setActiveOrder(null);
 			ObjectMapper objectMapper = new ObjectMapper();
 //			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 			Order order = new Order();
@@ -928,8 +932,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //				vir.save(vi);
 				setDirty(true);
 			
-			} else if (new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getLastPartialFill()) == 1 && new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getRequestedLtc()) == -1) {
-				setLastPartialFill(new BigDecimal(getActiveOrder().getFilled_size()));
+			} else if (new BigDecimal(getActiveOrder().getFilled_size()).compareTo(new BigDecimal("0")) == 1 && new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getRequestedLtc().subtract(getLastPartialFill())) == -1) {
+				setLastPartialFill(new BigDecimal(getActiveOrder().getFilled_size()).add(getLastPartialFill()));
 				setPartialState("PARTIAL");
 				setDirty(true);
 
@@ -953,8 +957,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 				setDirty(true);
 			} 
 
-			else if (new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getLastPartialFill()) == 1 && new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getLastLtc()) == -1) {
-				setLastPartialFill(new BigDecimal(getActiveOrder().getFilled_size()));
+			else if (new BigDecimal(getActiveOrder().getFilled_size()).compareTo(new BigDecimal("0")) == 1 && new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getLastLtc().subtract(getLastPartialFill())) == -1) {
+				setLastPartialFill(new BigDecimal(getActiveOrder().getFilled_size()).add(getLastPartialFill()));
 				setPartialState("PARTIAL");
 				setDirty(true);
 
