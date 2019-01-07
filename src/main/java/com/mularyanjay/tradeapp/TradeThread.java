@@ -205,7 +205,7 @@ public class TradeThread {
 	if (!retval.equals("")){
 		return retval;
 	}
-	if (res.getResponseBodyAsString().contains("message")) {
+	if (res.getBody().toString().contains("message")) {
 		return "MESSAGE";
 	} else if (res == null) {
 		return "NULL";
@@ -411,7 +411,7 @@ public class TradeThread {
 				setRequestedTotal(sellPrice.multiply(forceLtc));
 				setRequestSellPrice(sellPrice);
 				// setLtc(new BigDecimal("0"));
-				setLastLtc(forceLtc());
+				setLastLtc(forceLtc);
 				setLtc(new BigDecimal("0"));
 				//set Litecoin
 				setBuyProcessState("DESIRED_SELL");
