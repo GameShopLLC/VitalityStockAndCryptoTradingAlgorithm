@@ -242,9 +242,16 @@ public class TradeThread {
 		} 
 
 		if (getPartialState().equals("PARTIAL")){
-			forceLtc = getLastPartialFill();
+			if(getBuyProcessState().equals("DESIRED_SELL")){
+				forceLtc = getLastLtc().subtract(getLastPartialFill());
+				// forceLtc = getLastLtc();
 
-		}
+			} else if(getBuyProcessState().equals("BOUGHT")) {
+				forceLtc = getLtc().subtract(getLastPartialFill());
+				// forceLtc = getLtc();
+			}
+			// forceLtc = forceLtc.subtract(getLastPartialFill());
+		} 
 		// setRequestSellPrice(sellPrice);
 		if (getSimMode() == SimulationMode.REALTIME) {
 			ObjectMapper objectMapper = new ObjectMapper();
@@ -946,7 +953,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 				setDirty(true);
 			} 
 
-			else if (new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getLastPartialFill()) == 1 && new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getRequestedLtc()) == -1) {
+			else if (new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getLastPartialFill()) == 1 && new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getLastLtc()) == -1) {
 				setLastPartialFill(new BigDecimal(getActiveOrder().getFilled_size()));
 				setPartialState("PARTIAL");
 				setDirty(true);
