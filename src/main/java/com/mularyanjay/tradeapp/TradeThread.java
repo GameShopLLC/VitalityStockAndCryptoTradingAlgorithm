@@ -166,6 +166,7 @@ public class TradeThread {
 		if (res != null) {
 			System.out.println("The id is:" + res.getBody());
 			setOrderId(new String(res.getBody()));
+			fetchOrder();
 		} else {
 			System.out.print("RESPONSE IS NULL");
 			
@@ -229,6 +230,8 @@ public class TradeThread {
 	
 	public void forceLoss() {
 		if (getBuyProcessState().equals("DESIRED_SELL") || getBuyProcessState().equals("BOUGHT")) {
+			setActiveOrder(null);
+		setOrderId(null);
 		BigDecimal sellPrice = new BigDecimal("0");
 		sellPrice = getCurrentPrice().add(new BigDecimal(".001"));//.subtract(getCurrentPrice().multiply(getForceSellFee()));
 		BigDecimal forceLtc = new BigDecimal("0");
