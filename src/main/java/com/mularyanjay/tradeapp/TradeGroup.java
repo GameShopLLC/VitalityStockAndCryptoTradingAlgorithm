@@ -658,7 +658,10 @@ public class TradeGroup {
 				// }
 				//}
 					// if (t.cancelOrder().contains(t.getOrderId())){
+					if (t.getOrderId() != null){
 						t.cancelOrder();
+					}
+						
 						t.forceLoss();
 					// } else {
 					// 	System.out.println("Failed to cancel")
