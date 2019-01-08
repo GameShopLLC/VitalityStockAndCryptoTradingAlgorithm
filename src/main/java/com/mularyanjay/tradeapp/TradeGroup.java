@@ -650,77 +650,77 @@ public class TradeGroup {
 				//t.evaluateSimulationTimeout();
 			}
 			}
-			boolean buystuck = false;
-			for (TradeThread t: trades){
-				if (t.getLifeTimeState().equals("BUY_STUCK")) {
-					// t.cancelOrder();
-					buystuck = true;
-				}
-			}
+		// 	boolean buystuck = false;
+		// 	for (TradeThread t: trades){
+		// 		if (t.getLifeTimeState().equals("BUY_STUCK")) {
+		// 			// t.cancelOrder();
+		// 			buystuck = true;
+		// 		}
+		// 	}
 
-			if (buystuck){
-				//buystuck = false;
-				try {
-				Thread.sleep(100);
-				}	catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// 	if (buystuck){
+		// 		//buystuck = false;
+		// 		try {
+		// 		Thread.sleep(100);
+		// 		}	catch (InterruptedException e) {
+		// 	// TODO Auto-generated catch block
+		// 	e.printStackTrace();
+		// }
 				for (TradeThread t: trades){
-					t.setSecondTick(t.getSecondTick() + 100L);
+					// t.setSecondTick(t.getSecondTick() + 100L);
 				if (t.getLifeTimeState().equals("BUY_STUCK")) {
 					t.cancelBuy();
 					// buystuck = true;
 				}	
 				}
 
-			}
+			// }
 
 			if (getLossMode().equals("IMMEDIATE")) {
 			boolean sellstuck = false;
 
-			for (TradeThread t: trades) {
-				if (t.getLifeTimeState().equals("SELL_STUCK")) {
-				// 	for (TradeThread b: trades){
-				// 	if (b.getBuyProcessState().equals("DESIRED_BUY")){
-				// 	b.setBuyProcessState(new String("SUSPEND"));
-				// }
-				//}
-					// if (t.cancelOrder().contains(t.getOrderId())){
-					if (t.getBuyProcessState().equals("DESIRED_SELL")){
-						if (t.getOrderId() != null){
-						if (t.getActiveOrder().getSettled() == false){
-							// t.cancelOrder();
-							sellstuck = true;
+			// for (TradeThread t: trades) {
+			// 	if (t.getLifeTimeState().equals("SELL_STUCK")) {
+			// 	// 	for (TradeThread b: trades){
+			// 	// 	if (b.getBuyProcessState().equals("DESIRED_BUY")){
+			// 	// 	b.setBuyProcessState(new String("SUSPEND"));
+			// 	// }
+			// 	//}
+			// 		// if (t.cancelOrder().contains(t.getOrderId())){
+			// 		if (t.getBuyProcessState().equals("DESIRED_SELL")){
+			// 			if (t.getOrderId() != null){
+			// 			if (t.getActiveOrder().getSettled() == false){
+			// 				// t.cancelOrder();
+			// 				sellstuck = true;
 							
-						}
-						}
-					}
+			// 			}
+			// 			}
+			// 		}
 					
 						
 						
-					// } else {
-					// 	System.out.println("Failed to cancel")
-					// }
-					 //forceSell?
+			// 		// } else {
+			// 		// 	System.out.println("Failed to cancel")
+			// 		// }
+			// 		 //forceSell?
 					
-				}
-			}
+			// 	}
+			// }
 
-			if (sellstuck){
-			try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		// 	if (sellstuck){
+		// 	try {
+		// 	Thread.sleep(100);
+		// } catch (InterruptedException e) {
+		// 	// TODO Auto-generated catch block
+		// 	e.printStackTrace();
+		// }
 				for (TradeThread t: trades){
-					t.setSecondTick(t.getSecondTick() + 100L);
+					// t.setSecondTick(t.getSecondTick() + 100L);
 				if (t.getLifeTimeState().equals("SELL_STUCK")) {
 					t.forceLoss();
 				}
 			}
-		}
+		// }
 			// for (TradeThread t: trades) {
 			// 	if (t.getBuyProcessState().equals("SUSPEND")){
 			// 		if (getCurrentCarrot().getCurrent().compareTo(t.getRequestBuyPrice()) <= 0) {
