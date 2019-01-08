@@ -171,6 +171,7 @@ public class TradeThread {
 			fetchOrder();
 		} else {
 			System.out.print("RESPONSE IS NULL");
+
 			
 		}
 	}
@@ -425,7 +426,7 @@ public class TradeThread {
 				//set Litecoin
 				setBuyProcessState("DESIRED_SELL");
 				setLifeTimeState("TRADING");
-				System.out.println("Sell order placed at $" + getRequestSellPrice());
+				System.out.println("Sell order placed at $" + sellPrice);
 
 				resetTick();
 					setDirty(true);
