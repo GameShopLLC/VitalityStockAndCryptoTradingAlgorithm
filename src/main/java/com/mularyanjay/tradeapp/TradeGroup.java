@@ -653,7 +653,7 @@ public class TradeGroup {
 			boolean buystuck = false;
 			for (TradeThread t: trades){
 				if (t.getLifeTimeState().equals("BUY_STUCK")) {
-					t.cancelOrder();
+					// t.cancelOrder();
 					buystuck = true;
 				}
 			}
@@ -661,13 +661,13 @@ public class TradeGroup {
 			if (buystuck){
 				//buystuck = false;
 				try {
-				Thread.sleep(2000);
+				Thread.sleep(100);
 				}	catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 				for (TradeThread t: trades){
-					t.setSecondTick(t.getSecondTick() + 2000L);
+					t.setSecondTick(t.getSecondTick() + 100L);
 				if (t.getLifeTimeState().equals("BUY_STUCK")) {
 					t.cancelBuy();
 					// buystuck = true;
@@ -690,7 +690,7 @@ public class TradeGroup {
 					if (t.getBuyProcessState().equals("DESIRED_SELL")){
 						if (t.getOrderId() != null){
 						if (t.getActiveOrder().getSettled() == false){
-							t.cancelOrder();
+							// t.cancelOrder();
 							sellstuck = true;
 							
 						}
@@ -709,13 +709,13 @@ public class TradeGroup {
 
 			if (sellstuck){
 			try {
-			Thread.sleep(2000);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 				for (TradeThread t: trades){
-					t.setSecondTick(t.getSecondTick() + 2000L);
+					t.setSecondTick(t.getSecondTick() + 100L);
 				if (t.getLifeTimeState().equals("SELL_STUCK")) {
 					t.forceLoss();
 				}
