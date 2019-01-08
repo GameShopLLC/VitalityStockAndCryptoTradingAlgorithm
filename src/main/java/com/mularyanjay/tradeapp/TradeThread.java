@@ -193,11 +193,15 @@ public class TradeThread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cancelOrder();
+		// cancelOrder();
 	} finally {
 		// if (res != null) {
 			System.out.println("Removed Order:");// + res.getBody());
 			// setOrderId(new String(res.getBody()));
+
+
+
+
 			setOrderId(null);
 			setActiveOrder(null);
 		// } else {
@@ -215,6 +219,8 @@ public class TradeThread {
 	// }
 	// return res.getBody().toString();
 	}
+
+	// 
 	public void fetchOrder() {
 			ResponseEntity<String> res = null;
 		try {
@@ -502,7 +508,6 @@ public class TradeThread {
 
 
 	public void cancelBuy() {
-		cancelOrder();
 			setOrderId(null);
 			setActiveOrder(null);
 		if(getLifeTimeState().equals("BUY_STUCK")){ //|| getBuyProcessState().equals("SUSPEND")) {
@@ -671,7 +676,6 @@ if (getSimMode() == SimulationMode.REALTIME) {
 		if (getBuyProcessState().equals("DESIRED_BUY")) {
 			if (getSecondTick() - getLastSecondTick() > getDesiredBuyTimeout()/1000) {
 				setLifeTimeState("BUY_STUCK");
-				cancelBuy();
 				setDirty(true);
 			}
 		} else if (getBuyProcessState().equals("BOUGHT") || getBuyProcessState().equals("DESIRED_SELL")) {

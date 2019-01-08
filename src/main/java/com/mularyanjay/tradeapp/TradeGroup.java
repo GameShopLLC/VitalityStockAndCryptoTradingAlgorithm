@@ -650,11 +650,30 @@ public class TradeGroup {
 				//t.evaluateSimulationTimeout();
 			}
 			}
-			
+			boolean buystuck = false;
+			for (TradeThread t: trades){
+				if (t.getLifeTimeState().equals("BUY_STUCK")) {
+					t.cancelOrder();
+					buystuck = true;
+				}
+			}
+
+			if (buystuck){
+				//buystuck = false;
+				Thread.sleep(2000);
+				for (TradeThread t: trades){
+					t.setSecondTick(t.getSecondTick() + 2000L);
+				if (t.getLifeTimeState().equals("BUY_STUCK")) {
+					t.cancelBuy();
+					// buystuck = true;
+				}	
+				}
+
+			}
+
 			if (getLossMode().equals("IMMEDIATE")) {
-			// for (TradeThread t: trades) {
-				
-			// }
+			boolean sellstuck = false;
+
 			for (TradeThread t: trades) {
 				if (t.getLifeTimeState().equals("SELL_STUCK")) {
 				// 	for (TradeThread b: trades){
@@ -667,11 +686,12 @@ public class TradeGroup {
 						if (t.getOrderId() != null){
 						if (t.getActiveOrder().getSettled() == false){
 							t.cancelOrder();
+							sellstuck = true;
 							
 						}
 						}
 					}
-					t.forceLoss();
+					
 						
 						
 					// } else {
@@ -681,6 +701,17 @@ public class TradeGroup {
 					
 				}
 			}
+
+			if (sellstuck){
+
+			Thread.sleep(2000);
+				for (TradeThread t: trades){
+					t.setSecondTick(t.getSecondTick() + 2000L);
+				if (t.getLifeTimeState().equals("SELL_STUCK")) {
+					t.forceLoss();
+				}
+			}
+		}
 			// for (TradeThread t: trades) {
 			// 	if (t.getBuyProcessState().equals("SUSPEND")){
 			// 		if (getCurrentCarrot().getCurrent().compareTo(t.getRequestBuyPrice()) <= 0) {
