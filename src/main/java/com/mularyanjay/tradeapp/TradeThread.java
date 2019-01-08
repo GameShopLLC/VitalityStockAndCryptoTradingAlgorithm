@@ -166,9 +166,15 @@ public class TradeThread {
 		doRestTemplate(url, json);
 	} finally {
 		if (res != null) {
+			if (res.getBody().toString().contains("undefined")) {
+				setOrderId(null);
+				setActiveOrder(null);
+				doRestTemplate(url, json);
+			} else {
 			System.out.println("The id is:" + res.getBody());
 			setOrderId(new String(res.getBody()));
 			fetchOrder();
+		}
 		} else {
 			System.out.print("RESPONSE IS NULL");
 
