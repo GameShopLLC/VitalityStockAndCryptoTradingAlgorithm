@@ -717,7 +717,7 @@ public class TradeGroup {
 				for (TradeThread t: trades){
 					// t.setSecondTick(t.getSecondTick() + 100L);
 				if (t.getLifeTimeState().equals("SELL_STUCK")) {
-					t.attemptSell();
+					t.attemptSell(carrot);
 				}
 			}
 		// }
