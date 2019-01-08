@@ -878,7 +878,9 @@ if (getSimMode() == SimulationMode.REALTIME) {
 		if ((getSimMode() == SimulationMode.SIMULATION) || (getCurrentPrice().compareTo(carrot.getHigh().add(getSlightAmount())) == -1)) {
 			setRequestSellPrice(carrot.getHigh().add(getSlightAmount()));
 			if (getRequestSellPrice().compareTo(getRequestBuyPrice()) == 1) {
-			
+				if (getLastLtc().compareTo(new BigDecimal("0")) == 1){
+					setLtc(getLastLtc());
+				}
 				setRequestedTotal(getRequestSellPrice().multiply(getLtc()));
 				if (getSimMode() == SimulationMode.REALTIME) {
 					ObjectMapper objectMapper = new ObjectMapper();
