@@ -95,7 +95,7 @@ public class SimulationManager {
 			map.put("from", from);
 			map.put("to", to);
 			try {
-				Thread.sleep(1000L);
+				Thread.sleep(1500L);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
