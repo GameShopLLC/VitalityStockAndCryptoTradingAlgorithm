@@ -181,7 +181,8 @@ public class TradeThread {
 		// String retval = new String("");
 		try {
 			RestTemplate restTemplate = new RestTemplate();
-			res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/cancelOrder/" + getOrderId(), HttpMethod.DELETE, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/cancelOrder/" + getOrderId()), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+			// res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/cancelOrder/" + getOrderId(), HttpMethod.DELETE, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/cancelOrder/" + getOrderId()), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+			restTemplate.delete("https://sample-tradeapp.herokuapp.com/cancelOrder/" + getOrderId());
 	} catch (Throwable t) {
 //		e.printStackTrace();
 		//System.out.println(e.getResponseBodyAsString());
@@ -194,15 +195,15 @@ public class TradeThread {
 		}
 		cancelOrder();
 	} finally {
-		if (res != null) {
-			System.out.println("Removed Order:" + res.getBody());
+		// if (res != null) {
+			System.out.println("Removed Order:");// + res.getBody());
 			// setOrderId(new String(res.getBody()));
 			setOrderId(null);
 			setActiveOrder(null);
-		} else {
-			System.out.print("REMOVE RESPONSE IS NULL");
+		// } else {
+		// 	System.out.print("REMOVE RESPONSE IS NULL");
 			
-		}
+		// }
 	}
 	// if (!retval.equals("")){
 	// 	return retval;
