@@ -308,8 +308,8 @@ public class TradeThread {
 			order.setSide("sell");
 			order.setProduct_id("ZRX-USD");
 			// order.setStp("co");
-			 // order.setTime_in_force("GTT");
-			 // order.setCancel_after("hour");
+			 order.setTime_in_force("GTT");
+			 order.setCancel_after("hour");
 //			order.setPrice(getRequestBuyPrice().toPlainString());
 			 forceLtc = (new BigDecimal(forceLtc.toPlainString()).setScale(5, RoundingMode.HALF_DOWN));
 			order.setSize(forceLtc.toPlainString());
@@ -566,8 +566,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			if (getDesiredBuyTimeout() >= (1000L * 60L * 60L * 24L)) {
 				days = getDesiredBuyTimeout() / (1000L * 60L * 60L * 24L);
 			}
-			// order.setTime_in_force("GTT");
-			// order.setCancel_after("hour");
+			order.setTime_in_force("GTT");
+			order.setCancel_after("hour");
 			
 			String json = null;
 			try {
@@ -635,8 +635,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 					if (getDesiredSellToStuckTimeout() >= (1000L * 60L * 60L * 24L)) {
 						days = getDesiredSellToStuckTimeout() / (1000L * 60L * 60L * 24L);
 					}
-					// order.setTime_in_force("GTT");
-					// order.setCancel_after("hour");
+					order.setTime_in_force("GTT");
+					order.setCancel_after("hour");
 //					
 					String json = null;
 					try {
@@ -779,8 +779,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			if (getDesiredBuyTimeout() >= (1000L * 60L * 60L * 24L)) {
 				days = getDesiredBuyTimeout() / (1000L * 60L * 60L * 24L);
 			}
-			// order.setTime_in_force("GTT");
-			// order.setCancel_after("hour");
+			order.setTime_in_force("GTT");
+			order.setCancel_after("hour");
 			
 			String json = null;
 			try {
@@ -898,8 +898,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 					if (getDesiredSellToStuckTimeout() >= (1000L * 60L * 60L * 24L)) {
 						days = getDesiredSellToStuckTimeout() / (1000L * 60L * 60L * 24L);
 					}
-					// order.setTime_in_force("GTT");
-					// order.setCancel_after("hour");
+					order.setTime_in_force("GTT");
+					order.setCancel_after("hour");
 //					
 					String json = null;
 					try {
