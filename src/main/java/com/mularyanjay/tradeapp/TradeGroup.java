@@ -660,7 +660,12 @@ public class TradeGroup {
 
 			if (buystuck){
 				//buystuck = false;
+				try {
 				Thread.sleep(2000);
+				}	catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 				for (TradeThread t: trades){
 					t.setSecondTick(t.getSecondTick() + 2000L);
 				if (t.getLifeTimeState().equals("BUY_STUCK")) {
@@ -703,8 +708,12 @@ public class TradeGroup {
 			}
 
 			if (sellstuck){
-
+			try {
 			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 				for (TradeThread t: trades){
 					t.setSecondTick(t.getSecondTick() + 2000L);
 				if (t.getLifeTimeState().equals("SELL_STUCK")) {
