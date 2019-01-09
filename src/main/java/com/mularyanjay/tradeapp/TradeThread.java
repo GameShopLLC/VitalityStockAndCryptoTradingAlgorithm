@@ -141,9 +141,9 @@ public class TradeThread {
 					// TODO Auto-generated method stub
 					incrementSecondTick(1L);
 
-					 if (getBuyProcessState().equals("SOLD")){
-						setLifeTimeState(new String("RESERVE"));
-					}
+					//  if (getBuyProcessState().equals("SOLD")){
+					// 	setLifeTimeState(new String("RESERVE"));
+					// }
 					else if (getActiveOrder().getId() != null) {
 
 						if (getBuyProcessState().equals("DESIRED_BUY")){
