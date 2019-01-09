@@ -53,6 +53,7 @@ public class TradeThread {
 	private String partialState;// NONE, PARTIAL
 	// @Transient
 	private HttpEntityBean httpEntityBean;
+	private HttpEntityBean localHttpEntityBean;
 	private boolean dirty;
 	private BigDecimal usd;
 	private BigDecimal ltc;
@@ -172,13 +173,12 @@ public class TradeThread {
 				ObjectMapper objectMapper = new ObjectMapper();
 				RestTemplate restTemplate = new RestTemplate();
 				String url = "https://ancient-crag-48261.herokuapp.com/testbackendrequest";
-				ResponseEntity<String> response;
-				response = restTemplate.exchange(url, HttpMethod.GET, localHttpEntityBean.getLocalEntityFromUrl(url,"application/json"), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
-				settData(response.getBody());
+				ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, localHttpEntityBean.getLocalEntityFromUrl(url,"application/json"), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+				// settData(response.getBody());
 				TickerData tickerData = null;
 				try {
 					tickerData = objectMapper.readValue(response.getBody(), TickerData.class);
-				} catch (IOException e) {
+				} catch (Throwable e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -188,6 +188,7 @@ public class TradeThread {
 				Thread.sleep(100);
 				return calculateSpread();
 	}
+
 	public void doRestTemplate(String url, String json) {
 		ResponseEntity<String> res = null;
 		try {
