@@ -185,7 +185,12 @@ public class TradeThread {
 				if (tickerData != null){
 					return new BigDecimal((tickerData.getAsk().subtract(tickerData.getBid())).toPlainString());
 				}
-				Thread.sleep(100);
+				try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 				return calculateSpread();
 	}
 
