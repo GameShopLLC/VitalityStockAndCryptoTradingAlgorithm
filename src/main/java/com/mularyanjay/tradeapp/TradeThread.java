@@ -144,7 +144,7 @@ public class TradeThread {
 					//  if (getBuyProcessState().equals("SOLD")){
 					// 	setLifeTimeState(new String("RESERVE"));
 					// }
-					else if (getActiveOrder().getId() != null) {
+					 if (getActiveOrder().getId() != null) {
 
 						if (getBuyProcessState().equals("DESIRED_BUY")){
 							if (!fetchOrder()) {
