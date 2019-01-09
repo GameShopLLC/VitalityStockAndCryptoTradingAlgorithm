@@ -482,7 +482,7 @@ public class TradeGroup {
 					}
 				}
 			}
-			
+
 		for (TradeThread t: trades) {
 			t.broadcastCarrot(carrot); //or should I evaluate current
 			//carrot and broadcast that? No, keep as is.
@@ -786,7 +786,7 @@ public class TradeGroup {
 				//else {
 					//if (useCarrotCache().size() > 0) {
 						//if... hit entry point
-						if (useCarrotCache().get(useCarrotCache().size() - 1).getTrend() != null && useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("DEC")) {
+						if (useCarrotCache().get(useCarrotCache().size() - 1).getTrend() != null && useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("DEC") || useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("EQ")) {
 							setState("ACTIVE");	
 							deployThread(useCarrotCache().get(useCarrotCache().size() - 1));
 						}
@@ -810,7 +810,7 @@ public class TradeGroup {
 //					if (useCarrotCache().size() > 0) {
 						//if... hit entry point
 				if (useCarrotCache().get(useCarrotCache().size() - 1).getTrend() != null){
-						if (useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("DEC")) {
+						if (useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("DEC") || useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("EQ")) {
 							//setState("ACTIVE");
 							deployThread(useCarrotCache().get(useCarrotCache().size() - 1));
 						} 
