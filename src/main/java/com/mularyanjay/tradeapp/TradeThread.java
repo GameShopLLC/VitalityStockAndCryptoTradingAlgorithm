@@ -1000,7 +1000,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			}
 
 			} else if (getActiveOrder() == null){
-					if (t.getLifeTimeState().equals("BUY_STUCK")) {
+					if (getLifeTimeState().equals("BUY_STUCK")) {
 						setPartialState("NONE");
 				setLastPartialFill(new BigDecimal("0"));
 				buy();
@@ -1041,7 +1041,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 				// sellPartial();
 			} 
 			} else if (getActiveOrder().getStatus().equals("done")){
-					if (t.getLifeTimeState().equals("SELL_STUCK")) {
+					if (getLifeTimeState().equals("SELL_STUCK")) {
 						setPartialState("NONE");
 				setLastPartialFill(new BigDecimal("0"));
 				sell();
