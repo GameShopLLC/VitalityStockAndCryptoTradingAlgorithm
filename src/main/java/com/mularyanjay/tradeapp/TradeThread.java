@@ -298,8 +298,9 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 			}
 }
 		// } else {
-			return false;
 			System.out.print("RESPONSE IS NULL");
+			return false;
+			
 			
 		// }
 	}
