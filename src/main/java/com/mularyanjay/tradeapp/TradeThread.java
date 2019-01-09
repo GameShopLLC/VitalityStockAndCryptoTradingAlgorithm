@@ -191,7 +191,7 @@ public class TradeThread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("SPREAD NULL")
+		System.out.println("SPREAD NULL");
 				return calculateSpread();
 	}
 
