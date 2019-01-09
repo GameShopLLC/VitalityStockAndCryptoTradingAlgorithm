@@ -167,6 +167,27 @@ public class TradeThread {
 			
 			}
 	}
+
+	public BigDecimal calculateSpread() {
+				ObjectMapper objectMapper = new ObjectMapper();
+				RestTemplate restTemplate = new RestTemplate();
+				String url = "https://ancient-crag-48261.herokuapp.com/testbackendrequest";
+				ResponseEntity<String> response;
+				response = restTemplate.exchange(url, HttpMethod.GET, localHttpEntityBean.getLocalEntityFromUrl(url,"application/json"), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+				settData(response.getBody());
+				TickerData tickerData = null;
+				try {
+					tickerData = objectMapper.readValue(response.getBody(), TickerData.class);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (tickerData != null){
+					return new BigDecimal((tickerData.getAsk().subtract(tickerData.getBid())).toPlainString());
+				}
+				Thread.sleep(100);
+				return calculateSpread();
+	}
 	public void doRestTemplate(String url, String json) {
 		ResponseEntity<String> res = null;
 		try {
@@ -313,6 +334,8 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 		// }
 	}
 	}
+
+
 	
 	public void forceLoss() {
 		if (getBuyProcessState().equals("DESIRED_SELL") || getBuyProcessState().equals("BOUGHT")) {
@@ -814,7 +837,12 @@ if (getSimMode() == SimulationMode.REALTIME) {
 		//Have to make sure things are set up correctly
 			
 		//At this point I would place buy order with api	
-		setRequestBuyPrice(carrot.getLow().subtract(getSlightAmount()));
+			if((getSimMode() == SimulationMode.SIMULATION)){
+				setRequestBuyPrice(carrot.getLow().subtract(getSlightAmount()));
+			} else if ((getSimMode() == SimulationMode.REALTIME)) {
+				setRequestBuyPrice(carrot.getLow().subtract(getSlightAmount().add(calculateSpread())));
+			}
+		
 		//placeBuyOrder();
 		//Need to calculate totals and then do transaction
 		//A buy order will deduct dollars and want ltc,
@@ -938,7 +966,13 @@ if (getSimMode() == SimulationMode.REALTIME) {
 		if (getSimMode() != null && getCurrentPrice() != null &&carrot != null && carrot.getHigh() != null) {
 			
 		if ((getSimMode() == SimulationMode.SIMULATION) || (getCurrentPrice().compareTo(carrot.getHigh().add(getSlightAmount())) == -1)) {
-			setRequestSellPrice(carrot.getHigh().add(getSlightAmount()));
+			
+			if ((getSimMode() == SimulationMode.SIMULATION)){
+				setRequestSellPrice(carrot.getHigh().add(getSlightAmount()));
+			} else if ((getSimMode() == SimulationMode.REALTIME)){
+				setRequestSellPrice(carrot.getHigh().add(getSlightAmount().add(calculateSpread())));
+			}
+			
 			if (getRequestSellPrice().compareTo(getRequestBuyPrice()) == 1) {
 				if (getLastLtc().compareTo(new BigDecimal("0")) == 1){
 					setLtc(getLastLtc());
