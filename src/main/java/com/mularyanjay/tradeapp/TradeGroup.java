@@ -814,7 +814,7 @@ public class TradeGroup {
 							//setState("ACTIVE");
 							deployThread(useCarrotCache().get(useCarrotCache().size() - 1));
 						} 
-						 if (useCarrotCache().get(useCarrotCache().size() - 1).getTrend() != null && (useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("INC")){ //|| useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("EQ")) ) { //|| useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("DEC") ) {
+						 if (useCarrotCache().get(useCarrotCache().size() - 1).getTrend() != null && (useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("INC") )){ //|| useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("EQ")) ) { //|| useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("DEC") ) {
 							//setState("ACTIVE");
 							//deployThread(useCarrotCache().get(useCarrotCache().size() - 1));
 							attemptSellThread(useCarrotCache().get(useCarrotCache().size() - 1));
@@ -827,7 +827,7 @@ public class TradeGroup {
 		} else if (getState().equals("RALLYING")) {
 			if (useCarrotCache().size() > 0) {
 				if(useCarrotCache().get(useCarrotCache().size() - 1).getTrend() != null ){
-				if ((useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("INC")){// || useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("EQ")) ) { //|| useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("DEC")) {
+				if ((useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("INC"))){// || useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("EQ")) ) { //|| useCarrotCache().get(useCarrotCache().size() - 1).getTrend().equals("DEC")) {
 					//setState("ACTIVE");
 					//deployThread(useCarrotCache().get(useCarrotCache().size() - 1));
 					attemptSellThread(useCarrotCache().get(useCarrotCache().size() - 1));
