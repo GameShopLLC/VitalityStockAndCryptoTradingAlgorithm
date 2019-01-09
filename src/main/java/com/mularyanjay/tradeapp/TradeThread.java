@@ -99,6 +99,7 @@ public class TradeThread {
 	public TradeThread(SimulationMode sm, BigDecimal initialUSD, long whatDBT, long whatDSTST, BigDecimal slightAmount) {
 	
 		httpEntityBean = new HttpEntityBean();
+		localHttpEntityBean = new HttpEntityBean();
 		//setSimMode(sm);
 		setDirty(false);
 		setSlightAmount(slightAmount);
