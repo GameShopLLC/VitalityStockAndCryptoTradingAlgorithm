@@ -999,6 +999,12 @@ if (getSimMode() == SimulationMode.REALTIME) {
 				// deployPartial();
 			}
 
+			} else if (getOrderId() == null) {
+				setPartialState("NONE");
+				setLastPartialFill(new BigDecimal("0"));
+				buy();
+//				vir.save(vi);
+				setDirty(true);
 			} else if (getActiveOrder() == null){
 					if (getLifeTimeState().equals("BUY_STUCK")) {
 						setPartialState("NONE");
@@ -1016,16 +1022,17 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			}
 		} else if (getBuyProcessState().equals("DESIRED_SELL")) {
 			if (getSimMode() == SimulationMode.REALTIME) {
-				if (getCurrentPrice().compareTo(getRequestSellPrice()) == 1){
-				setPartialState("NONE");
+				if (getActiveOrder() != null) {
+				if (getActiveOrder().getSettled() == true){
+					setPartialState("NONE");
 				setLastPartialFill(new BigDecimal("0"));
 				sell();
 //				vir.save(vi);
 				setDirty(true);
-			}
-			 else if (getActiveOrder() != null) {
-				if (getActiveOrder().getSettled() == true){
-					setPartialState("NONE");
+			} 
+
+			else if (getCurrentPrice().compareTo(getRequestSellPrice()) == 1){
+				setPartialState("NONE");
 				setLastPartialFill(new BigDecimal("0"));
 				sell();
 //				vir.save(vi);
