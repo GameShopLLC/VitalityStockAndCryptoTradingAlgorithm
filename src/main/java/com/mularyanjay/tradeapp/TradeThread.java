@@ -730,18 +730,28 @@ if (getSimMode() == SimulationMode.REALTIME) {
 	}
 	public void evaluateSimulationTimeout() {
 		if (getLastSecondTick() > -1L) {
+			if (getSimMode() == SimulationMode.SIMULATION){
+
+			
 		if (getBuyProcessState().equals("DESIRED_BUY")) {
 			if (getSecondTick() - getLastSecondTick() > getDesiredBuyTimeout()/1000) {
 				setLifeTimeState("BUY_STUCK");
-				setDirty(true);
+				// setDirty(true);
 			}
 		} else if (getBuyProcessState().equals("BOUGHT") || getBuyProcessState().equals("DESIRED_SELL")) {
 			if (getSecondTick() - getLastSecondTick() > getDesiredSellToStuckTimeout()/1000) {
 				setLifeTimeState("SELL_STUCK");
-				setDirty(true);
+				// setDirty(true);
 			}
 		}
+	} else if (getSimMode() == SimulationMode.REALTIME){
+		if (getBuyProcessState().equals("BOUGHT")) {
+			setLifeTimeState("SELL_STUCK");
+			setDirty(true);
 		}
+	}
+		}
+	}
 	}
 	
 	public void incrementSecondTick() {
