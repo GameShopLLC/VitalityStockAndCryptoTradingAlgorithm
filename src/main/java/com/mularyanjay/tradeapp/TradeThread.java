@@ -345,8 +345,8 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 	
 	public void forceLoss() {
 		if (getBuyProcessState().equals("DESIRED_SELL") || getBuyProcessState().equals("BOUGHT")) {
-			setActiveOrder(null);
-		setOrderId(null);
+			//setActiveOrder(null);
+		//setOrderId(null);
 		BigDecimal sellPrice = new BigDecimal("0");
 		sellPrice = getCurrentPrice().add(new BigDecimal(".001"));//.subtract(getCurrentPrice().multiply(getForceSellFee()));
 		BigDecimal forceLtc = new BigDecimal("0");
