@@ -516,14 +516,32 @@ public class TradeThread {
 
 
 	public void cancelBuy() {
-			setOrderId(null);
-			setActiveOrder(null);
-		if(getLifeTimeState().equals("BUY_STUCK")){ //|| getBuyProcessState().equals("SUSPEND")) {
+			// setOrderId(null);
+			// setActiveOrder(null);
+		//if(getLifeTimeState().equals("BUY_STUCK")){ //|| getBuyProcessState().equals("SUSPEND")) {
 			//PARTIAL STATE
 			// cancelOrder();
 
 			//if (cancel.contains(getOrderId())){
-			if (getPartialState().equals("NONE")){
+			if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
+				setPartialState("NONE");
+				setLastPartialFill(new BigDecimal("0"));
+				buy();
+//				vir.save(vi);
+				setDirty(true);
+			
+			}
+			else if (getActiveOrder() != null)	{
+			
+			if (getActiveOrder().getSettled() == true){//if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
+				setPartialState("NONE");
+				setLastPartialFill(new BigDecimal("0"));
+				buy();
+//				vir.save(vi);
+				setDirty(true);
+			
+			} 
+		} else if (getPartialState().equals("NONE")){
 			setUsd(getLastUsd());
 			setBuyProcessState("STANDBY");
 			setLifeTimeState("IDLE");
@@ -537,7 +555,7 @@ public class TradeThread {
 	// 	System.out.println(cancel);
 	// 	System.exit(0);
 	// }
-		}
+	//	}
 	}
 	
 	
