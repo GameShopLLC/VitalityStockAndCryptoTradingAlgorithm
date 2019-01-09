@@ -561,10 +561,11 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 				setLastPartialFill(new BigDecimal("0"));
 				buy();
 //				vir.save(vi);
-				//setDirty(true);
-			
+				setDirty(true);
+			return;
 			} 
-		} else if (getPartialState().equals("NONE")){
+		} 
+		if (getPartialState().equals("NONE")){
 			setUsd(getLastUsd());
 			setBuyProcessState("STANDBY");
 			setLifeTimeState("IDLE");
