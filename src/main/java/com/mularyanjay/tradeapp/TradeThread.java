@@ -296,7 +296,7 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 				System.out.println("CANNOT READ ACTIVE ORDER");
 			} 
 			}
-
+}
 		// } else {
 			return false;
 			System.out.print("RESPONSE IS NULL");
