@@ -140,8 +140,20 @@ public class TradeThread {
 				public void run() {
 					// TODO Auto-generated method stub
 					incrementSecondTick(1L);
-					if (getOrderId() != null) {
-						fetchOrder();	
+					if (getActiveOrder().getId() != null) {
+						if (getBuyProcessState().equals("DESIRED_BUY")){
+							if (!fetchOrder()) {
+								setLifeTimeState(new String("BUY_STUCK"));
+
+							} 
+						}
+						if (getBuyProcessState().equals("DESIRED_SELL")){
+							if (!fetchOrder()) {
+								setLifeTimeState(new String("SELL_STUCK"));
+
+							} 
+						}
+						// fetchOrder();	
 					}
 				}
 				
@@ -229,7 +241,7 @@ public class TradeThread {
 	}
 
 	// 
-	public void fetchOrder() {
+	public boolean fetchOrder() {
 			ResponseEntity<String> res = null;
 		try {
 			RestTemplate restTemplate = new RestTemplate();
@@ -242,7 +254,14 @@ public class TradeThread {
   // converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));     
   //  messageConverters.add(converter);  
   //  restTemplate.setMessageConverters(messageConverters);  
-			res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + getOrderId(), HttpMethod.GET, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/getOrder/" + getOrderId()), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+			if (getOrderId() != null){
+res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + getOrderId(), HttpMethod.GET, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/getOrder/" + getOrderId()), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+	
+			} else if (getActiveOrder().getId() != null){
+				res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + getActiveOrder().getId(), HttpMethod.GET, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/getOrder/" + getActiveOrder().getId()), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+	
+			}
+			
 	} catch (Throwable t) {
 //		e.printStackTrace();
 		//System.out.println(e.getResponseBodyAsString());
@@ -263,6 +282,7 @@ public class TradeThread {
 			objectMapper.configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, false);
 			if (res.getBody().equals("undefined")) {
 				setOrderId(null);
+				return false;
 			} else {
 
 
@@ -270,6 +290,7 @@ public class TradeThread {
 			setActiveOrder(null);	
 
 			setActiveOrder(objectMapper.readValue(res.getBody().toString(), IncomingOrder.class));
+			return true;
 			} catch (Throwable throwable){
 				throwable.printStackTrace();
 				System.out.println("CANNOT READ ACTIVE ORDER");
@@ -277,6 +298,7 @@ public class TradeThread {
 			}
 
 		} else {
+			return false;
 			System.out.print("RESPONSE IS NULL");
 			
 		}
@@ -528,7 +550,7 @@ public class TradeThread {
 				setLastPartialFill(new BigDecimal("0"));
 				buy();
 //				vir.save(vi);
-				setDirty(true);
+				//setDirty(true);
 			
 			}
 			else if (getActiveOrder() != null)	{
@@ -538,7 +560,7 @@ public class TradeThread {
 				setLastPartialFill(new BigDecimal("0"));
 				buy();
 //				vir.save(vi);
-				setDirty(true);
+				//setDirty(true);
 			
 			} 
 		} else if (getPartialState().equals("NONE")){
@@ -550,6 +572,7 @@ public class TradeThread {
 		} else if (getPartialState().equals("PARTIAL")){
 			deployPartial();
 		}
+		setDirty(true);
 	// } else {
 	// 	System.out.println("cancel failed");
 	// 	System.out.println(cancel);
