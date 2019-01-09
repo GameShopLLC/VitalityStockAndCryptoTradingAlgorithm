@@ -752,7 +752,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 	}
 		}
 	}
-	}
+	
 	
 	public void incrementSecondTick() {
 		setSecondTick(getSecondTick() + 1L);
