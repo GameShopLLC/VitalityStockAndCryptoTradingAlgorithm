@@ -397,13 +397,7 @@ public class TradeGroup {
 		// 			}
 		// 		}
 		// 	}
-					for (TradeThread t: trades){
-					// t.setSecondTick(t.getSecondTick() + 100L);
-				if (t.getLifeTimeState().equals("BUY_STUCK")) {
-					t.cancelBuy();
-					// buystuck = true;
-				}	
-				}
+				
 
 			// }
 
@@ -752,6 +746,13 @@ public class TradeGroup {
 		// 	// TODO Auto-generated catch block
 		// 	e.printStackTrace();
 		// }
+				for (TradeThread t: trades){
+					// t.setSecondTick(t.getSecondTick() + 100L);
+				if (t.getLifeTimeState().equals("BUY_STUCK")) {
+					t.cancelBuy();
+					// buystuck = true;
+				}	
+				}
 
 			for (TradeThread t: trades) {
 				t.calculateNet();
