@@ -144,7 +144,7 @@ public class TradeThread {
 					//  if (getBuyProcessState().equals("SOLD")){
 					// 	setLifeTimeState(new String("RESERVE"));
 					// }
-					 if (getActiveOrder().getId() != null) {
+					 // if (getActiveOrder().getId() != null) {
 
 						if (getBuyProcessState().equals("DESIRED_BUY")){
 							if (!fetchOrder()) {
@@ -160,7 +160,7 @@ public class TradeThread {
 							} 
 						}
 						 // fetchOrder();	
-					} 
+					// } 
 				}
 				
 			}, 1000L, 1000L);
@@ -266,6 +266,8 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 			} else if (getActiveOrder().getId() != null){
 				res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + getActiveOrder().getId(), HttpMethod.GET, httpEntityBean.getEntityFromUrl("https://sample-tradeapp.herokuapp.com/getOrder/" + getActiveOrder().getId()), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
 	
+			} else {
+				return false;
 			}
 			
 	} catch (Throwable t) {
