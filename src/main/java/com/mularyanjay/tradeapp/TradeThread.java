@@ -1107,21 +1107,23 @@ if (getSimMode() == SimulationMode.REALTIME) {
 				// deployPartial();
 			}
 
-			} else if (getOrderId() == null) {
-				setPartialState("NONE");
-				setLastPartialFill(new BigDecimal("0"));
-				buy();
-//				vir.save(vi);
-				setDirty(true);
-			} else if (getActiveOrder() == null){
-					if (getLifeTimeState().equals("BUY_STUCK")) {
-						setPartialState("NONE");
-				setLastPartialFill(new BigDecimal("0"));
-				buy();
-//				vir.save(vi);
-				setDirty(true);
-					}
-			}
+			} 
+
+// 			else if (getOrderId() == null) {
+// 				setPartialState("NONE");
+// 				setLastPartialFill(new BigDecimal("0"));
+// 				buy();
+// //				vir.save(vi);
+// 				setDirty(true);
+// 			} else if (getActiveOrder() == null){
+// 					if (getLifeTimeState().equals("BUY_STUCK")) {
+// 						setPartialState("NONE");
+// 				setLastPartialFill(new BigDecimal("0"));
+// 				buy();
+// //				vir.save(vi);
+// 				setDirty(true);
+// 					}
+// 			}
 
 			} else if(getSimMode() == SimulationMode.SIMULATION) {
 				if (getRequestBuyPrice().compareTo(getSimCarrot().getHigh()) == -1) {
@@ -1155,15 +1157,17 @@ if (getSimMode() == SimulationMode.REALTIME) {
 				setDirty(true);
 				// sellPartial();
 			} 
-			} else if (getActiveOrder().getStatus().equals("done")){
-					if (getLifeTimeState().equals("SELL_STUCK")) {
-						setPartialState("NONE");
-				setLastPartialFill(new BigDecimal("0"));
-				sell();
-//				vir.save(vi);
-				setDirty(true);
-					}
 			} 
+
+// 			else if (getActiveOrder().getStatus().equals("done")){
+// 					if (getLifeTimeState().equals("SELL_STUCK")) {
+// 						setPartialState("NONE");
+// 				setLastPartialFill(new BigDecimal("0"));
+// 				sell();
+// //				vir.save(vi);
+// 				setDirty(true);
+// 					}
+// 			} 
 			} else if(getSimMode() == SimulationMode.SIMULATION) {
 				if (getRequestSellPrice().compareTo(getSimCarrot().getLow()) == 1) {
 					sell();

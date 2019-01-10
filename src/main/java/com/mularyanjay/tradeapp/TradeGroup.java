@@ -401,105 +401,17 @@ public class TradeGroup {
 
 			// }
 
-			for (TradeThread t: trades){
-					// t.setSecondTick(t.getSecondTick() + 100L);
-				if (t.getLifeTimeState().equals("BUY_STUCK")) {
-					t.cancelBuy();
-					// buystuck = true;
-				}	
-				}
-				
-		for (TradeThread t: trades) {
-			t.broadcastCarrot(carrot); //or should I evaluate current
-			//carrot and broadcast that? No, keep as is.
-		}
+
 //		} else if (getSimMode().equals("SIMULATION")) {
 //			for (TradeThread t: trades) {
 //				t.refresh();
 //			}
 //		}
-		
-			if (getLossMode().equals("IMMEDIATE")) {
-			boolean sellstuck = false;
-
-			// for (TradeThread t: trades) {
-			// 	if (t.getLifeTimeState().equals("SELL_STUCK")) {
-			// 	// 	for (TradeThread b: trades){
-			// 	// 	if (b.getBuyProcessState().equals("DESIRED_BUY")){
-			// 	// 	b.setBuyProcessState(new String("SUSPEND"));
-			// 	// }
-			// 	//}
-			// 		// if (t.cancelOrder().contains(t.getOrderId())){
-			// 		if (t.getBuyProcessState().equals("DESIRED_SELL")){
-			// 			if (t.getOrderId() != null){
-			// 			if (t.getActiveOrder().getSettled() == false){
-			// 				// t.cancelOrder();
-			// 				sellstuck = true;
-							
-			// 			}
-			// 			}
-			// 		}
-					
-						
-						
-			// 		// } else {
-			// 		// 	System.out.println("Failed to cancel")
-			// 		// }
-			// 		 //forceSell?
-					
-			// 	}
-			// }
-
-		// 	if (sellstuck){
-		// 	try {
-		// 	Thread.sleep(100);
-		// } catch (InterruptedException e) {
-		// 	// TODO Auto-generated catch block
-		// 	e.printStackTrace();
-		// }
-
-				
-
-				for (TradeThread t: trades){
-					// t.setSecondTick(t.getSecondTick() + 100L);
-				if (t.getLifeTimeState().equals("SELL_STUCK")) {
-					if (t.getPartialState().equals("NONE")){
-						 t.forceLoss();
-						 // return;
-						//t.attemptSell(carrot);
-					} else if (t.getPartialState().equals("PARTIAL")){
-						t.sellPartial();
-						// return;
-					}
-					
-				}
-			}
-		// }
-			// for (TradeThread t: trades) {
-			// 	if (t.getBuyProcessState().equals("SUSPEND")){
-			// 		if (getCurrentCarrot().getCurrent().compareTo(t.getRequestBuyPrice()) <= 0) {
-			// 			t.cancelBuy();
-			// 		} else {
-			// 			t.setBuyProcessState(new String("DESIRED_BUY"));
-			// 		}
-			// 	}
-			// }
-			} else if (getLossMode().equals("INSTANT")) {
-				boolean sellAll = false;
-				for (TradeThread t: trades) {
-					if (t.getLifeTimeState().equals("SELL_STUCK")) {
-						sellAll = true;
-						break;
-					}
-					
-				}
-				
-				for (TradeThread t: trades) {
-					if (t.getBuyProcessState().equals("BOUGHT") || t.getBuyProcessState().equals("DESIRED_SELL")) {
-						t.forceSell();
-					}
-				}
-			}
+		for (TradeThread t: trades) {
+			t.broadcastCarrot(carrot); //or should I evaluate current
+			//carrot and broadcast that? No, keep as is.
+		}
+			
 		//CHECK SPLIT
 		if (getSplitMode().equals("ZENO_CLASSIC")) {
 			System.out.println("Checking split");
@@ -670,6 +582,98 @@ public class TradeGroup {
 				}
 			}
 		}
+		
+		for (TradeThread t: trades){
+					// t.setSecondTick(t.getSecondTick() + 100L);
+				if (t.getLifeTimeState().equals("BUY_STUCK")) {
+					t.cancelBuy();
+					// buystuck = true;
+				}	
+				}
+
+if (getLossMode().equals("IMMEDIATE")) {
+			boolean sellstuck = false;
+
+			// for (TradeThread t: trades) {
+			// 	if (t.getLifeTimeState().equals("SELL_STUCK")) {
+			// 	// 	for (TradeThread b: trades){
+			// 	// 	if (b.getBuyProcessState().equals("DESIRED_BUY")){
+			// 	// 	b.setBuyProcessState(new String("SUSPEND"));
+			// 	// }
+			// 	//}
+			// 		// if (t.cancelOrder().contains(t.getOrderId())){
+			// 		if (t.getBuyProcessState().equals("DESIRED_SELL")){
+			// 			if (t.getOrderId() != null){
+			// 			if (t.getActiveOrder().getSettled() == false){
+			// 				// t.cancelOrder();
+			// 				sellstuck = true;
+							
+			// 			}
+			// 			}
+			// 		}
+					
+						
+						
+			// 		// } else {
+			// 		// 	System.out.println("Failed to cancel")
+			// 		// }
+			// 		 //forceSell?
+					
+			// 	}
+			// }
+
+		// 	if (sellstuck){
+		// 	try {
+		// 	Thread.sleep(100);
+		// } catch (InterruptedException e) {
+		// 	// TODO Auto-generated catch block
+		// 	e.printStackTrace();
+		// }
+
+				
+
+				for (TradeThread t: trades){
+					// t.setSecondTick(t.getSecondTick() + 100L);
+				if (t.getLifeTimeState().equals("SELL_STUCK")) {
+					if (t.getPartialState().equals("NONE")){
+						 t.forceLoss();
+						 // return;
+						//t.attemptSell(carrot);
+					} else if (t.getPartialState().equals("PARTIAL")){
+						t.sellPartial();
+						// return;
+					}
+					
+				}
+			}
+		// }
+			// for (TradeThread t: trades) {
+			// 	if (t.getBuyProcessState().equals("SUSPEND")){
+			// 		if (getCurrentCarrot().getCurrent().compareTo(t.getRequestBuyPrice()) <= 0) {
+			// 			t.cancelBuy();
+			// 		} else {
+			// 			t.setBuyProcessState(new String("DESIRED_BUY"));
+			// 		}
+			// 	}
+			// }
+			} else if (getLossMode().equals("INSTANT")) {
+				boolean sellAll = false;
+				for (TradeThread t: trades) {
+					if (t.getLifeTimeState().equals("SELL_STUCK")) {
+						sellAll = true;
+						break;
+					}
+					
+				}
+				
+				for (TradeThread t: trades) {
+					if (t.getBuyProcessState().equals("BOUGHT") || t.getBuyProcessState().equals("DESIRED_SELL")) {
+						t.forceSell();
+					}
+				}
+			}
+				
+		
 		
 		
 //		//Dont forget about carrotCache (the point of
