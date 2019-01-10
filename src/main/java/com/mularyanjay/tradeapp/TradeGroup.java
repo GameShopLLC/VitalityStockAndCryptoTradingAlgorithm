@@ -452,8 +452,8 @@ public class TradeGroup {
 					// t.setSecondTick(t.getSecondTick() + 100L);
 				if (t.getLifeTimeState().equals("SELL_STUCK")) {
 					if (t.getPartialState().equals("NONE")){
-						// t.forceLoss();
-						t.attemptSell(carrot);
+						 t.forceLoss();
+						//t.attemptSell(carrot);
 					} else if (t.getPartialState().equals("PARTIAL")){
 						t.sellPartial();
 					}

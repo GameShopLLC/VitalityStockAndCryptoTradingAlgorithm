@@ -350,22 +350,21 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 		if (getBuyProcessState().equals("DESIRED_SELL") || getBuyProcessState().equals("BOUGHT")) {
 			//setActiveOrder(null);
 		//setOrderId(null);
-		BigDecimal sellPrice = new BigDecimal("0");
-		sellPrice = getCurrentPrice().add(new BigDecimal(".001"));//.subtract(getCurrentPrice().multiply(getForceSellFee()));
+		BigDecimal sellPrice = new BigDecimal(getCurrentPrice().add(new BigDecimal(".001")).toPlainString());//.subtract(getCurrentPrice().multiply(getForceSellFee()));
 		BigDecimal forceLtc = new BigDecimal("0");
 		if (getBuyProcessState().equals("DESIRED_SELL")) {
-		forceLtc = getLastLtc();//getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_DOWN);
+		forceLtc = new BigDecimal(getLastLtc().toPlainString());//getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_DOWN);
 		} else if (getBuyProcessState().equals("BOUGHT")) {
-			forceLtc = getLtc();
+			forceLtc = new BigDecimal(getLtc().toPlainString());
 		} 
 
 		if (getPartialState().equals("PARTIAL")){
 			if(getBuyProcessState().equals("DESIRED_SELL")){
-				forceLtc = getLastLtc().subtract(getLastPartialFill());
+				forceLtc = new BigDecimal((getLastLtc().subtract(getLastPartialFill())).toPlainString());
 				// forceLtc = getLastLtc();
 
 			} else if(getBuyProcessState().equals("BOUGHT")) {
-				forceLtc = getLtc().subtract(getLastPartialFill());
+				forceLtc = new BigDecimal((getLtc().subtract(getLastPartialFill())).toPlainString());
 				// forceLtc = getLtc();
 			}
 			// forceLtc = forceLtc.subtract(getLastPartialFill());
