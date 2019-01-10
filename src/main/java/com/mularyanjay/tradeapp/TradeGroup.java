@@ -400,6 +400,7 @@ public class TradeGroup {
 				
 
 			// }
+
 			for (TradeThread t: trades){
 					// t.setSecondTick(t.getSecondTick() + 100L);
 				if (t.getLifeTimeState().equals("BUY_STUCK")) {
@@ -407,6 +408,17 @@ public class TradeGroup {
 					// buystuck = true;
 				}	
 				}
+				
+		for (TradeThread t: trades) {
+			t.broadcastCarrot(carrot); //or should I evaluate current
+			//carrot and broadcast that? No, keep as is.
+		}
+//		} else if (getSimMode().equals("SIMULATION")) {
+//			for (TradeThread t: trades) {
+//				t.refresh();
+//			}
+//		}
+		
 			if (getLossMode().equals("IMMEDIATE")) {
 			boolean sellstuck = false;
 
@@ -453,9 +465,11 @@ public class TradeGroup {
 				if (t.getLifeTimeState().equals("SELL_STUCK")) {
 					if (t.getPartialState().equals("NONE")){
 						 t.forceLoss();
+						 // return;
 						//t.attemptSell(carrot);
 					} else if (t.getPartialState().equals("PARTIAL")){
 						t.sellPartial();
+						// return;
 					}
 					
 				}
@@ -486,17 +500,6 @@ public class TradeGroup {
 					}
 				}
 			}
-
-		for (TradeThread t: trades) {
-			t.broadcastCarrot(carrot); //or should I evaluate current
-			//carrot and broadcast that? No, keep as is.
-		}
-//		} else if (getSimMode().equals("SIMULATION")) {
-//			for (TradeThread t: trades) {
-//				t.refresh();
-//			}
-//		}
-		
 		//CHECK SPLIT
 		if (getSplitMode().equals("ZENO_CLASSIC")) {
 			System.out.println("Checking split");
