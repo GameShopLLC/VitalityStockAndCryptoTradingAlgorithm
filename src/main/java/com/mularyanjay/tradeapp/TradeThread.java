@@ -150,25 +150,7 @@ public class TradeThread {
 					// }
 					 // if (getActiveOrder().getId() != null) {
 
-						if (getBuyProcessState().equals("DESIRED_BUY")){
-							if (!fetchOrder()) {
-
-								setLifeTimeState(new String("BUY_STUCK"));
-								cancelBuy();
-							} 
-						}
-						if (getBuyProcessState().equals("DESIRED_SELL")){
-							if (!fetchOrder()) {
-								setLifeTimeState(new String("SELL_STUCK"));
-								if (getPartialState().equals("NONE")){
-						 		forceLoss();
-						 
-								} else if (getPartialState().equals("PARTIAL")){
-									sellPartial();
-						// return;
-								}
-							} 
-						}
+						
 						 // fetchOrder();	
 					// } 
 				}
@@ -1168,6 +1150,8 @@ setLastUsd(getUsd());
 	
 	//Implement realtime trading features
 	public void refresh() {
+
+
 		if(getBuyProcessState().equals("DESIRED_BUY")) {
 			//if current price lower then desired buy then 
 			//processBuy(which is buy()), store requested ltc
@@ -1268,6 +1252,28 @@ setLastUsd(getUsd());
 				}
 			}
 		}
+				if (getSimMode() == SimulationMode.REALTIME) {
+		if (getBuyProcessState().equals("DESIRED_BUY")){
+							if (!fetchOrder()) {
+
+								setLifeTimeState(new String("BUY_STUCK"));
+								cancelBuy();
+							} 
+						}
+						if (getBuyProcessState().equals("DESIRED_SELL")){
+							if (!fetchOrder()) {
+								setLifeTimeState(new String("SELL_STUCK"));
+								if (getPartialState().equals("NONE")){
+						 		forceLoss();
+						 
+								} else if (getPartialState().equals("PARTIAL")){
+									sellPartial();
+						// return;
+								}
+							} 
+						}
+}
+
 	}
 	
 	//Ok, now to do sells (start in tradegroup)
