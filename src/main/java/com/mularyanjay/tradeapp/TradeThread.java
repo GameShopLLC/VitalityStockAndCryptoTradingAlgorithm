@@ -348,8 +348,8 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 	
 	public void forceLoss() {
 		//if (getBuyProcessState().equals("DESIRED_SELL") || getBuyProcessState().equals("BOUGHT")) {
-			//setActiveOrder(null);
-		//setOrderId(null);
+			setActiveOrder(null);
+		setOrderId(null);
 		BigDecimal sellPrice = new BigDecimal(getCurrentPrice().add(new BigDecimal(".0001")).toPlainString());//.subtract(getCurrentPrice().multiply(getForceSellFee()));
 		BigDecimal forceLtc = new BigDecimal("0");
 		if (getBuyProcessState().equals("DESIRED_SELL")) {
@@ -983,7 +983,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			if ((getSimMode() == SimulationMode.SIMULATION)){
 				setRequestSellPrice(carrot.getHigh().add(getSlightAmount()));
 			} else if ((getSimMode() == SimulationMode.REALTIME)){
-				setRequestSellPrice(carrot.getHigh().add(getSlightAmount().add(calculateSpread())));
+				setRequestSellPrice(carrot.getHigh().add(getSlightAmount()));
 			}
 			
 			if (getRequestSellPrice().compareTo(getRequestBuyPrice()) == 1) {
