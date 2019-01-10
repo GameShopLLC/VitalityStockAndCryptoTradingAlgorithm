@@ -158,11 +158,11 @@ public class TradeThread {
 						if (getBuyProcessState().equals("DESIRED_SELL")){
 							if (!fetchOrder()) {
 								setLifeTimeState(new String("SELL_STUCK"));
-								if (t.getPartialState().equals("NONE")){
-						 		t.forceLoss();
+								if (getPartialState().equals("NONE")){
+						 		forceLoss();
 						 
-								} else if (t.getPartialState().equals("PARTIAL")){
-									t.sellPartial();
+								} else if (getPartialState().equals("PARTIAL")){
+									sellPartial();
 						// return;
 								}
 							} 
