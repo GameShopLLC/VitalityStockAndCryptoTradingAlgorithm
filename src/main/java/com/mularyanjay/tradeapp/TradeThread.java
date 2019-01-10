@@ -674,8 +674,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			
 			
 //			BigDecimal temp = new BigDecimal(getRequestBuyPrice().toPlainString());
-			setRequestBuyPrice((new BigDecimal(getRequestBuyPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
-			setRequestedLtc((new BigDecimal(getRequestedLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
+			setRequestBuyPrice(new BigDecimal((new BigDecimal(getRequestBuyPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString()));
+			setRequestedLtc(new BigDecimal((new BigDecimal(getRequestedLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString()));
 			order.setPrice(getRequestBuyPrice().toPlainString());
 			order.setSize(getRequestedLtc().subtract(getLastPartialFill()).toPlainString());
 
