@@ -152,13 +152,19 @@ public class TradeThread {
 							if (!fetchOrder()) {
 
 								setLifeTimeState(new String("BUY_STUCK"));
-
+								cancelBuy();
 							} 
 						}
 						if (getBuyProcessState().equals("DESIRED_SELL")){
 							if (!fetchOrder()) {
 								setLifeTimeState(new String("SELL_STUCK"));
-
+								if (t.getPartialState().equals("NONE")){
+						 		t.forceLoss();
+						 
+								} else if (t.getPartialState().equals("PARTIAL")){
+									t.sellPartial();
+						// return;
+								}
 							} 
 						}
 						 // fetchOrder();	
