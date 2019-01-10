@@ -101,6 +101,8 @@ public class TradeThread {
 		httpEntityBean = new HttpEntityBean();
 		localHttpEntityBean = new HttpEntityBean();
 		//setSimMode(sm);
+		setActiveOrder(new IncomingOrder());
+		setOrderId(new String(""));
 		setDirty(false);
 		setSlightAmount(slightAmount);
 		setSimMode(sm);
@@ -334,16 +336,16 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 			objectMapper.configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, false);
 			if (res.getBody().equals("undefined")) {
-				setOrderId(null);
+				//setOrderId(null);
 				return false;
 			} else {
 
 
 			try {
 				
-			setActiveOrder(null);
-			// objectMapper.readerForUpdating(activeOrder).readValue(res.getBody().toString());
-			objectMapper.readValue(res.getBody().toString(), IncomingOrder.class);
+			//setActiveOrder(null);
+			objectMapper.readerForUpdating(activeOrder).withType(IncomingOrder.class).readValue(res.getBody().toString());
+			//objectMapper.readValue(res.getBody().toString(), IncomingOrder.class);
 			return true;
 			} catch (Throwable throwable){
 				throwable.printStackTrace();
@@ -364,8 +366,8 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 	
 	public void forceLoss() {
 		//if (getBuyProcessState().equals("DESIRED_SELL") || getBuyProcessState().equals("BOUGHT")) {
-			setActiveOrder(null);
-		setOrderId(null);
+		// 	setActiveOrder(null);
+		// setOrderId(null);
 
 		BigDecimal sellPrice = new BigDecimal(getCurrentPrice().add(new BigDecimal(".0001")).toPlainString());//.subtract(getCurrentPrice().multiply(getForceSellFee()));
 		BigDecimal forceLtc = new BigDecimal("0");
@@ -642,8 +644,8 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 // 			return;
 // 			} 
 // 		} 
-		 setOrderId(null);
-		 setActiveOrder(null);
+		 // setOrderId(null);
+		 // setActiveOrder(null);
 		if (getPartialState().equals("NONE")){
 			setUsd(getLastUsd());
 			setBuyProcessState("STANDBY");
@@ -1276,8 +1278,8 @@ setLastUsd(getUsd());
 //		if (getSimMode() == SimulationMode.REALTIME) {
 //		timer.cancel();
 //		} else if (getSimMode() == SimulationMode.SIMULATION) {
-		setActiveOrder(null);
-		setOrderId(null);
+		// setActiveOrder(null);
+		// setOrderId(null);
 			resetTick();
 //		}
 //		if(getSimMode() == SimulationMode.REALTIME) {
@@ -1339,8 +1341,8 @@ setLastUsd(getUsd());
 //		if (getSimMode() == SimulationMode.REALTIME) {
 //			timer.cancel();
 //			} else if (getSimMode() == SimulationMode.SIMULATION) {
-		setOrderId(null);
-		setActiveOrder(null);
+		// setOrderId(null);
+		// setActiveOrder(null);
 				resetTick();
 //			}
 	}
