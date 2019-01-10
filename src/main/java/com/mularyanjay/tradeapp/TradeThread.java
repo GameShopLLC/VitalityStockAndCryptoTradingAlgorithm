@@ -196,7 +196,7 @@ public class TradeThread {
 				return calculateSpread();
 	}
 
-	public void doRestTemplate(String url, String json) {
+	public boolean doRestTemplate(String url, String json) {
 		ResponseEntity<String> res = null;
 		try {
 			RestTemplate restTemplate = new RestTemplate();
@@ -211,23 +211,28 @@ public class TradeThread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		doRestTemplate(url, json);
+
+		return false;
 	} finally {
 		if (res != null) {
 			if (res.getBody().toString().contains("undefined")) {
-				setOrderId(null);
-				setActiveOrder(null);
-				doRestTemplate(url, json);
+				// setOrderId(null);
+				// setActiveOrder(null);
+				// doRestTemplate(url, json);
+				return false;
 			} else {
 			System.out.println("The id is:" + res.getBody());
 			setOrderId(new String(res.getBody()));
-			fetchOrder();
+			if(fetchOrder()){
+				return true;
+			}
+			return false;
 		}
-		} else {
+		}
 			System.out.print("RESPONSE IS NULL");
 
 			
-		}
+			return false;
 	}
 	}
 
@@ -309,7 +314,12 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		fetchOrder();
+		if (!getLifeTimeState().equals("BUY_STUCK") && !getLifeTimeState().equals("SELL_STUCK")){
+			fetchOrder();
+		} else {
+			return false;
+		}
+		
 	} finally {
 		if (res != null) {
 			System.out.println(res.getBody());
@@ -350,6 +360,7 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 		//if (getBuyProcessState().equals("DESIRED_SELL") || getBuyProcessState().equals("BOUGHT")) {
 			setActiveOrder(null);
 		setOrderId(null);
+
 		BigDecimal sellPrice = new BigDecimal(getCurrentPrice().add(new BigDecimal(".0001")).toPlainString());//.subtract(getCurrentPrice().multiply(getForceSellFee()));
 		BigDecimal forceLtc = new BigDecimal("0");
 		if (getBuyProcessState().equals("DESIRED_SELL")) {
@@ -371,6 +382,7 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 		} 
 		// setRequestSellPrice(sellPrice);
 		if (getSimMode() == SimulationMode.REALTIME) {
+			timer.cancel();
 			ObjectMapper objectMapper = new ObjectMapper();
 //			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 			Order order = new Order();
@@ -409,7 +421,24 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 			
 			String url = "https://sample-tradeapp.herokuapp.com/placeOrder";
 
-			doRestTemplate(url, json);
+			if(doRestTemplate(url, json)){
+				setRequestedTotal(new BigDecimal(sellPrice.multiply(new BigDecimal(forceLtc.toPlainString())).toPlainString()));
+				setRequestSellPrice(new BigDecimal(sellPrice.toPlainString()));
+				// setLtc(new BigDecimal("0"));
+				setLastLtc(new BigDecimal(forceLtc.toPlainString()));
+				setLtc(new BigDecimal("0"));
+				//set Litecoin
+				setBuyProcessState("DESIRED_SELL");
+				setLifeTimeState("TRADING");
+				System.out.println("Sell order placed at $" + sellPrice);
+
+				resetTick();
+					setDirty(true);
+					startTimer();
+			} else {
+				System.out.println("DO REST TEMPLATE FAILED")
+			}
+
 //			ResponseEntity<Order> response = 
 		
 					//			try {
@@ -420,6 +449,19 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 //			} catch (HttpStatusCodeException e) {
 //				e.printStackTrace();
 //			}
+		} else {
+			setRequestedTotal(new BigDecimal(sellPrice.multiply(new BigDecimal(forceLtc.toPlainString())).toPlainString()));
+				setRequestSellPrice(new BigDecimal(sellPrice.toPlainString()));
+				// setLtc(new BigDecimal("0"));
+				setLastLtc(new BigDecimal(forceLtc.toPlainString()));
+				setLtc(new BigDecimal("0"));
+				//set Litecoin
+				setBuyProcessState("DESIRED_SELL");
+				setLifeTimeState("TRADING");
+				System.out.println("Sell order placed at $" + sellPrice);
+
+				resetTick();
+					// setDirty(true);
 		}
 
 		//**************
@@ -487,18 +529,7 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 				// setBuyProcessState("DESIRED_SELL");
 				// setLifeTimeState("TRADING");
 				// System.out.println("Sell order placed at $" + getRequestSellPrice());
-				setRequestedTotal(new BigDecimal(sellPrice.multiply(new BigDecimal(forceLtc.toPlainString())).toPlainString()));
-				setRequestSellPrice(new BigDecimal(sellPrice.toPlainString()));
-				// setLtc(new BigDecimal("0"));
-				setLastLtc(new BigDecimal(forceLtc.toPlainString()));
-				setLtc(new BigDecimal("0"));
-				//set Litecoin
-				setBuyProcessState("DESIRED_SELL");
-				setLifeTimeState("TRADING");
-				System.out.println("Sell order placed at $" + sellPrice);
-
-				resetTick();
-					setDirty(true);
+				
 //				}
 		//}
 	}
@@ -585,25 +616,26 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 			// cancelOrder();
 
 			//if (cancel.contains(getOrderId())){
-			if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
-				setPartialState("NONE");
-				setLastPartialFill(new BigDecimal("0"));
-				buy();
-//				vir.save(vi);
-				setDirty(true);
-			return;
-			}
-			else if (getActiveOrder() != null)	{
+		timer.cancel();
+// 			if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
+// 				setPartialState("NONE");
+// 				setLastPartialFill(new BigDecimal("0"));
+// 				buy();
+// //				vir.save(vi);
+// 				setDirty(true);
+// 			return;
+// 			}
+// 			else if (getActiveOrder() != null)	{
 			
-			if (getActiveOrder().getSettled() == true){//if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
-				setPartialState("NONE");
-				setLastPartialFill(new BigDecimal("0"));
-				buy();
-//				vir.save(vi);
-				setDirty(true);
-			return;
-			} 
-		} 
+// 			if (getActiveOrder().getSettled() == true){//if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
+// 				setPartialState("NONE");
+// 				setLastPartialFill(new BigDecimal("0"));
+// 				buy();
+// //				vir.save(vi);
+// 				setDirty(true);
+// 			return;
+// 			} 
+// 		} 
 		 setOrderId(null);
 		 setActiveOrder(null);
 		if (getPartialState().equals("NONE")){
@@ -615,6 +647,7 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 		} else if (getPartialState().equals("PARTIAL")){
 			deployPartial();
 		}
+		startTimer();
 		setDirty(true);
 	// } else {
 	// 	System.out.println("cancel failed");
@@ -641,8 +674,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			
 			
 //			BigDecimal temp = new BigDecimal(getRequestBuyPrice().toPlainString());
-			// setRequestBuyPrice((new BigDecimal(getRequestBuyPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
-			// setRequestedLtc((new BigDecimal(getRequestedLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
+			setRequestBuyPrice((new BigDecimal(getRequestBuyPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
+			setRequestedLtc((new BigDecimal(getRequestedLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString());
 			order.setPrice(getRequestBuyPrice().toPlainString());
 			order.setSize(getRequestedLtc().subtract(getLastPartialFill()).toPlainString());
 
@@ -674,7 +707,17 @@ if (getSimMode() == SimulationMode.REALTIME) {
 				System.out.println("JSON is Null!!!");
 			}
 			String url = "https://sample-tradeapp.herokuapp.com/placeOrder";
-			doRestTemplate(url, json);
+			if (doRestTemplate(url, json)) {
+				if(getBuyProcessState().equals("BUY_STUCK")) {
+			resetTick();
+		}
+				setBuyProcessState("DESIRED_BUY");
+		setLifeTimeState("TRADING");
+		//Sysout?
+		System.out.println("Partial buy order placed at $" + getRequestBuyPrice());
+			} else {
+				System.out.println("PARTIAL BUY FAILED");
+			}
 //			RestTemplate restTemplate = new RestTemplate();
 //			String url = "https://api.gdax.com/orders";
 ////			 response;
@@ -688,7 +731,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //			} catch (HttpStatusCodeException e) {
 //				e.printStackTrace();
 //			}
-		}
+		} else {
 		if(getBuyProcessState().equals("BUY_STUCK")) {
 			resetTick();
 		}
@@ -696,6 +739,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 		setLifeTimeState("TRADING");
 		//Sysout?
 		System.out.println("Partial buy order placed at $" + getRequestBuyPrice());
+	}
 		// resetTick();
 	}
 
@@ -738,7 +782,17 @@ if (getSimMode() == SimulationMode.REALTIME) {
 						e.printStackTrace();
 					}
 					String url = "https://sample-tradeapp.herokuapp.com/placeOrder";
-					doRestTemplate(url, json);
+					if(doRestTemplate(url, json)){
+					setLtc(new BigDecimal("0"));
+				//set Litecoin
+				setBuyProcessState("DESIRED_SELL");
+				setLifeTimeState("TRADING");
+				System.out.println("Sell order placed at $" + getRequestSellPrice());
+//				vir.save(vi);
+				setDirty(true);
+					} else {
+						System.out.println("SELL PARTIAL FAILED");
+					}
 //					RestTemplate restTemplate = new RestTemplate();
 //					String url = "https://api.gdax.com/orders";
 ////					ResponseEntity<Order> response;
@@ -749,7 +803,9 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //						// TODO Auto-generated catch block
 //						e.printStackTrace();
 //					}
-				}
+				} else {
+
+				
 				// setLastLtc(getLtc());
 				setLtc(new BigDecimal("0"));
 				//set Litecoin
@@ -758,6 +814,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 				System.out.println("Sell order placed at $" + getRequestSellPrice());
 //				vir.save(vi);
 				setDirty(true);
+			}
 	}
 
 	public void calculateNet() {
@@ -905,7 +962,19 @@ if (getSimMode() == SimulationMode.REALTIME) {
 				System.out.println("JSON is Null!!!");
 			}
 			String url = "https://sample-tradeapp.herokuapp.com/placeOrder";
-			doRestTemplate(url, json);
+			if(doRestTemplate(url, json)){
+setLastUsd(getUsd());
+		setUsd(getUsd().subtract(getRequestBuyPrice().multiply(getRequestedLtc())).setScale(6, RoundingMode.HALF_DOWN));
+		setBuyProcessState("DESIRED_BUY");
+		setLifeTimeState("TRADING");
+		//Sysout?
+		System.out.println("Buy order placed at $" + getRequestBuyPrice());
+//		vir.save(vi);
+		setDirty(true);
+		resetTick();
+			} else {
+				System.out.println("BUY ORDER FAILED");
+			}
 //			RestTemplate restTemplate = new RestTemplate();
 //			String url = "https://api.gdax.com/orders";
 ////			 response;
@@ -919,7 +988,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //			} catch (HttpStatusCodeException e) {
 //				e.printStackTrace();
 //			}
-		}
+		} else {
+
 		setLastUsd(getUsd());
 		setUsd(getUsd().subtract(getRequestBuyPrice().multiply(getRequestedLtc())).setScale(6, RoundingMode.HALF_DOWN));
 		setBuyProcessState("DESIRED_BUY");
@@ -928,6 +998,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 		System.out.println("Buy order placed at $" + getRequestBuyPrice());
 //		vir.save(vi);
 		setDirty(true);
+		resetTick();
+	}
 		//Make timer change to stuck if not at different
 		//buy process state, otherwise change to trading
 		//Make getCurrentTime for Carrot?
@@ -954,7 +1026,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //		} else if (getSimMode() == SimulationMode.SIMULATION) {
 //			//setLastSecondTick(getSecondTick());
 //			//,,,
-			resetTick();
+			
 //		}
 		}
 		
@@ -1027,7 +1099,19 @@ if (getSimMode() == SimulationMode.REALTIME) {
 						e.printStackTrace();
 					}
 					String url = "https://sample-tradeapp.herokuapp.com/placeOrder";
-					doRestTemplate(url, json);
+					if (doRestTemplate(url, json)){
+	setLastLtc(getLtc());
+				setLtc(new BigDecimal("0"));
+				//set Litecoin
+				setBuyProcessState("DESIRED_SELL");
+				setLifeTimeState("TRADING");
+				System.out.println("Sell order placed at $" + getRequestSellPrice());
+//				vir.save(vi);
+				setDirty(true);
+				resetTick();
+					} else {
+						System.out.println("ATTEMPT SELL FAILED");
+					}
 //					RestTemplate restTemplate = new RestTemplate();
 //					String url = "https://api.gdax.com/orders";
 ////					ResponseEntity<Order> response;
@@ -1038,7 +1122,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //						// TODO Auto-generated catch block
 //						e.printStackTrace();
 //					}
-				}
+				} else {
 				setLastLtc(getLtc());
 				setLtc(new BigDecimal("0"));
 				//set Litecoin
@@ -1048,6 +1132,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //				vir.save(vi);
 				setDirty(true);
 				resetTick();
+			}
 				}
 			}
 		} else {
