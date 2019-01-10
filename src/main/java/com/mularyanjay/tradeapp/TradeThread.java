@@ -436,7 +436,7 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 					setDirty(true);
 					startTimer();
 			} else {
-				System.out.println("DO REST TEMPLATE FAILED")
+				System.out.println("FORCE SELL FAILED");
 			}
 
 //			ResponseEntity<Order> response = 
