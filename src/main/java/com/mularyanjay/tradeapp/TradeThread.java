@@ -1179,8 +1179,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //		if (getSimMode() == SimulationMode.REALTIME) {
 //		timer.cancel();
 //		} else if (getSimMode() == SimulationMode.SIMULATION) {
-		// setActiveOrder(null);
-		// setOrderId(null);
+		setActiveOrder(null);
+		setOrderId(null);
 			resetTick();
 //		}
 //		if(getSimMode() == SimulationMode.REALTIME) {
@@ -1242,8 +1242,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //		if (getSimMode() == SimulationMode.REALTIME) {
 //			timer.cancel();
 //			} else if (getSimMode() == SimulationMode.SIMULATION) {
-		// setOrderId(null);
-		// setActiveOrder(null);
+		setOrderId(null);
+		setActiveOrder(null);
 				resetTick();
 //			}
 	}
