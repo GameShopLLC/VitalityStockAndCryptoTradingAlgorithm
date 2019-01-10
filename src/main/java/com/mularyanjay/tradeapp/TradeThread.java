@@ -442,11 +442,11 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 
 				resetTick();
 					setDirty(true);
-					startTimer();
+					
 			} else {
 				System.out.println("FORCE SELL FAILED");
 			}
-
+			startTimer();
 //			ResponseEntity<Order> response = 
 		
 					//			try {
@@ -1173,15 +1173,16 @@ setLastUsd(getUsd());
 			//processBuy(which is buy()), store requested ltc
 			//into ltc
 			if (getSimMode() == SimulationMode.REALTIME) {
-				if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
-				setPartialState("NONE");
-				setLastPartialFill(new BigDecimal("0"));
-				buy();
-//				vir.save(vi);
-				setDirty(true);
+// 				if((getCurrentPrice().subtract(calculateSpread())).compareTo(getRequestBuyPrice()) == -1) {
+// 				setPartialState("NONE");
+// 				setLastPartialFill(new BigDecimal("0"));
+// 				buy();
+// //				vir.save(vi);
+// 				setDirty(true);
 			
-			}
-			else if (getActiveOrder() != null)	{
+// 			}
+// 			else
+			 if (getActiveOrder() != null)	{
 			
 			if (getActiveOrder().getSettled() == true){//if(getCurrentPrice().compareTo(getRequestBuyPrice()) == -1) {
 				setPartialState("NONE");
@@ -1234,13 +1235,13 @@ setLastUsd(getUsd());
 				setDirty(true);
 			} 
 
-			else if (getCurrentPrice().compareTo(getRequestSellPrice()) == 1){
-				setPartialState("NONE");
-				setLastPartialFill(new BigDecimal("0"));
-				sell();
-//				vir.save(vi);
-				setDirty(true);
-			} 
+// 			else if (getCurrentPrice().compareTo(getRequestSellPrice()) == 1){
+// 				setPartialState("NONE");
+// 				setLastPartialFill(new BigDecimal("0"));
+// 				sell();
+// //				vir.save(vi);
+// 				setDirty(true);
+// 			} 
 
 			else if (new BigDecimal(getActiveOrder().getFilled_size()).compareTo(new BigDecimal("0")) == 1 && new BigDecimal(getActiveOrder().getFilled_size()).compareTo(getLastLtc().subtract(getLastPartialFill())) == -1) {
 				// cancelOrder();
