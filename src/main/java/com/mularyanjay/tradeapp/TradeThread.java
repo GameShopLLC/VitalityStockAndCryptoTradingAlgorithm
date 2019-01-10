@@ -779,8 +779,11 @@ if (getSimMode() == SimulationMode.REALTIME) {
 		}
 	} else if (getSimMode() == SimulationMode.REALTIME){
 		if (getBuyProcessState().equals("BOUGHT")) {
+			if (getSecondTick() - getLastSecondTick() > getDesiredSellToStuckTimeout()/1000) {
 			setLifeTimeState("SELL_STUCK");
+
 			setDirty(true);
+		}
 		}
 	}
 		}
