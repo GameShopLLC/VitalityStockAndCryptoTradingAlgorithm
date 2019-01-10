@@ -1271,6 +1271,7 @@ setLastUsd(getUsd());
 	
 	//Ok, now to do sells (start in tradegroup)
 	public void buy() {
+		timer.cancel();
 		setLtc(getRequestedLtc());
 		setBuyProcessState("BOUGHT");
 		setLifeTimeState("TRADING");
@@ -1281,6 +1282,7 @@ setLastUsd(getUsd());
 		// setActiveOrder(null);
 		// setOrderId(null);
 			resetTick();
+			startTimer();
 //		}
 //		if(getSimMode() == SimulationMode.REALTIME) {
 //			setTimer(new Timer());
@@ -1320,6 +1322,7 @@ setLastUsd(getUsd());
 		// 	setLtc(new BigDecimal("0"));
 		// 	setLastUsd(forceTotal);
 		// }
+		timer.cancel();
 		setUsd(getRequestedTotal());
 		if ((getUsd().subtract(getLastUsd())).compareTo(getSlightAmount()) >= 0){
 		setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
@@ -1345,6 +1348,7 @@ setLastUsd(getUsd());
 		// setActiveOrder(null);
 				resetTick();
 //			}
+				startTimer();
 	}
 	//request... blah?
 
