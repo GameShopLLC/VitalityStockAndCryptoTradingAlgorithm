@@ -626,8 +626,8 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 	public void deployPartial(){
 if (getSimMode() == SimulationMode.REALTIME) {
 
-	setOrderId(null);
-	setActiveOrder(null);
+	// setOrderId(null);
+	// setActiveOrder(null);
 			ObjectMapper objectMapper = new ObjectMapper();
 //			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 			Order order = new Order();
@@ -1179,8 +1179,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //		if (getSimMode() == SimulationMode.REALTIME) {
 //		timer.cancel();
 //		} else if (getSimMode() == SimulationMode.SIMULATION) {
-		setActiveOrder(null);
-		setOrderId(null);
+		// setActiveOrder(null);
+		// setOrderId(null);
 			resetTick();
 //		}
 //		if(getSimMode() == SimulationMode.REALTIME) {
@@ -1242,8 +1242,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //		if (getSimMode() == SimulationMode.REALTIME) {
 //			timer.cancel();
 //			} else if (getSimMode() == SimulationMode.SIMULATION) {
-		setOrderId(null);
-		setActiveOrder(null);
+		// setOrderId(null);
+		// setActiveOrder(null);
 				resetTick();
 //			}
 	}
