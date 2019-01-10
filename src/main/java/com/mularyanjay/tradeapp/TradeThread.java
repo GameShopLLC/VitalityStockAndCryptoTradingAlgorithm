@@ -325,9 +325,9 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 
 			try {
 				
-			setActiveOrder(new IncomingOrder());
-			objectMapper.readerForUpdating(activeOrder).readValue(res.getBody().toString());
-			//objectMapper.readValue(res.getBody().toString(), IncomingOrder.class));
+			setActiveOrder(null);
+			// objectMapper.readerForUpdating(activeOrder).readValue(res.getBody().toString());
+			objectMapper.readValue(res.getBody().toString(), IncomingOrder.class);
 			return true;
 			} catch (Throwable throwable){
 				throwable.printStackTrace();
@@ -347,10 +347,10 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 
 	
 	public void forceLoss() {
-		if (getBuyProcessState().equals("DESIRED_SELL") || getBuyProcessState().equals("BOUGHT")) {
+		//if (getBuyProcessState().equals("DESIRED_SELL") || getBuyProcessState().equals("BOUGHT")) {
 			//setActiveOrder(null);
 		//setOrderId(null);
-		BigDecimal sellPrice = new BigDecimal(getCurrentPrice().add(new BigDecimal(".001")).toPlainString());//.subtract(getCurrentPrice().multiply(getForceSellFee()));
+		BigDecimal sellPrice = new BigDecimal(getCurrentPrice().add(new BigDecimal(".0001")).toPlainString());//.subtract(getCurrentPrice().multiply(getForceSellFee()));
 		BigDecimal forceLtc = new BigDecimal("0");
 		if (getBuyProcessState().equals("DESIRED_SELL")) {
 		forceLtc = new BigDecimal(getLastLtc().toPlainString());//getRequestedTotal().divide(getRequestSellPrice(), 8, RoundingMode.HALF_DOWN);
@@ -487,10 +487,10 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 				// setBuyProcessState("DESIRED_SELL");
 				// setLifeTimeState("TRADING");
 				// System.out.println("Sell order placed at $" + getRequestSellPrice());
-				setRequestedTotal(sellPrice.multiply(forceLtc));
-				setRequestSellPrice(sellPrice);
+				setRequestedTotal(new BigDecimal(sellPrice.multiply(new BigDecimal(forceLtc.toPlainString())).toPlainString()));
+				setRequestSellPrice(new BigDecimal(sellPrice.toPlainString()));
 				// setLtc(new BigDecimal("0"));
-				setLastLtc(forceLtc);
+				setLastLtc(new BigDecimal(forceLtc).toPlainString());
 				setLtc(new BigDecimal("0"));
 				//set Litecoin
 				setBuyProcessState("DESIRED_SELL");
@@ -500,7 +500,7 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 				resetTick();
 					setDirty(true);
 //				}
-		}
+		//}
 	}
 	
 	public void forceSell() {
@@ -1179,8 +1179,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //		if (getSimMode() == SimulationMode.REALTIME) {
 //		timer.cancel();
 //		} else if (getSimMode() == SimulationMode.SIMULATION) {
-		// setActiveOrder(null);
-		// setOrderId(null);
+		setActiveOrder(null);
+		setOrderId(null);
 			resetTick();
 //		}
 //		if(getSimMode() == SimulationMode.REALTIME) {
@@ -1242,8 +1242,8 @@ if (getSimMode() == SimulationMode.REALTIME) {
 //		if (getSimMode() == SimulationMode.REALTIME) {
 //			timer.cancel();
 //			} else if (getSimMode() == SimulationMode.SIMULATION) {
-		// setOrderId(null);
-		// setActiveOrder(null);
+		setOrderId(null);
+		setActiveOrder(null);
 				resetTick();
 //			}
 	}
