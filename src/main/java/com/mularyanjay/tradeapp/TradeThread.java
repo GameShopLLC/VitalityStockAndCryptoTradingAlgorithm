@@ -324,9 +324,10 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 
 
 			try {
-			setActiveOrder(null);	
-
-			setActiveOrder(objectMapper.readValue(res.getBody().toString(), IncomingOrder.class));
+				
+			setActiveOrder(new IncomingOrder());
+			objectMapper.readerForUpdating(activeOrder).readValue(res.getBody().toString());
+			//objectMapper.readValue(res.getBody().toString(), IncomingOrder.class));
 			return true;
 			} catch (Throwable throwable){
 				throwable.printStackTrace();
