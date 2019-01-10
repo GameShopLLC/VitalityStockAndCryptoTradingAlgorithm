@@ -490,7 +490,7 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 				setRequestedTotal(new BigDecimal(sellPrice.multiply(new BigDecimal(forceLtc.toPlainString())).toPlainString()));
 				setRequestSellPrice(new BigDecimal(sellPrice.toPlainString()));
 				// setLtc(new BigDecimal("0"));
-				setLastLtc(new BigDecimal(forceLtc).toPlainString());
+				setLastLtc((new BigDecimal(forceLtc)).toPlainString());
 				setLtc(new BigDecimal("0"));
 				//set Litecoin
 				setBuyProcessState("DESIRED_SELL");
