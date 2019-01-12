@@ -1271,7 +1271,22 @@ setLastUsd(getUsd());
 						// return;
 								}
 							} 
+						} 
+
+						if (getBuyProcessState().equals("BOUGHT")){
+							if (getLifeTimeState().equals("SELL_STUCK")){
+							if (getPartialState().equals("NONE")){
+						 		forceLoss();
+						 
+								} else if (getPartialState().equals("PARTIAL")){
+									sellPartial();
+						// return;
+								}
+							}
+
+
 						}
+
 } else {
 	if (getBuyProcessState().equals("DESIRED_BUY")){
 							//if (!fetchOrder()) {
@@ -1291,6 +1306,19 @@ setLastUsd(getUsd());
 						// return;
 								}
 							//} 
+						}
+							if (getBuyProcessState().equals("BOUGHT")){
+							if (getLifeTimeState().equals("SELL_STUCK")){
+							if (getPartialState().equals("NONE")){
+						 		forceLoss();
+						 
+								} else if (getPartialState().equals("PARTIAL")){
+									sellPartial();
+						// return;
+								}
+							}
+
+
 						}
 }
 
@@ -1354,7 +1382,7 @@ setLastUsd(getUsd());
 		if (getSimMode() == SimulationMode.REALTIME){
 
 
-		if ((getUsd().subtract(getLastUsd())).compareTo(getSlightAmount()) >= 0){
+		if ((getUsd().subtract(getLastUsd())).compareTo(new BigDecimal("0")) >= 0){
 		setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
 		setLastUsd(getUsd());
 		//profit percentage?
