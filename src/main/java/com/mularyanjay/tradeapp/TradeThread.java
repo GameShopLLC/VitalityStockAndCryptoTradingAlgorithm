@@ -1351,6 +1351,9 @@ setLastUsd(getUsd());
 		// }
 		timer.cancel();
 		setUsd(getRequestedTotal());
+		if (getSimMode() == SimulationMode.REALTIME){
+
+
 		if ((getUsd().subtract(getLastUsd())).compareTo(getSlightAmount()) >= 0){
 		setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
 		setLastUsd(getUsd());
@@ -1365,6 +1368,23 @@ setLastUsd(getUsd());
 			// setLastUsd(getUsd());
 		setBuyProcessState("SOLD");
 		setLifeTimeState("IDLE");
+		}
+		} else {
+			if ((getUsd().subtract(getLastUsd())).compareTo(new BigDecimal("0")) >= 0){
+		setProfit(getProfit().add(getUsd().subtract(getLastUsd())));
+		setLastUsd(getUsd());
+		//profit percentage?
+		setBuyProcessState("SOLD");
+		setLifeTimeState("RESERVE");
+		} 
+		else {
+			setLoss(getLoss().add((getUsd()).subtract(getLastUsd())));
+			setLastUsd(getUsd());
+		//profit percentage?
+			// setLastUsd(getUsd());
+		setBuyProcessState("SOLD");
+		setLifeTimeState("IDLE");
+		}
 		}
 		setLastLtc(new BigDecimal("0"));
 		System.out.println("Sold at $" + getRequestSellPrice());
