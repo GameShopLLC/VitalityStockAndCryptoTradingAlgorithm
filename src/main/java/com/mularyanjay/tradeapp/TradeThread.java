@@ -1264,7 +1264,7 @@ setLastUsd(getUsd());
 							if (!fetchOrder()) {
 								setLifeTimeState(new String("SELL_STUCK"));
 								if (getPartialState().equals("NONE")){
-						 		attemptSell(carrot);
+						 		forceLoss();
 						 
 								} else if (getPartialState().equals("PARTIAL")){
 									sellPartial();
@@ -1284,7 +1284,7 @@ setLastUsd(getUsd());
 							//if (!fetchOrder()) {
 								setLifeTimeState(new String("SELL_STUCK"));
 								if (getPartialState().equals("NONE")){
-						 		attemptSell(carrot);
+						 		forceLoss();
 						 
 								} else if (getPartialState().equals("PARTIAL")){
 									sellPartial();
