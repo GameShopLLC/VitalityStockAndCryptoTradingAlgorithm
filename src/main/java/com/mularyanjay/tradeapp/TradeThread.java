@@ -1145,11 +1145,11 @@ setLastUsd(getUsd());
 	public void broadcastCarrot(Carrot carrot) {
 		setCurrentPrice(carrot.getCurrent());
 		setSimCarrot(carrot);
-		refresh();
+		refresh(carrot);
 	}
 	
 	//Implement realtime trading features
-	public void refresh() {
+	public void refresh(Carrot carrot) {
 
 
 		if(getBuyProcessState().equals("DESIRED_BUY")) {
@@ -1264,13 +1264,33 @@ setLastUsd(getUsd());
 							if (!fetchOrder()) {
 								setLifeTimeState(new String("SELL_STUCK"));
 								if (getPartialState().equals("NONE")){
-						 		forceLoss();
+						 		attemptSell(carrot);
 						 
 								} else if (getPartialState().equals("PARTIAL")){
 									sellPartial();
 						// return;
 								}
 							} 
+						}
+} else {
+	if (getBuyProcessState().equals("DESIRED_BUY")){
+							//if (!fetchOrder()) {
+
+								setLifeTimeState(new String("BUY_STUCK"));
+								cancelBuy();
+							//} 
+						}
+						if (getBuyProcessState().equals("DESIRED_SELL")){
+							//if (!fetchOrder()) {
+								setLifeTimeState(new String("SELL_STUCK"));
+								if (getPartialState().equals("NONE")){
+						 		attemptSell(carrot);
+						 
+								} else if (getPartialState().equals("PARTIAL")){
+									sellPartial();
+						// return;
+								}
+							//} 
 						}
 }
 

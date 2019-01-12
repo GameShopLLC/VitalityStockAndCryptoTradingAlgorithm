@@ -366,6 +366,10 @@ public class TradeGroup {
 		updateBalance();
 		setAccountSnapshot(getUsd());
 	}
+
+	public void correctThreads(){
+		
+	}
 	//:D
 	public void broadcastCarrot (Carrot carrot) {
 		//Make "currentCarrot" variable and resize
