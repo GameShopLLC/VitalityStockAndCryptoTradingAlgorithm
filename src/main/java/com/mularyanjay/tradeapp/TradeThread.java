@@ -1264,8 +1264,8 @@ setLastUsd(getUsd());
 							if (!fetchOrder()) {
 								setLifeTimeState(new String("SELL_STUCK"));
 								if (getPartialState().equals("NONE")){
-						 		//forceLoss();
-						 		attemptSell(carrot);
+						 		forceLoss();
+						 		// attemptSell(carrot);
 								} else if (getPartialState().equals("PARTIAL")){
 									sellPartial();
 						// return;
@@ -1276,8 +1276,8 @@ setLastUsd(getUsd());
 						if (getBuyProcessState().equals("BOUGHT")){
 							if (getLifeTimeState().equals("SELL_STUCK")){
 							if (getPartialState().equals("NONE")){
-						 		// forceLoss();
-						 		attemptSell(carrot);
+						 		forceLoss();
+						 		// attemptSell(carrot);
 						 
 								} else if (getPartialState().equals("PARTIAL")){
 									sellPartial();
@@ -1300,8 +1300,8 @@ setLastUsd(getUsd());
 							//if (!fetchOrder()) {
 								setLifeTimeState(new String("SELL_STUCK"));
 								if (getPartialState().equals("NONE")){
-						 		// forceLoss();
-									attemptSell(carrot);
+						 		forceLoss();
+									// attemptSell(carrot);
 						 
 								} else if (getPartialState().equals("PARTIAL")){
 									sellPartial();
@@ -1312,8 +1312,8 @@ setLastUsd(getUsd());
 							if (getBuyProcessState().equals("BOUGHT")){
 							if (getLifeTimeState().equals("SELL_STUCK")){
 							if (getPartialState().equals("NONE")){
-						 		// forceLoss();
-						 		attemptSell(carrot);
+						 		forceLoss();
+						 		// attemptSell(carrot);
 						 
 								} else if (getPartialState().equals("PARTIAL")){
 									sellPartial();
