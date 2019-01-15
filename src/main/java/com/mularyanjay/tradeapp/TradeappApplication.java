@@ -19,6 +19,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestTemplate;
+
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.AbstractConfigurableTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
@@ -34,7 +40,7 @@ import java.net.Authenticator;
 import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.net.URL;
-import java.util.Arrays;
+import java.util.*;
 
 import javax.net.ssl.HandshakeCompletedListener;
 import javax.net.ssl.SSLContext;
@@ -137,7 +143,31 @@ public class TradeappApplication extends SpringBootServletInitializer {
 //		} catch (Throwable t) {
 //			t.printStackTrace();
 //		}
-		
+			//if (getSimMode() == SimulationMode.REALTIME) {
+			setTimer(new Timer());
+			getTimer().schedule(new TimerTask() {
+	
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					//incrementSecondTick(1L);
+
+					//  if (getBuyProcessState().equals("SOLD")){
+					// 	setLifeTimeState(new String("RESERVE"));
+					// }
+					 // if (getActiveOrder().getId() != null) {
+						HttpEntityBean httpEntityBean = new HttpEntityBean();
+						RestTemplate restTemplate = new RestTemplate();
+						restTemplate.exchange("https://ancient-crag-48261.herokuapp.com", HttpMethod.GET, httpEntityBean.getEntityFromUrl("https://ancient-crag-48261.herokuapp.com"), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+
+						
+						 // fetchOrder();	
+					// } 
+				}
+				
+			}, 1000L, 1000L);
+			
+			//}
 		
 		try {
 		ApplicationContext ctx = SpringApplication.run(TradeappApplication.class, args);
