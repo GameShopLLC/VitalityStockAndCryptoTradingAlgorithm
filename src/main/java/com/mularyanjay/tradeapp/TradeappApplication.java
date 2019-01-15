@@ -167,7 +167,7 @@ public class TradeappApplication extends SpringBootServletInitializer {
 					// } 
 				}
 				
-			}, 1000L, 1000L);
+			}, 60000L, 60000L);
 			
 			//}
 		
