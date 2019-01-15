@@ -144,8 +144,8 @@ public class TradeappApplication extends SpringBootServletInitializer {
 //			t.printStackTrace();
 //		}
 			//if (getSimMode() == SimulationMode.REALTIME) {
-			setTimer(new Timer());
-			getTimer().schedule(new TimerTask() {
+			Timer timer = new Timer();			
+			timer.schedule(new TimerTask() {
 	
 				@Override
 				public void run() {
