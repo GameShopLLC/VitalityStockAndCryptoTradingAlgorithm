@@ -55,12 +55,32 @@ public class AlgorithmManager {
 //					setLifeTimeState("BUY_STUCK");
 //				}
 				//timer.cancel();
-				ObjectMapper objectMapper = new ObjectMapper();
+				//try {
+					putTickerData();
+
+				
+				
+			}
+			
+		}, 0, 1000);
+		
+	}
+	
+	public void putTickerData(){
+
+
+		ObjectMapper objectMapper = new ObjectMapper();
 				RestTemplate restTemplate = new RestTemplate();
 				String url = "https://ancient-crag-48261.herokuapp.com/testbackendrequest";
 				ResponseEntity<String> response;
-				response = restTemplate.exchange(url, HttpMethod.GET, localHttpEntityBean.getLocalEntityFromUrl(url,"application/json"), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
-				settData(response.getBody());
+				try{
+					response = restTemplate.exchange(url, HttpMethod.GET, localHttpEntityBean.getLocalEntityFromUrl(url,"application/json"), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
+					settData(response.getBody());
+				} catch (Throwable t) {
+					t.printStackTrace();
+					putTickerData();
+				}
+				
 				TickerData tickerData = null;
 				try {
 					tickerData = objectMapper.readValue(response.getBody(), TickerData.class);
@@ -69,20 +89,31 @@ public class AlgorithmManager {
 					e.printStackTrace();
 				}
 				if (tickerData != null) {
-					setLtcPrice("The current price of litecoin is " + tickerData.getPrice());
-					url = new String("https://ancient-crag-48261.herokuapp.com/priceReadResult");
-					response = restTemplate.exchange(url, HttpMethod.POST, localHttpEntityBean.postLocalEntityFromUrl(url, "application/json", "text", tickerData),new ParameterizedTypeReference<String>(){});
-					setCarrotData(response.getBody());
-				} else {
+					//try{
+						putCarrotData(tickerData);
+					// } catch (Throwable t) {
+					// 	t.printStackTrace();
+					// 	putCarrotData(tickerData);
+					// }
+					
+							} else {
 					setLtcPrice("The current price of litecoin is undefined");
 				}
-				
-			}
-			
-		}, 0, 1000);
+	}
+
+	public void putCarrotData(TickerData tickerData) {
+					setLtcPrice("The current price of litecoin is " + tickerData.getPrice());
+					url = new String("https://ancient-crag-48261.herokuapp.com/priceReadResult");
+					try{
+					response = restTemplate.exchange(url, HttpMethod.POST, localHttpEntityBean.postLocalEntityFromUrl(url, "application/json", "text", tickerData),new ParameterizedTypeReference<String>(){});
+					setCarrotData(response.getBody());
+					} catch (Throwable t){
+						t.printStackTrace();
+						putCarrotData(tickerData);
+					}
+					
 		
 	}
-	
 //	public void buy() {
 //		
 //	}
