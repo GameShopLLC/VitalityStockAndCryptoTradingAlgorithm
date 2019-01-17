@@ -72,7 +72,7 @@ public class AlgorithmManager {
 		ObjectMapper objectMapper = new ObjectMapper();
 				RestTemplate restTemplate = new RestTemplate();
 				String url = "https://ancient-crag-48261.herokuapp.com/testbackendrequest";
-				ResponseEntity<String> response;
+				ResponseEntity<String> response = null;
 				try{
 					response = restTemplate.exchange(url, HttpMethod.GET, localHttpEntityBean.getLocalEntityFromUrl(url,"application/json"), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
 					settData(response.getBody());
@@ -103,7 +103,7 @@ public class AlgorithmManager {
 
 	public void putCarrotData(TickerData tickerData) {
 				RestTemplate restTemplate = new RestTemplate();
-				ResponseEntity<String> response;
+				ResponseEntity<String> response = null;
 
 					setLtcPrice("The current price of litecoin is " + tickerData.getPrice());
 					String url = new String("https://ancient-crag-48261.herokuapp.com/priceReadResult");
