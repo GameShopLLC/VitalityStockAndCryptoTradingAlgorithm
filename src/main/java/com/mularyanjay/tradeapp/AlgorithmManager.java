@@ -102,8 +102,11 @@ public class AlgorithmManager {
 	}
 
 	public void putCarrotData(TickerData tickerData) {
+				RestTemplate restTemplate = new RestTemplate();
+				ResponseEntity<String> response;
+
 					setLtcPrice("The current price of litecoin is " + tickerData.getPrice());
-					url = new String("https://ancient-crag-48261.herokuapp.com/priceReadResult");
+					String url = new String("https://ancient-crag-48261.herokuapp.com/priceReadResult");
 					try{
 					response = restTemplate.exchange(url, HttpMethod.POST, localHttpEntityBean.postLocalEntityFromUrl(url, "application/json", "text", tickerData),new ParameterizedTypeReference<String>(){});
 					setCarrotData(response.getBody());
