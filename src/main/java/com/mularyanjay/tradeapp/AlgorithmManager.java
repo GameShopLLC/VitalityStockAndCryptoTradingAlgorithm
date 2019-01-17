@@ -55,9 +55,12 @@ public class AlgorithmManager {
 //					setLifeTimeState("BUY_STUCK");
 //				}
 				//timer.cancel();
-				//try {
+				try {
 					putTickerData();
-
+				} catch (Throwable t) {
+					t.printStackTrace();
+					runAlgorithm();
+				}
 				
 				
 			}
