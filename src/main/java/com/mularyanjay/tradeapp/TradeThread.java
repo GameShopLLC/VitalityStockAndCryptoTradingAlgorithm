@@ -960,7 +960,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			if(doRestTemplate(url, json)){
 setLastUsd(getUsd());
 		setUsd(getUsd().subtract(getRequestBuyPrice().multiply(getRequestedLtc())).setScale(6, RoundingMode.HALF_DOWN));
-		if (getUsd().compareTo(new BigDecimal("0") == -1)){
+		if (getUsd().compareTo(new BigDecimal("0")) == -1){
 			setUsd(new BigDecimal("0"));
 		}
 		setBuyProcessState("DESIRED_BUY");
