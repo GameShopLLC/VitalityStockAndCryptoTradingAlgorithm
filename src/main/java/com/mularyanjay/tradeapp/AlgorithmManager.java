@@ -76,13 +76,13 @@ public class AlgorithmManager {
 				RestTemplate restTemplate = new RestTemplate();
 				String url = "https://ancient-crag-48261.herokuapp.com/testbackendrequest";
 				ResponseEntity<String> response = null;
-				try{
+				//try{
 					response = restTemplate.exchange(url, HttpMethod.GET, localHttpEntityBean.getLocalEntityFromUrl(url,"application/json"), new ParameterizedTypeReference<String>(){});//restTemplate.exchange(requestEntity, responseType)//
 					settData(response.getBody());
-				} catch (Throwable t) {
-					t.printStackTrace();
-					putTickerData();
-				}
+				// } catch (Throwable t) {
+				// 	t.printStackTrace();
+				// 	putTickerData();
+				// }
 				
 				TickerData tickerData = null;
 				try {
@@ -110,13 +110,13 @@ public class AlgorithmManager {
 
 					setLtcPrice("The current price of litecoin is " + tickerData.getPrice());
 					String url = new String("https://ancient-crag-48261.herokuapp.com/priceReadResult");
-					try{
+					//try{
 					response = restTemplate.exchange(url, HttpMethod.POST, localHttpEntityBean.postLocalEntityFromUrl(url, "application/json", "text", tickerData),new ParameterizedTypeReference<String>(){});
 					setCarrotData(response.getBody());
-					} catch (Throwable t){
-						t.printStackTrace();
-						putCarrotData(tickerData);
-					}
+					// } catch (Throwable t){
+					// 	t.printStackTrace();
+					// 	putCarrotData(tickerData);
+					// }
 					
 		
 	}
