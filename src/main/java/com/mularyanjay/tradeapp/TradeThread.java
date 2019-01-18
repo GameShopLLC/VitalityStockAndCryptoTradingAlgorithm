@@ -7,8 +7,8 @@
 
 package com.mularyanjay.tradeapp;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.math.*;
+
 // import java.util.ArrayList;
 // import java.util.Timer;
 // import java.util.TimerTask;
@@ -960,6 +960,9 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			if(doRestTemplate(url, json)){
 setLastUsd(getUsd());
 		setUsd(getUsd().subtract(getRequestBuyPrice().multiply(getRequestedLtc())).setScale(6, RoundingMode.HALF_DOWN));
+		if (getUsd().compareTo(new BigDecimal("0") == -1)){
+			setUsd(new BigDecimal("0"));
+		}
 		setBuyProcessState("DESIRED_BUY");
 		setLifeTimeState("TRADING");
 		//Sysout?
@@ -1335,7 +1338,7 @@ setLastUsd(getUsd());
 	//Ok, now to do sells (start in tradegroup)
 	public void buy() {
 		timer.cancel();
-		setLtc(getRequestedLtc());
+		setLtc(getRequestedLtc().abs());
 		setBuyProcessState("BOUGHT");
 		setLifeTimeState("TRADING");
 		System.out.println("Bought at $" + getRequestBuyPrice());
@@ -1386,7 +1389,7 @@ setLastUsd(getUsd());
 		// 	setLastUsd(forceTotal);
 		// }
 		timer.cancel();
-		setUsd(getRequestedTotal());
+		setUsd(getRequestedTotal().abs());
 		if (getSimMode() == SimulationMode.REALTIME){
 
 
