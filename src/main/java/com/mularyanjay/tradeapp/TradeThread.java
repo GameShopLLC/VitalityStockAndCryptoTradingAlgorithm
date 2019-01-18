@@ -379,7 +379,7 @@ res = restTemplate.exchange("https://sample-tradeapp.herokuapp.com/getOrder/" + 
 			order.setType("limit");
 			order.setSide("sell");
 			order.setProduct_id("ZRX-USD");
-			// order.setStp("co");
+			order.setStp("co");
 			 order.setTime_in_force("GTT");
 			 order.setCancel_after("hour");
 //			order.setPrice(getRequestBuyPrice().toPlainString());
@@ -659,7 +659,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			order.setType("limit");
 			order.setSide("buy");
 			order.setProduct_id("ZRX-USD");
-			// order.setStp("co");
+			order.setStp("co");
 			// order.setPost_only("true");
 			
 			
@@ -743,7 +743,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 					order.setType("limit");
 					order.setSide("sell");
 					order.setProduct_id("ZRX-USD");
-					//order.setStp("co");
+					order.setStp("co");
 //					order.setPost_only("true");
 					// setRequestSellPrice((new BigDecimal(getRequestSellPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)).toPlainString());
 					setLastLtc(new BigDecimal((new BigDecimal(getLastLtc().subtract(getLastPartialFill()).toPlainString()).setScale(5, RoundingMode.HALF_DOWN)).toPlainString()));
@@ -915,7 +915,7 @@ if (getSimMode() == SimulationMode.REALTIME) {
 			order.setType("limit");
 			order.setSide("buy");
 			order.setProduct_id("ZRX-USD");
-			// order.setStp("co");
+			order.setStp("co");
 			// order.setPost_only("true");
 			
 			
@@ -1060,7 +1060,7 @@ setLastUsd(getUsd());
 					order.setType("limit");
 					order.setSide("sell");
 					order.setProduct_id("ZRX-USD");
-					// order.setStp("co");
+					order.setStp("co");
 //					order.setPost_only("true");
 					setRequestSellPrice((new BigDecimal(getRequestSellPrice().toPlainString()).setScale(6, RoundingMode.HALF_DOWN)));
 					setLtc((new BigDecimal(getLtc().toPlainString()).setScale(5, RoundingMode.HALF_DOWN)));
