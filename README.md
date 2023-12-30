@@ -6,4 +6,9 @@ Please run this algorithm under Simulation.  I want to use it to fund a brokerag
 
 Unfortunately this algorithm was stolen.  It made another man billions.
 
+This is the original paper from 2017.  The codebase is the same codebase from 2018.  The codebase was most recently modified in 2019.
+
+https://drive.google.com/file/d/1jkAUetejGBNBMthgNNNNjIu33oHXqyas/view?usp=sharing
+
+
 
