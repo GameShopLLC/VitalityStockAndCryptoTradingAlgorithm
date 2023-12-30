@@ -10,7 +10,7 @@ This is the original paper from 2017.  The codebase is the same one from 2018.  
 
 https://drive.google.com/file/d/1jkAUetejGBNBMthgNNNNjIu33oHXqyas/view?usp=sharing
 
-Tbis was intended for use on Coinbase.  My transactions from Coinbase were stopped.  I do not know who was at fault.  All of my purchases were valid.  I currently have a banned Coinbase account.
+This was intended for use on Coinbase.  My transactions from Coinbase were stopped.  I do not know who was at fault.  All of my purchases were valid.  I currently have a banned Coinbase account.
 
 
 
