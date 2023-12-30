@@ -2,7 +2,7 @@ Vitality Trading Algorithm
 
 Hello.  This is the most powerful stock and crypto trading algorithm to ever exist.  It goes by the name of Vitality.
 
-Please run this algorithm under Simulation.  Running this on the live market is not recommended.  I want to use it to fund a brokerage.  I have had this algorithm since 2017.
+Please run this algorithm under Simulation.  Running this on the live market is not recommended.  I want to use it to fund a brokerage.  I will sue anyone who uses this.  I have had this algorithm since 2017.
 
 Unfortunately this algorithm was stolen.  It made another man billions.
 
