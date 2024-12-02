@@ -6,7 +6,7 @@ patreon.com/GameShop_Engine
 
 *Use At Your Own Risk.  The Creator of this Program is not Responsible for any Losses incurred.  The warranty is voided.  You cannot sue me ethically.  People can now use the Program once the fee on Patreon is payed.  Its only $3/Month*
 
-All Derivative Works including Distribution Use and Publishing are Copyrighted with GameShop LLC Of North Carolina
+All Derivative Works including Distribution Use and Publishing are Copyrighted with Lynden Jay Evans Of GameShop LLC Of North Carolina
  
 Hello.  This is the most powerful stock and crypto trading algorithm to ever exist.  It goes by the name of Vitality.
 
